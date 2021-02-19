@@ -125,6 +125,3 @@ function gameLoop() {
 
     requestAnimationFrame(gameLoop)
 }
-
-
-init();
