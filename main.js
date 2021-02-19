@@ -29,30 +29,32 @@ class Point3D {
     }
 }
 
-
-
-
 class Hex {
     /**
-     * @param {Point3D} center 
+     * 
+     * @param {Point3D} point3D 
      */
-    constructor(center) {
-        this.X = center.x;
-        this.Y = center.y;
-        this.Z = center.z;
+    constructor(point) {
+        this.point3D = point;
         this.height = Math.sqrt(3) * size;
         this.width = 2 * size;
-    }    
-    static cube_to_axial(P){
-        let q = cube.x
-        let r = cube.z
-        return Hex(q, r)
     }
-    static axial_to_cube(hex){
-        let x = hex.q
-        let z = hex.r
-        let y = -x-z
-        return Cube(x, y, z)
+    /**
+     * 
+     * @param {Point3D} point3D 
+     */
+    static cubeToAxial(point3D) {
+        return new Point2D(point3D.x, point3D.z);
+    }
+    /**
+     * 
+     * @param {Point2D} point2D 
+     */
+    static axialToCube(point2D) {
+        let x = point2D.x;
+        let z = point2D.z;
+        let y = -x - z;
+        return new Point3D(x, y, z);
     }
 }
 
@@ -74,37 +76,48 @@ function hex_coords(center, size, number) {
 
 let points = [];
 for (let i = 0; i <= 5; i++) {
-    points.push(hex_coords(new Point2D(200, 200), 100, i));
+    points.push(hex_coords(new Point2D(200, 200), size, i));
 }
 
-const a = 2 * Math.PI / 6;
+const degrees60 = 2 * Math.PI / 6;
 
 function init() {
     gameLoop()
 }
 
-
-
-function drawGrid(width, height) {
-    for (let y = size; y + size * Math.sin(a) < height; y += size * Math.sin(a)) {
-        for (let x = size, j = 0; x + size * (1 + Math.cos(a)) < width; x += size * (1 + Math.cos(a)), y += (-1) ** j++ * size * Math.sin(a)) {
-            drawHexagon(x, y);
-        }
-    }
-}
+/**
+ * @param {Number} x x-coordinate of where you want to draw the 
+ */
 
 function drawHexagon(x, y) {
     ctx.beginPath();
     for (let i = 0; i < 6; i++) {
-        ctx.lineTo(x + size * Math.cos(a * i), y + size * Math.sin(a * i));
+        ctx.lineTo(x + r * Math.cos(degrees60 * i), y + r * Math.sin(degrees60 * i));
     }
     ctx.closePath();
     ctx.stroke();
 }
 
+/**
+ * @param {Number} width width of the grid
+ * @param {Number} height height of the grid
+ */
+
+function drawGrid(width, height) {
+    for (let y = size; y + size * Math.sin(degrees60) < height; y += size * Math.sin(degrees60)) {
+        for (let x = size, j = 0; x + size * (1 + Math.cos(degrees60)) < width; x += size * (1 + Math.cos(degrees60)), y += (-1) ** j++ * size * Math.sin(degrees60)) {
+            drawHexagon(x, y);
+        }
+    }
+}
+
 function gameLoop() {
     //Calculations
     
+
+    //Animation
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawGrid(canvas.width, canvas.height);
 
     //Animation
     ctx.clearRect(0,0,canvas.widht,canvas.height);
