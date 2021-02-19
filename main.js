@@ -1,6 +1,6 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-const size = 40;
+const size = 64;
 
 
 class Point2D {
