@@ -1,7 +1,8 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-const size = 40;
-
+canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
+const size = 32;
 
 class Point2D {
     /**
@@ -92,7 +93,7 @@ function init() {
 function drawHexagon(x, y) {
     ctx.beginPath();
     for (let i = 0; i < 6; i++) {
-        ctx.lineTo(x + r * Math.cos(degrees60 * i), y + r * Math.sin(degrees60 * i));
+        ctx.lineTo(x + size * Math.cos(degrees60 * i), y + size * Math.sin(degrees60 * i));
     }
     ctx.closePath();
     ctx.stroke();
@@ -104,24 +105,21 @@ function drawHexagon(x, y) {
  */
 
 function drawGrid(width, height) {
-    for (let y = size; y + size * Math.sin(degrees60) < height; y += size * Math.sin(degrees60)) {
-        for (let x = size, j = 0; x + size * (1 + Math.cos(degrees60)) < width; x += size * (1 + Math.cos(degrees60)), y += (-1) ** j++ * size * Math.sin(degrees60)) {
+    for (let x = size, i = 0, y; x + size * (1 + Math.cos(degrees60)) < width; x += size * (1 + Math.cos(degrees60)), i++) {
+        for (i % 2 === 1 ? y = 2 * size * Math.sin(degrees60) : y = size * Math.sin(degrees60); y + size * Math.sin(degrees60) < height; y += 2 * size * Math.sin(degrees60)) {
             drawHexagon(x, y);
         }
     }
 }
 
+drawGrid(canvas.width, canvas.height);
+
 function gameLoop() {
     //Calculations
     
-
-    //Animation
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawGrid(canvas.width, canvas.height);
-
     //Animation
     ctx.clearRect(0,0,canvas.widht,canvas.height);
-    drawGrid(canvas.width, canvas.height);
+    
 
     requestAnimationFrame(gameLoop)
 }
