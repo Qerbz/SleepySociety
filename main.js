@@ -1,6 +1,6 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-const size = 64;
+const size = 32;
 const degrees60 = 2 * Math.PI / 6;
 const elementsToBeLoaded = 2;
 let loadedElements = 0;
@@ -12,7 +12,7 @@ class Point2D {
      * @param {int} x 
      * @param {int} y 
      */
-    constructor(x, y) {
+    constructor(x, y)  {
         this.x = x;
         this.y = y;
     }
@@ -25,7 +25,7 @@ class Point3D {
      * @param {int} y 
      * @param {int} z 
      */
-    constructor(x,y,z){
+    constructor(x, y, z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -38,30 +38,30 @@ class Hex {
      * @param {Point3D} point3D 
      */
     constructor(point) {
-        this.point3D = point;
-        this.height = Math.sqrt(3) * size;
-        this.width = 2 * size;
-    }
-    /**
-     * 
-     * @param {Point3D} point3D 
-     */
+            this.point3D = point;
+            this.height = Math.sqrt(3) * size;
+            this.width = 2 * size;
+        }
+        /**
+         * 
+         * @param {Point3D} point3D 
+         */
     static cubeToAxial(point3D) {
-        return new Point2D(point3D.x, point3D.z);
-    }
-    /**
-     * 
-     * @param {Point2D} point2D 
-     */
+            return new Point2D(point3D.x, point3D.z);
+        }
+        /**
+         * 
+         * @param {Point2D} point2D 
+         */
     static axialToCube(point2D) {
         let x = point2D.x;
         let z = point2D.z;
         let y = -x - z;
         return new Point3D(x, y, z);
     }
-    static hexToPixel(hex){
-        let x = size * (3/2 * hex.q) 
-        let y = size * (Math.sqrt(3)/2 * hex.q  +  Math.sqrt(3) * hex.r) 
+    static hexToPixel(hex) {
+        let x = size * (3 / 2 * hex.q)
+        let y = size * (Math.sqrt(3) / 2 * hex.q + Math.sqrt(3) * hex.r)
         return new Point(x, y)
     }
 }
@@ -70,45 +70,42 @@ let camera = {
     x: 100,
     y: 100
 }
-let tile = 
-{
-    water: new Point2D(0,0),
-    sand: new Point2D(1,0),
-    grass: new Point2D(2,0),
-    dirt: new Point2D(3,0)
+let tile = {
+    water: new Point2D(0, 0),
+    sand: new Point2D(1, 0),
+    grass: new Point2D(2, 0),
+    dirt: new Point2D(3, 0)
 }
 
-function drawTile( tile,x,y )
-{
-  const spriteWidth = 64
-  const spriteHeight = 56
+function drawTile(tile, x, y) {
+    const spriteWidth = 64
+    const spriteHeight = 56
 
-  let width = size*2;
-  let height = size*Math.sqrt(3);
+    let width = size * 2;
+    let height = size * Math.sqrt(3);
 
-  let spriteX = width * tile.x;
-  let spriteY = height * tile.y;
+    let spriteX = width * tile.x;
+    let spriteY = height * tile.y;
 
-  ctx.drawImage(hexSpritesheet, spriteX, spriteY, spriteWidth, spriteHeight, x, y, width, height);
+    ctx.drawImage(hexSpritesheet, spriteX, spriteY, spriteWidth, spriteHeight, x, y, width, height);
 }
 
-function loading()
-{
-  loadedElements += 1;
-  if (loadedElements = elementsToBeLoaded)
-  {
-    init()
-  }
+function loading() {
+    loadedElements += 1;
+    if (loadedElements = elementsToBeLoaded) {
+        init()
+    }
 }
+
 function flat_hex_to_pixel(hex) {
-    let x = size * (     3./2 * hex.q                    )
-    let y = size * (sqrt(3)/2 * hex.q  +  sqrt(3) * hex.r)
+    let x = size * (3. / 2 * hex.q)
+    let y = size * (sqrt(3) / 2 * hex.q + sqrt(3) * hex.r)
     return Point2D(x, y)
 }
 
-function pixel_to_flat_hex(pixelPoint){
-    var x = ( 2/3 * point.x                        ) / size
-    var y = (-1/3 * point.x  +  sqrt(3)/3 * point.y) / size
+function pixel_to_flat_hex(pixelPoint) {
+    var x = (2 / 3 * point.x) / size
+    var y = (-1 / 3 * point.x + sqrt(3) / 3 * point.y) / size
     return hex_round(Hex(q, r))
 }
 
@@ -145,25 +142,31 @@ function drawHexagon(x, y) {
  */
 
 function drawGrid(width, height) {
-    for (let y = size; y + size * Math.sin(degrees60) < height; y += size * Math.sin(degrees60)) {
-        for (let x = size, j = 0; x + size * (1 + Math.cos(degrees60)) < width; x += size * (1 + Math.cos(degrees60)), y += (-1) ** j++ * size * Math.sin(degrees60)) {
+    for (let x = size, i = 0, y; x + size * (1 + Math.cos(degrees60)) < width; x += size * (1 + Math.cos(degrees60)), i++) {
+        for (i % 2 === 1 ? y = 2 * size * Math.sin(degrees60) : y = size * Math.sin(degrees60); y + size * Math.sin(degrees60) < height; y += 2 * size * Math.sin(degrees60)) {
             drawHexagon(x, y);
         }
     }
 }
 
+drawGrid(canvas.width, canvas.height);
+
 function gameLoop() {
     //Calculations
-    
+
 
     //Animation
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+<<<<<<< HEAD
     drawTile(tile.water,0,0);
+=======
+    drawTile(tile.water, 0, 9);
+>>>>>>> 819f7db47da6be27c10a94ef5a3bef56db7d942b
     drawGrid(canvas.width, canvas.height);
 
     //Animation
-    ctx.clearRect(0,0,canvas.widht,canvas.height);
-    drawGrid(canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.widht, canvas.height);
+
 
     requestAnimationFrame(gameLoop)
 }
