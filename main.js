@@ -69,8 +69,8 @@ let camera = {
 }
 
 function pixel_to_flat_hex(pixelPoint){
-    var x = ( 2./3 * point.x                        ) / size
-    var y = (-1./3 * point.x  +  sqrt(3)/3 * point.y) / size
+    var x = ( 2/3 * point.x                        ) / size
+    var y = (-1/3 * point.x  +  sqrt(3)/3 * point.y) / size
     return hex_round(Hex(q, r))
 }
 
