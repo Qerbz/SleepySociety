@@ -1,8 +1,10 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-canvas.height = window.innerHeight;
-canvas.width = window.innerWidth;
 const size = 32;
+const degrees60 = 2 * Math.PI / 6;
+const elementsToBeLoaded = 2;
+let loadedElements = 0;
+
 
 class Point2D {
     /**
@@ -68,6 +70,38 @@ let camera = {
     x: 100,
     y: 100
 }
+let tile = {
+    water: new Point2D(0, 0),
+    sand: new Point2D(1, 0),
+    grass: new Point2D(2, 0),
+    dirt: new Point2D(3, 0)
+}
+
+function drawTile(tile, x, y) {
+    const spriteWidth = 64
+    const spriteHeight = 56
+
+    let width = size * 2;
+    let height = size * Math.sqrt(3);
+
+    let spriteX = width * tile.x;
+    let spriteY = height * tile.y;
+
+    ctx.drawImage(hexSpritesheet, spriteX, spriteY, spriteWidth, spriteHeight, x, y, width, height);
+}
+
+function loading() {
+    loadedElements += 1;
+    if (loadedElements = elementsToBeLoaded) {
+        init()
+    }
+}
+
+function flat_hex_to_pixel(hex) {
+    let x = size * (3. / 2 * hex.q)
+    let y = size * (sqrt(3) / 2 * hex.q + sqrt(3) * hex.r)
+    return Point2D(x, y)
+}
 
 function pixel_to_flat_hex(pixelPoint) {
     var x = (2 / 3 * point.x) / size
@@ -84,8 +118,6 @@ let points = [];
 for (let i = 0; i <= 5; i++) {
     points.push(hex_coords(new Point2D(200, 200), size, i));
 }
-
-const degrees60 = 2 * Math.PI / 6;
 
 function init() {
     gameLoop()
@@ -124,8 +156,8 @@ function gameLoop() {
 
 
     //Animation
-    drawTile(tile.water, 0, 0)
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawTile(tile.water, 0, 9);
     drawGrid(canvas.width, canvas.height);
 
     //Animation
@@ -134,3 +166,7 @@ function gameLoop() {
 
     requestAnimationFrame(gameLoop)
 }
+
+let hexSpritesheet = new Image();
+hexSpritesheet.src = "hexagonTerrain_sheet.png";
+hexSpritesheet.onload = loading();
