@@ -59,6 +59,11 @@ class Hex {
         let y = -x - z;
         return new Point3D(x, y, z);
     }
+    static hexToPixel(hex){
+        let x = size * (3/2 * hex.q) 
+        let y = size * (Math.sqrt(3)/2 * hex.q  +  Math.sqrt(3) * hex.r) 
+        return new Point(x, y)
+    }
 }
 
 let camera = {
@@ -99,6 +104,12 @@ function flat_hex_to_pixel(hex) {
     let x = size * (     3./2 * hex.q                    )
     let y = size * (sqrt(3)/2 * hex.q  +  sqrt(3) * hex.r)
     return Point2D(x, y)
+}
+
+function pixel_to_flat_hex(pixelPoint){
+    var x = ( 2/3 * point.x                        ) / size
+    var y = (-1/3 * point.x  +  sqrt(3)/3 * point.y) / size
+    return hex_round(Hex(q, r))
 }
 
 function hex_coords(center, size, number) {
