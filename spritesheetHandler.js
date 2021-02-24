@@ -1,6 +1,6 @@
-let spritesheet = new Image();
-spritesheet.src = "hexagonTerrain_sheet.png";
-spritesheet.onload = loading();
+let hexSpritesheet = new Image();
+hexSpritesheet.src = "hexagonTerrain_sheet.png";
+hexSpritesheet.onload = loading();
 
 let tile = 
 {
@@ -10,8 +10,16 @@ let tile =
   dirt: new Point2D(3,0)
 }
 
-function drawTile( x,y )
+function drawTile( tile,x,y )
 {
+  const spriteWidth = 64
+  const spriteHeight = 56
+
   let width = size*2;
-  let height = size*Math.sqrt(3)
+  let height = size*Math.sqrt(3);
+
+  let spriteX = width * tile.x;
+  let spriteY = height * tile.y;
+
+  ctx.drawImage(hexSpritesheet, spriteX, spriteY, spriteWidth, spriteHeight, x, y, width, height);
 }

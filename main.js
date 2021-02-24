@@ -92,7 +92,7 @@ function init() {
 function drawHexagon(x, y) {
     ctx.beginPath();
     for (let i = 0; i < 6; i++) {
-        ctx.lineTo(x + r * Math.cos(degrees60 * i), y + r * Math.sin(degrees60 * i));
+        ctx.lineTo(x + size * Math.cos(degrees60 * i), y + size * Math.sin(degrees60 * i));
     }
     ctx.closePath();
     ctx.stroke();
@@ -116,6 +116,7 @@ function gameLoop() {
     
 
     //Animation
+    drawTile(tile.water,0,0)
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawGrid(canvas.width, canvas.height);
 
