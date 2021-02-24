@@ -38,7 +38,6 @@ class Hex {
      * @param {Point3D} point3D 
      */
     constructor(point) {
-<<<<<<< HEAD
         this.point = point;
         this.height = Math.sqrt(3) * size;
         this.width = 2 * size;
@@ -55,16 +54,6 @@ class Hex {
      * 
      * @param {Point3D} point3D 
      */
-=======
-            this.point3D = point;
-            this.height = Math.sqrt(3) * size;
-            this.width = 2 * size;
-        }
-        /**
-         * 
-         * @param {Point3D} point3D 
-         */
->>>>>>> 39cdaa688de012490739c59447fc9f1dfc998f59
     static cubeToAxial(point3D) {
             return new Point2D(point3D.x, point3D.z);
         }
