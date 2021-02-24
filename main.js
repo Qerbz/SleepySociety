@@ -10,7 +10,7 @@ class Point2D {
      * @param {int} x 
      * @param {int} y 
      */
-    constructor(x, y) {
+    constructor(x, y)  {
         this.x = x;
         this.y = y;
     }
@@ -23,7 +23,7 @@ class Point3D {
      * @param {int} y 
      * @param {int} z 
      */
-    constructor(x,y,z){
+    constructor(x, y, z) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -36,26 +36,31 @@ class Hex {
      * @param {Point3D} point3D 
      */
     constructor(point) {
-        this.point3D = point;
-        this.height = Math.sqrt(3) * size;
-        this.width = 2 * size;
-    }
-    /**
-     * 
-     * @param {Point3D} point3D 
-     */
+            this.point3D = point;
+            this.height = Math.sqrt(3) * size;
+            this.width = 2 * size;
+        }
+        /**
+         * 
+         * @param {Point3D} point3D 
+         */
     static cubeToAxial(point3D) {
-        return new Point2D(point3D.x, point3D.z);
-    }
-    /**
-     * 
-     * @param {Point2D} point2D 
-     */
+            return new Point2D(point3D.x, point3D.z);
+        }
+        /**
+         * 
+         * @param {Point2D} point2D 
+         */
     static axialToCube(point2D) {
         let x = point2D.x;
         let z = point2D.z;
         let y = -x - z;
         return new Point3D(x, y, z);
+    }
+    static hexToPixel(hex) {
+        let x = size * (3 / 2 * hex.q)
+        let y = size * (Math.sqrt(3) / 2 * hex.q + Math.sqrt(3) * hex.r)
+        return new Point(x, y)
     }
 }
 
@@ -64,10 +69,10 @@ let camera = {
     y: 100
 }
 
-function flat_hex_to_pixel(hex) {
-    let x = size * (     3./2 * hex.q                    )
-    let y = size * (sqrt(3)/2 * hex.q  +  sqrt(3) * hex.r)
-    return Point2D(x, y)
+function pixel_to_flat_hex(pixelPoint) {
+    var x = (2 / 3 * point.x) / size
+    var y = (-1 / 3 * point.x + sqrt(3) / 3 * point.y) / size
+    return hex_round(Hex(q, r))
 }
 
 function hex_coords(center, size, number) {
@@ -116,13 +121,16 @@ drawGrid(canvas.width, canvas.height);
 
 function gameLoop() {
     //Calculations
-    
+
+
     //Animation
-    ctx.clearRect(0,0,canvas.widht,canvas.height);
-    
+    drawTile(tile.water, 0, 0)
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawGrid(canvas.width, canvas.height);
+
+    //Animation
+    ctx.clearRect(0, 0, canvas.widht, canvas.height);
+
 
     requestAnimationFrame(gameLoop)
 }
-
-
-init();
