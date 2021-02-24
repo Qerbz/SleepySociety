@@ -158,7 +158,7 @@ function gameLoop() {
 
     //Animation
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawTile(tile.water,0,9);
+    drawTile(tile.water,0,0);
     drawGrid(canvas.width, canvas.height);
 
     //Animation
