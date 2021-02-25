@@ -1,5 +1,7 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
+canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
 const size = 32;
 const degrees60 = 2 * Math.PI / 6;
 const elementsToBeLoaded = 2;
@@ -120,7 +122,7 @@ for (let i = 0; i <= 5; i++) {
 }
 
 function init() {
-    gameLoop()
+    gameLoop();
 }
 
 /**
@@ -149,24 +151,18 @@ function drawGrid(width, height) {
     }
 }
 
-drawGrid(canvas.width, canvas.height);
-
 function gameLoop() {
     //Calculations
 
 
     //Animation
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawTile(tile.water, 0, 9);
+    drawTile(tile.water, 0, 0);
     drawGrid(canvas.width, canvas.height);
 
-    //Animation
-    ctx.clearRect(0, 0, canvas.widht, canvas.height);
-
-
-    requestAnimationFrame(gameLoop)
+    requestAnimationFrame(gameLoop);
 }
 
-let hexSpritesheet = new Image();
+const hexSpritesheet = new Image();
 hexSpritesheet.src = "hexagonTerrain_sheet.png";
 hexSpritesheet.onload = loading();
