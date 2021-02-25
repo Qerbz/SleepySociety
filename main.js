@@ -40,9 +40,17 @@ class Hex {
      * @param {Point3D} point3D 
      */
     constructor(point) {
-            this.point3D = point;
+            this.point = point;
             this.height = Math.sqrt(3) * size;
             this.width = 2 * size;
+
+            this.x = point.x;
+            this.y = point.y;
+            this.z = point.z;
+
+
+            this.q = this.x;
+            this.r = this.z;
         }
         /**
          * 
@@ -57,14 +65,16 @@ class Hex {
          */
     static axialToCube(point2D) {
         let x = point2D.x;
-        let z = point2D.z;
+        let z = point2D.y;
         let y = -x - z;
         return new Point3D(x, y, z);
     }
     static hexToPixel(hex) {
         let x = size * (3 / 2 * hex.q)
         let y = size * (Math.sqrt(3) / 2 * hex.q + Math.sqrt(3) * hex.r)
-        return new Point(x, y)
+        console.log(hex.q);
+        console.log(hex.z);
+        return new Point2D(x, y)
     }
 }
 
@@ -78,6 +88,7 @@ let tile = {
     grass: new Point2D(2, 0),
     dirt: new Point2D(3, 0)
 }
+let origo = new Point2D(0, 0);
 
 function drawTile(tile, x, y) {
     const spriteWidth = 64
@@ -121,8 +132,13 @@ for (let i = 0; i <= 5; i++) {
     points.push(hex_coords(new Point2D(200, 200), size, i));
 }
 
+let hex = new Hex(new Point3D(1, 0, 1));
+let t = Hex.hexToPixel(hex);
+console.log(t.x)
+console.log(t.y)
+
 function init() {
-    gameLoop();
+    gameLoop()
 }
 
 /**
@@ -144,12 +160,20 @@ function drawHexagon(x, y) {
  */
 
 function drawGrid(width, height) {
-    for (let x = size, i = 0, y; x + size * (1 + Math.cos(degrees60)) < width; x += size * (1 + Math.cos(degrees60)), i++) {
-        for (i % 2 === 1 ? y = 2 * size * Math.sin(degrees60) : y = size * Math.sin(degrees60); y + size * Math.sin(degrees60) < height; y += 2 * size * Math.sin(degrees60)) {
+    for (let x = size + origo.x, i = 0, y; x + size * (1 + Math.cos(degrees60)) < width; x += size * (1 + Math.cos(degrees60)), i++) {
+        for (i % 2 === 1 ? y = 2 * size * Math.sin(degrees60) + origo.y : y = size * Math.sin(degrees60) + origo.y; y + size * Math.sin(degrees60) < height; y += 2 * size * Math.sin(degrees60)) {
             drawHexagon(x, y);
         }
     }
 }
+
+function eventHandler() {
+
+}
+
+document.addEventListener("keydown", eventHandler)
+
+drawGrid(canvas.width, canvas.height);
 
 function gameLoop() {
     //Calculations
@@ -157,10 +181,12 @@ function gameLoop() {
 
     //Animation
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawTile(tile.water, 0, 0);
+    drawTile(tile.water, origo.x, origo.y);
+    drawTile(tile.sand, origo.x + 47, origo.y + 28)
     drawGrid(canvas.width, canvas.height);
 
-    requestAnimationFrame(gameLoop);
+
+    requestAnimationFrame(gameLoop)
 }
 
 const hexSpritesheet = new Image();
