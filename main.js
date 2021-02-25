@@ -4,6 +4,10 @@ const size = 32;
 const degrees60 = 2 * Math.PI / 6;
 const elementsToBeLoaded = 2;
 let loadedElements = 0;
+let origo = new Vector(0,0);
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+let scrollSpeed = new Vector(0,0);
 
 
 class Point2D 
@@ -95,7 +99,6 @@ let tile =
     dirt: new Point2D(3, 0)
 }
 
-
 function drawTile(tile, x, y) 
 {
     const spriteWidth = 64
@@ -175,18 +178,33 @@ document.addEventListener('mousemove', (event) => {
     console.log(`Mouse X: ${event.clientX}, Mouse Y: ${event.clientY}`);
 });
 
-function eventHandler()
+function eventHandler(e)
 {
-
+    if (e.type = "ArrowDown")
+    {
+        scrollSpeed.y = 10;
+    }
+    else if (e.type = "ArrowUp")
+    {
+        scrollSpeed.y = -10;
+    }
+    else if (e.type = "ArrowRight")
+    {
+        scrollSpeed.x = -10;
+    }
+    else if (e.type = "ArrowLeft")
+    {
+        scrollSpeed.x = -10;
+    }
 }
 
-document.addEventListener("keydown", eventHandler)
+document.onkeydown= eventHandler;
 
 drawGrid(canvas.width, canvas.height);
 
 function gameLoop() {
     //Calculations
-
+    origo.add(scrollSpeed);
 
     //Animation
     // ctx.clearRect(0, 0, canvas.width, canvas.height);
