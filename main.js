@@ -130,16 +130,11 @@ for (let i = 0; i <= 5; i++) {
     points.push(hex_coords(new Point2D(200, 200), size, i));
 }
 
-<<<<<<< HEAD
 let hex = new Hex(new Point3D(1, 0, 1));
 let t = Hex.hexToPixel(hex);
 console.log(t.x)
 console.log(t.y)
 
-const degrees60 = 2 * Math.PI / 6;
-
-=======
->>>>>>> 39cdaa688de012490739c59447fc9f1dfc998f59
 function init() {
     gameLoop()
 }
