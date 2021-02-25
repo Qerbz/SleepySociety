@@ -76,6 +76,7 @@ let tile = {
     grass: new Point2D(2, 0),
     dirt: new Point2D(3, 0)
 }
+let origo = new Point2D(0,0);
 
 function drawTile(tile, x, y) {
     const spriteWidth = 64
@@ -142,8 +143,8 @@ function drawHexagon(x, y) {
  */
 
 function drawGrid(width, height) {
-    for (let x = size, i = 0, y; x + size * (1 + Math.cos(degrees60)) < width; x += size * (1 + Math.cos(degrees60)), i++) {
-        for (i % 2 === 1 ? y = 2 * size * Math.sin(degrees60) : y = size * Math.sin(degrees60); y + size * Math.sin(degrees60) < height; y += 2 * size * Math.sin(degrees60)) {
+    for (let x = size + origo.x, i = 0, y; x + size * (1 + Math.cos(degrees60)) < width; x += size * (1 + Math.cos(degrees60)), i++) {
+        for (i % 2 === 1 ? y = 2 * size * Math.sin(degrees60) + origo.y : y = size * Math.sin(degrees60) + origo.y; y + size * Math.sin(degrees60) < height; y += 2 * size * Math.sin(degrees60)) {
             drawHexagon(x, y);
         }
     }
@@ -157,12 +158,9 @@ function gameLoop() {
 
     //Animation
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawTile(tile.water,0,0);
-    drawTile(tile.sand,47,28)
+    drawTile(tile.water,origo.x,origo.y);
+    drawTile(tile.sand,origo.x+47,origo.y+28)
     drawGrid(canvas.width, canvas.height);
-
-    //Animation
-    ctx.clearRect(0, 0, canvas.widht, canvas.height);
 
 
     requestAnimationFrame(gameLoop)
