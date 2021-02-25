@@ -24,7 +24,7 @@ class Point2D
     }
 }
 
-let origo = new Point2D(0,0);
+
 
 class Point3D 
 {
@@ -46,17 +46,17 @@ class Hex
 {
     /**
      * 
-     * @param {Point3D} point3D 
+     * @param {Point2D} point2D 
      */
-    constructor(point3D) 
+    constructor(point2D) 
     {
-        this.point = point;
+        this.point2D = point2D;
         this.height = Math.sqrt(3) * size;
         this.width = 2 * size;
 
-        this.x = point.x;
-        this.y = point.y;
-        this.z = point.z;
+        this.x = point2D.x;
+        this.y = point2D.y;
+        
 
     }
     /**
@@ -79,10 +79,52 @@ class Hex
         return new Point3D(x, y, z);
     }
 
-    static hexToPixel(hex){
+    /**
+     * 
+     * @param {Point3D} point3D 
+     */
+    static hexRound(point3D){
+        let rx = Math.round(point3D.x)
+        let ry = Math.round(point3D.y)
+        let rz = Math.round(point3D.z)
+
+        let x_diff = Math.abs(rx - point3D.x)
+        let y_diff = Math.abs(ry - point3D.y)
+        let z_diff = Math.abs(rz - point3D.z)
+
+        if (x_diff > y_diff && x_diff > z_diff){
+            rx = -ry-rz
+        }
+        else if (y_diff > z_diff){
+            ry = -rx-rz
+        }
+        else{
+            rz = -rx-ry
+        }
+
+        return new Point3D(rx, ry, rz);
+    }
+
+
+    /**
+     * 
+     * @param {Hex} hex 
+     */
+    static hexToPixel(hex) {
         let x = size * (3/2 * hex.x) + size + origo.x;
-        let y = size * (Math.sqrt(3)/2 * hex.z  +  Math.sqrt(3) * hex.z) + (size * Math.sin(Math.PI/3)) + origo.y;
+        let y = size * (Math.sqrt(3)/2 * hex.y  +  Math.sqrt(3) * hex.y) + (size * Math.sin(Math.PI/3)) + origo.y;
         return new Point2D(x, y);
+    }
+
+    
+    /**
+     * 
+     * @param {Point2D} point2D 
+     */
+    static PixelToHex (point2D){
+        var x = ((point2D.x - size - origo.x) /size ) * 2/3;
+        var y = (point2D.y - size * Math.sin(Math.PI/3) + origo.y)/(size*(Math.sqrt(3)/2 + Math.sqrt(3)))
+        return this.cubeToAxial(this.hexRound(this.axialToCube(new Point2D(x, y))))
     }
 }
 
@@ -123,6 +165,7 @@ function loading()
 }
 
 
+
 function hex_coords(center, size, number) 
 {
     let angle = Math.PI / 180 * (60 * number);
@@ -135,10 +178,6 @@ for (let i = 0; i <= 5; i++)
     points.push(hex_coords(new Point2D(200, 200), size, i));
 }
 
-let hex = new Hex(new Point3D(1, 0, 1));
-let t = Hex.hexToPixel(hex);
-console.log(t.x)
-console.log(t.y)
 
 function init() 
 {
@@ -174,9 +213,12 @@ function drawGrid(width, height)
         }
     }
 }
-document.addEventListener('mousemove', (event) => {
-    console.log(`Mouse X: ${event.clientX}, Mouse Y: ${event.clientY}`);
-});
+// document.addEventListener('mousemove', (event) => {
+//     console.log(`Mouse X: ${event.clientX}, Mouse Y: ${event.clientY}`);
+// });
+
+
+console.log(`${t.x}, ${t.y}`)
 
 function eventHandler(e)
 {
