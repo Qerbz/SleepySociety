@@ -19,7 +19,7 @@ class Point2D
         this.y = y;
     }
 }
-
+let scrollSpeed = new Point2D(0,0);
 class Point3D 
 {
     /**
@@ -188,12 +188,27 @@ function drawGrid(width, height)
     }
 }
 
-function eventHandler()
+function eventHandler(e)
 {
-
+    if (e.type = "ArrowDown")
+    {
+        scrollSpeed.y = 10;
+    }
+    else if (e.type = "ArrowUp")
+    {
+        scrollSpeed.y = -10;
+    }
+    else if (e.type = "ArrowRight")
+    {
+        scrollSpeed.x = -10;
+    }
+    else if (e.type = "ArrowLeft")
+    {
+        scrollSpeed.x = -10;
+    }
 }
 
-document.addEventListener("keydown", eventHandler)
+document.onkeydown= eventHandler;
 
 drawGrid(canvas.width, canvas.height);
 
