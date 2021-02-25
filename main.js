@@ -46,9 +46,6 @@ class Hex {
         this.y = point.y;
         this.z = point.z;
 
-        
-        this.q = this.x;
-        this.r = this.z;
     }
     /**
      * 
@@ -107,17 +104,7 @@ function loading() {
     }
 }
 
-function flat_hex_to_pixel(hex) {
-    let x = size * (3. / 2 * hex.q)
-    let y = size * (sqrt(3) / 2 * hex.q + sqrt(3) * hex.r)
-    return Point2D(x, y)
-}
 
-function pixel_to_flat_hex(pixelPoint) {
-    var x = (2 / 3 * point.x) / size
-    var y = (-1 / 3 * point.x + sqrt(3) / 3 * point.y) / size
-    return hex_round(Hex(q, r))
-}
 
 function hex_coords(center, size, number) {
     let angle = Math.PI / 180 * (60 * number);
@@ -129,16 +116,10 @@ for (let i = 0; i <= 5; i++) {
     points.push(hex_coords(new Point2D(200, 200), size, i));
 }
 
-<<<<<<< HEAD
-let hex = new Hex(new Point3D(1, 0, 1));
-let t = Hex.hexToPixel(hex);
-console.log(t.x)
-console.log(t.y)
 
-const degrees60 = 2 * Math.PI / 6;
 
-=======
->>>>>>> 39cdaa688de012490739c59447fc9f1dfc998f59
+// const degrees60 = 2 * Math.PI / 6;
+
 function init() {
     gameLoop()
 }
@@ -165,6 +146,9 @@ function drawGrid(width, height) {
     for (let x = size, i = 0, y; x + size * (1 + Math.cos(degrees60)) < width; x += size * (1 + Math.cos(degrees60)), i++) {
         for (i % 2 === 1 ? y = 2 * size * Math.sin(degrees60) : y = size * Math.sin(degrees60); y + size * Math.sin(degrees60) < height; y += 2 * size * Math.sin(degrees60)) {
             drawHexagon(x, y);
+            document.addEventListener('mousemove', (event) => {
+                console.log(`Mouse X: ${event.clientX}, Mouse Y: ${event.clientY}`);
+            });
         }
     }
 }
@@ -177,11 +161,7 @@ function gameLoop() {
 
     //Animation
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-<<<<<<< HEAD
-    drawTile(tile.water,0,0);
-=======
     drawTile(tile.water, 0, 9);
->>>>>>> 819f7db47da6be27c10a94ef5a3bef56db7d942b
     drawGrid(canvas.width, canvas.height);
 
     //Animation
