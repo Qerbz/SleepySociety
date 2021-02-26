@@ -191,27 +191,54 @@ function drawGrid(width, height)
     }
 }
 
-function eventHandler(e)
+function keyHandlerDown(e)
 {
-    if (e.type = "ArrowDown")
-    {
-        scrollSpeed.y = 10;
-    }
-    else if (e.type = "ArrowUp")
+    if (e.key == "ArrowDown")
     {
         scrollSpeed.y = -10;
     }
-    else if (e.type = "ArrowRight")
+    else if (e.key == "ArrowUp")
+    {
+        scrollSpeed.y = 10;
+    }
+    else if (e.key == "ArrowRight")
     {
         scrollSpeed.x = -10;
     }
-    else if (e.type = "ArrowLeft")
+    else if (e.key == "ArrowLeft")
     {
-        scrollSpeed.x = -10;
+        scrollSpeed.x = 10;
+    }
+    else 
+    {
     }
 }
 
-document.onkeydown= eventHandler;
+function keyHandlerUp(e)
+{
+    if (e.key == "ArrowDown")
+    {
+        scrollSpeed.y = 0;
+    }
+    else if (e.key == "ArrowUp")
+    {
+        scrollSpeed.y = 0;
+    }
+    else if (e.key == "ArrowRight")
+    {
+        scrollSpeed.x = 0;
+    }
+    else if (e.key == "ArrowLeft")
+    {
+        scrollSpeed.x = 0;
+    }
+    else 
+    {
+    }
+}
+
+document.onkeydown = keyHandlerDown;
+document.onkeyup = keyHandlerUp;
 
 drawGrid(canvas.width, canvas.height);
 
