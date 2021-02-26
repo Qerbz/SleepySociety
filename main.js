@@ -217,9 +217,6 @@ function drawGrid(width, height)
 //     console.log(`Mouse X: ${event.clientX}, Mouse Y: ${event.clientY}`);
 // });
 
-
-console.log(`${t.x}, ${t.y}`)
-
 function keyHandlerDown(e)
 {
     if (e.key == "ArrowDown")
@@ -266,8 +263,16 @@ function keyHandlerUp(e)
     }
 }
 
+function mouseHandler(e)
+{
+    pointerPos = new Point2D(e.clientX, e.clientY);
+    console.log(pointerPos);
+    console.log(Hex.PixelToHex(pointerPos));
+}
+
 document.onkeydown = keyHandlerDown;
 document.onkeyup = keyHandlerUp;
+document.onclick = mouseHandler;
 
 drawGrid(canvas.width, canvas.height);
 
@@ -276,13 +281,13 @@ function gameLoop() {
     origo.add(scrollSpeed);
 
     //Animation
-    // ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // drawTile(tile.water,origo.x,origo.y);
-    // drawTile(tile.sand,origo.x+47,origo.y+28)
-    // drawGrid(canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawTile(tile.water,origo.x,origo.y);
+    drawTile(tile.sand,origo.x+47,origo.y+28)
+    drawGrid(canvas.width, canvas.height);
 
 
-    // requestAnimationFrame(gameLoop)
+    requestAnimationFrame(gameLoop)
 }
 
 let hexSpritesheet = new Image();
