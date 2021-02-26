@@ -8,6 +8,9 @@ let origo = new Vector(0,0);
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 let scrollSpeed = new Vector(0,0);
+const mapHeight = 100;
+const mapWidth = 100;
+
 
 
 class Point2D 
@@ -53,9 +56,6 @@ class Hex
         this.point2D = point2D;
         this.height = Math.sqrt(3) * size;
         this.width = 2 * size;
-
-        this.x = point2D.x;
-        this.y = point2D.y;
         
 
     }
@@ -111,8 +111,8 @@ class Hex
      * @param {Hex} hex 
      */
     static hexToPixel(hex) {
-        let x = size * (3/2 * hex.x) + size + origo.x;
-        let y = size * (Math.sqrt(3)/2 * hex.y  +  Math.sqrt(3) * hex.y) + (size * Math.sin(Math.PI/3)) + origo.y;
+        let x = size * (3/2 * hex.point2D.x) + size + origo.x;
+        let y = size * (Math.sqrt(3)/2 * hex.point2D.y  +  Math.sqrt(3) * hex.point2D.y) + (size * Math.sin(Math.PI/3)) + origo.y;
         return new Point2D(x, y);
     }
 
@@ -139,6 +139,22 @@ let tile =
     sand: new Point2D(1, 0),
     grass: new Point2D(2, 0),
     dirt: new Point2D(3, 0)
+}
+
+let mapArray = [];
+
+for (let x = 0; x < 100; x++)
+{
+    mapArray.push([]);
+    for (let y = 0; y < 100; y++)
+    {
+        mapArray.push(new Hex(new Point2D(x,7)))
+    }
+}
+
+let map = 
+{
+    map: mapArray
 }
 
 function drawTile(tile, x, y) 
@@ -266,8 +282,10 @@ function keyHandlerUp(e)
 function mouseHandler(e)
 {
     pointerPos = new Point2D(e.clientX, e.clientY);
-    console.log(pointerPos);
-    console.log(Hex.PixelToHex(pointerPos));
+    
+    axialHex = Hex.PixelToHex(pointerPos);
+
+    
 }
 
 document.onkeydown = keyHandlerDown;
