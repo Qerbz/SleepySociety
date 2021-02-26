@@ -24,6 +24,8 @@ class Point2D
     }
 }
 
+
+
 class Point3D 
 {
     /**
@@ -44,21 +46,18 @@ class Hex
 {
     /**
      * 
-     * @param {Point3D} point3D 
+     * @param {Point2D} point2D 
      */
-    constructor(point) 
+    constructor(point2D) 
     {
-        this.point = point;
+        this.point2D = point2D;
         this.height = Math.sqrt(3) * size;
         this.width = 2 * size;
 
-        this.x = point.x;
-        this.y = point.y;
-        this.z = point.z;
-
+        this.x = point2D.x;
+        this.y = point2D.y;
         
-        this.q = this.x;
-        this.r = this.z;
+
     }
     /**
      * 
@@ -68,10 +67,10 @@ class Hex
     {
             return new Point2D(point3D.x, point3D.z);
     }
-        /**
-         * 
-         * @param {Point2D} point2D 
-         */
+    /**
+     * 
+     * @param {Point2D} point2D 
+     */
     static axialToCube(point2D)
     {
         let x = point2D.x;
@@ -79,13 +78,53 @@ class Hex
         let y = -x - z;
         return new Point3D(x, y, z);
     }
-    static hexToPixel(hex)
-    {
-        let x = size * (3/2 * hex.q) 
-        let y = size * (Math.sqrt(3)/2 * hex.q  +  Math.sqrt(3) * hex.r) 
-        console.log(hex.q);
-        console.log(hex.z);
-        return new Point2D(x, y)
+
+    /**
+     * 
+     * @param {Point3D} point3D 
+     */
+    static hexRound(point3D){
+        let rx = Math.round(point3D.x)
+        let ry = Math.round(point3D.y)
+        let rz = Math.round(point3D.z)
+
+        let x_diff = Math.abs(rx - point3D.x)
+        let y_diff = Math.abs(ry - point3D.y)
+        let z_diff = Math.abs(rz - point3D.z)
+
+        if (x_diff > y_diff && x_diff > z_diff){
+            rx = -ry-rz
+        }
+        else if (y_diff > z_diff){
+            ry = -rx-rz
+        }
+        else{
+            rz = -rx-ry
+        }
+
+        return new Point3D(rx, ry, rz);
+    }
+
+
+    /**
+     * 
+     * @param {Hex} hex 
+     */
+    static hexToPixel(hex) {
+        let x = size * (3/2 * hex.x) + size + origo.x;
+        let y = size * (Math.sqrt(3)/2 * hex.y  +  Math.sqrt(3) * hex.y) + (size * Math.sin(Math.PI/3)) + origo.y;
+        return new Point2D(x, y);
+    }
+
+    
+    /**
+     * 
+     * @param {Point2D} point2D 
+     */
+    static PixelToHex (point2D){
+        var x = ((point2D.x - size - origo.x) /size ) * 2/3;
+        var y = (point2D.y - size * Math.sin(Math.PI/3) + origo.y)/(size*(Math.sqrt(3)/2 + Math.sqrt(3)))
+        return this.cubeToAxial(this.hexRound(this.axialToCube(new Point2D(x, y))))
     }
 }
 
@@ -125,19 +164,7 @@ function loading()
     }
 }
 
-function flat_hex_to_pixel(hex) 
-{
-    let x = size * (3. / 2 * hex.q)
-    let y = size * (sqrt(3) / 2 * hex.q + sqrt(3) * hex.r)
-    return Point2D(x, y)
-}
 
-function pixel_to_flat_hex(pixelPoint) 
-{
-    var x = (2 / 3 * point.x) / size
-    var y = (-1 / 3 * point.x + sqrt(3) / 3 * point.y) / size
-    return hex_round(Hex(q, r))
-}
 
 function hex_coords(center, size, number) 
 {
@@ -151,10 +178,6 @@ for (let i = 0; i <= 5; i++)
     points.push(hex_coords(new Point2D(200, 200), size, i));
 }
 
-let hex = new Hex(new Point3D(1, 0, 1));
-let t = Hex.hexToPixel(hex);
-console.log(t.x)
-console.log(t.y)
 
 function init() 
 {
@@ -190,6 +213,12 @@ function drawGrid(width, height)
         }
     }
 }
+// document.addEventListener('mousemove', (event) => {
+//     console.log(`Mouse X: ${event.clientX}, Mouse Y: ${event.clientY}`);
+// });
+
+
+console.log(`${t.x}, ${t.y}`)
 
 function keyHandlerDown(e)
 {
@@ -247,13 +276,13 @@ function gameLoop() {
     origo.add(scrollSpeed);
 
     //Animation
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawTile(tile.water,origo.x,origo.y);
-    drawTile(tile.sand,origo.x+47,origo.y+28)
-    drawGrid(canvas.width, canvas.height);
+    // ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // drawTile(tile.water,origo.x,origo.y);
+    // drawTile(tile.sand,origo.x+47,origo.y+28)
+    // drawGrid(canvas.width, canvas.height);
 
 
-    requestAnimationFrame(gameLoop)
+    // requestAnimationFrame(gameLoop)
 }
 
 let hexSpritesheet = new Image();
