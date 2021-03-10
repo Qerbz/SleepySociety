@@ -123,8 +123,9 @@ class Hex
      */
     static pixelToHex (point2D){
         let px = point2D.x - size - origo.x;
-        let py = point2D.y - (Math.sqrt(3) * size)/2;
+        let py = point2D.y - ((Math.sqrt(3) * size)/2) - origo.y;
        
+        
       
         let q = ( 2./3 * px) / size;
         let r = (-1./3 * px  +  Math.sqrt(3)/3 * py) / size;
