@@ -122,9 +122,18 @@ class Hex
      * @param {Point2D} point2D 
      */
     static pixelToHex (point2D){
-        var x = ((point2D.x - size - origo.x) /size ) * 2/3;
-        var y = (point2D.y - size * Math.sin(Math.PI/3) + origo.y)/(size*(Math.sqrt(3)/2 + Math.sqrt(3)))
-        return this.cubeToAxial(this.hexRound(this.axialToCube(new Point2D(x, y))))
+        let px = point2D.x - size - origo.x;
+        let py = point2D.y - (Math.sqrt(3) * size)/2;
+       
+      
+        let q = ( 2./3 * px) / size;
+        let r = (-1./3 * px  +  Math.sqrt(3)/3 * py) / size;
+
+        let point = this.cubeToAxial(this.hexRound(this.axialToCube(new Point2D(q, r))));
+
+        point.y += Math.floor(point.x/2)
+       
+        return point;
     }
 
     drawHexagon(tile) {
@@ -225,30 +234,62 @@ function drawGrid(width, height)
 //     console.log(`Mouse X: ${event.clientX}, Mouse Y: ${event.clientY}`);
 // });
 
-
-
-
-function eventHandler(e)
+function keyHandlerDown(e)
 {
-    if (e.type = "ArrowDown")
-    {
-        scrollSpeed.y = 10;
-    }
-    else if (e.type = "ArrowUp")
+    if (e.key == "ArrowDown")
     {
         scrollSpeed.y = -10;
     }
-    else if (e.type = "ArrowRight")
+    else if (e.key == "ArrowUp")
+    {
+        scrollSpeed.y = 10;
+    }
+    else if (e.key == "ArrowRight")
     {
         scrollSpeed.x = -10;
     }
-    else if (e.type = "ArrowLeft")
+    else if (e.key == "ArrowLeft")
     {
-        scrollSpeed.x = -10;
+        scrollSpeed.x = 10;
+    }
+    else 
+    {
     }
 }
 
-document.onkeydown= eventHandler;
+function keyHandlerUp(e)
+{
+    if (e.key == "ArrowDown")
+    {
+        scrollSpeed.y = 0;
+    }
+    else if (e.key == "ArrowUp")
+    {
+        scrollSpeed.y = 0;
+    }
+    else if (e.key == "ArrowRight")
+    {
+        scrollSpeed.x = 0;
+    }
+    else if (e.key == "ArrowLeft")
+    {
+        scrollSpeed.x = 0;
+    }
+    else 
+    {
+    }
+}
+
+function mouseHandler(e)
+{
+    pointerPos = new Point2D(e.clientX, e.clientY);
+    // console.log(pointerPos);
+    console.log(Hex.pixelToHex(pointerPos));
+}
+
+document.onkeydown = keyHandlerDown;
+document.onkeyup = keyHandlerUp;
+document.onclick = mouseHandler;
 
 drawGrid(canvas.width, canvas.height);
 
@@ -257,13 +298,13 @@ function gameLoop() {
     origo.add(scrollSpeed);
 
     //Animation
-    // ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // drawTile(tile.water,origo.x,origo.y);
-    // drawTile(tile.sand,origo.x+47,origo.y+28)
-    // drawGrid(canvas.width, canvas.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawTile(tile.water,origo.x,origo.y);
+    drawTile(tile.sand,origo.x+47,origo.y+28)
+    drawGrid(canvas.width, canvas.height);
 
 
-    // requestAnimationFrame(gameLoop)
+    requestAnimationFrame(gameLoop)
 }
 
 let hexSpritesheet = new Image();
