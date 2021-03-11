@@ -11,7 +11,6 @@ let scrollSpeed = new Vector(0,0);
 const mapHeight = 100;
 const mapWidth = 100;
 const mapSeed = Math.random();
-ctx.lineWidth = 2;
 
 
 
@@ -268,7 +267,8 @@ function init()
  * @returns returns a tile.
  */
 
-function getBiome(x, y) {
+function getBiome(x, y)
+{
     const freq = 0.01;
     noise.seed(mapSeed);
     const e = (noise.perlin2(freq * x, freq * y) + 1) / 2;
@@ -283,8 +283,8 @@ function getBiome(x, y) {
  * @returns Returns a tile based on the value of e.
  */
 
-function biome(e) {
-    console.log(e);
+function biome(e)
+{
     if (e < 0.25) return tile.water;
     else if (e < 0.5) return tile.sand;
     else if (e < 0.75) return tile.grass;
@@ -324,7 +324,7 @@ function createGrid(width, height)
 function drawGrid(arr)
 {
     for (e in arr) {
-        drawTile(arr[e][0], arr[e][1] - arr[0][1], arr[e][2] - arr[0][2]);
+        drawTile(arr[e][0], new Point2D(arr[e][1] - arr[0][1], arr[e][2] - arr[0][2]));
         drawHexagon(arr[e][1], arr[e][2]);
     }
 }
@@ -418,7 +418,7 @@ function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawTile(tile.water,new Point2D(0,0));
     drawTile(tile.sand,new Point2D(0,1));
-    drawGrid(canvas.width, canvas.height);
+    drawGrid(gridArray);
     //ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
 
     requestAnimationFrame(gameLoop);
