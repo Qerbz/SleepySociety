@@ -2,148 +2,149 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const size = 32;
 const degrees60 = 2 * Math.PI / 6;
-const elementsToBeLoaded = 2;
-let loadedElements = 0;
+// const elementsToBeLoaded = 2;
+// let loadedElements = 0;
 let origo = new Vector(0,0);
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 let scrollSpeed = new Vector(0,0);
 const mapHeight = 100;
 const mapWidth = 100;
-let seed = 0.0001;
-
-class Point2D 
-{
-    /**
-     * 
-     * @param {int} x 
-     * @param {int} y 
-     */
-    constructor(x, y)  
-    {
-        this.x = x;
-        this.y = y;
-    }
-}
+const mapSeed = Math.random();
 
 
 
-class Point3D 
-{
-    /**
-     * 
-     * @param {int} x 
-     * @param {int} y 
-     * @param {int} z 
-     */
-    constructor(x, y, z) 
-    {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
-}
-
-class Hex 
-{
-    /**
-     * 
-     * @param {Point2D} point2D 
-     */
-    constructor(point2D) 
-    {
-        this.point2D = point2D;
-        this.building = 0;
-    }
-    /**
-     * 
-     * @param {Point3D} point3D 
-     */
-    static cubeToAxial(point3D) 
-    {
-            return new Point2D(point3D.x, point3D.z);
-    }
-    /**
-     * 
-     * @param {Point2D} point2D 
-     */
-    static axialToCube(point2D)
-    {
-        let x = point2D.x;
-        let z = point2D.y;
-        let y = -x - z;
-        return new Point3D(x, y, z);
-    }
-
-    /**
-     * 
-     * @param {Point3D} point3D 
-     */
-    static hexRound(point3D){
-        let rx = Math.round(point3D.x)
-        let ry = Math.round(point3D.y)
-        let rz = Math.round(point3D.z)
-
-        let x_diff = Math.abs(rx - point3D.x)
-        let y_diff = Math.abs(ry - point3D.y)
-        let z_diff = Math.abs(rz - point3D.z)
-
-        if (x_diff > y_diff && x_diff > z_diff){
-            rx = -ry-rz
-        }
-        else if (y_diff > z_diff){
-            ry = -rx-rz
-        }
-        else{
-            rz = -rx-ry
-        }
-
-        return new Point3D(rx, ry, rz);
-    }
+// class Point2D 
+// {
+//     /**
+//      * 
+//      * @param {int} x 
+//      * @param {int} y 
+//      */
+//     constructor(x, y)  
+//     {
+//         this.x = x;
+//         this.y = y;
+//     }
+// }
 
 
-    /**
-     * 
-     * @param {Hex} hex 
-     */
-    static hexToPixel(hex) {
-        let x = size * (3/2 * hex.point2D.x) + size + origo.x;
-        let y = size * (Math.sqrt(3)/2 * hex.point2D.y  +  Math.sqrt(3) * hex.point2D.y) + (size * Math.sin(Math.PI/3)) + origo.y;
-        return new Point2D(x, y);
-    }
+
+// class Point3D 
+// {
+//     /**
+//      * 
+//      * @param {int} x 
+//      * @param {int} y 
+//      * @param {int} z 
+//      */
+//     constructor(x, y, z) 
+//     {
+//         this.x = x;
+//         this.y = y;
+//         this.z = z;
+//     }
+// }
+
+// class Hex 
+// {
+//     /**
+//      * 
+//      * @param {Point2D} point2D 
+//      */
+//     constructor(point2D) 
+//     {
+//         this.point2D = point2D;
+//         this.building = 0;
+//     }
+//     /**
+//      * 
+//      * @param {Point3D} point3D 
+//      */
+//     static cubeToAxial(point3D) 
+//     {
+//             return new Point2D(point3D.x, point3D.z);
+//     }
+//     /**
+//      * 
+//      * @param {Point2D} point2D 
+//      */
+//     static axialToCube(point2D)
+//     {
+//         let x = point2D.x;
+//         let z = point2D.y;
+//         let y = -x - z;
+//         return new Point3D(x, y, z);
+//     }
+
+//     /**
+//      * 
+//      * @param {Point3D} point3D 
+//      */
+//     static hexRound(point3D){
+//         let rx = Math.round(point3D.x)
+//         let ry = Math.round(point3D.y)
+//         let rz = Math.round(point3D.z)
+
+//         let x_diff = Math.abs(rx - point3D.x)
+//         let y_diff = Math.abs(ry - point3D.y)
+//         let z_diff = Math.abs(rz - point3D.z)
+
+//         if (x_diff > y_diff && x_diff > z_diff){
+//             rx = -ry-rz
+//         }
+//         else if (y_diff > z_diff){
+//             ry = -rx-rz
+//         }
+//         else{
+//             rz = -rx-ry
+//         }
+
+//         return new Point3D(rx, ry, rz);
+//     }
 
 
-    /**
-     * 
-     * @param {Point2D} point2D 
-     */
-    static pixelToHex (point2D){
-        let px = point2D.x - size - origo.x;
-        let py = point2D.y - ((Math.sqrt(3) * size)/2) - origo.y;
+//     /**
+//      * 
+//      * @param {Hex} hex 
+//      */
+//     static hexToPixel(hex) {
+//         let x = size * (3/2 * hex.point2D.x) + size + origo.x; // creating an x-basis vector from origin to the hexagon that is clicked, giving its central x- coordinate
+//         let y = size * (Math.sqrt(3)/2 * hex.point2D.y  +  Math.sqrt(3) * hex.point2D.y) + (size * Math.sin(Math.PI/3)) + origo.y; // creating an y-basis vector from origin to the hexagon that is clicked, giving its central y- coordinate
+//         return new Point2D(x, y);
+//     }
+
+
+//     /**
+//      * 
+//      * @param {Point2D} point2D 
+//      */
+//     static pixelToHex (point2D){
+//         let px = point2D.x - size - origo.x; // Changing the initial x coordinate to the middle of the top left hexagon
+//         let py = point2D.y - ((Math.sqrt(3) * size)/2) - origo.y; // Changing the initial y coordinate to the middle of the top left hexagon
        
-        
+//         console.log(`${origo.x}, ${origo.y}`)
       
-        let q = ( 2./3 * px) / size;
-        let r = (-1./3 * px  +  Math.sqrt(3)/3 * py) / size;
+//         let q = ( 2/3 * px) / size; // using the inverted function from hexToPixel function to get x from hex-coord
+//         let r = (-1/3 * px  +  Math.sqrt(3)/3 * py) / size; // using the inverted function from hexToPixel function to get y from hex-coord
 
-        let point = this.cubeToAxial(this.hexRound(this.axialToCube(new Point2D(q, r))));
+//         let point = this.cubeToAxial(this.hexRound(this.axialToCube(new Point2D(q, r))));
 
-        point.y += Math.floor(point.x/2)
+//         point.y += Math.floor(point.x/2)
        
-        return point;
-    }
-}
-
-class HUD
-{
-    buttonsList;
-    infoLists;
-    constructor(buttonsList, infoLists)
-    {
-        this.buttonsList = buttonsList;
-        this.infoLists = infoLists;
-    }
-}
+//         return point;
+//     }
+// }
+// class HUD
+// {
+//     buttonsList;
+//     infoLists;
+//     constructor(buttonsList, infoLists)
+//     {
+//         this.buttonsList = buttonsList;
+//         this.infoLists = infoLists;
+//     }
+// }
 
 class Button
 {
@@ -151,7 +152,7 @@ class Button
     pointEnd;
     name;
 
-    constructor(point2DStart, point2DEnd,name)
+    constructor(point2DStart, point2DEnd, name)
     {
         this.pointStart = point2DStart;
         this.pointEnd = point2DEnd;
@@ -204,7 +205,7 @@ for (let x = 0; x < 100; x++)
 let map = 
 {
     mapHexes: mapArray,
-    mapSeed: seed
+    mapSeed: mapSeed
 }
 //PROOF OF CONCEPT. DOESN'T SAVE ANYTHING OF NOTE AS NOTHING HAS YET HAPPENED IN THE GAME. TODO: ADD AUTOSAVE EVERY 5 MINUTESx
 let mapJSON = JSON.stringify(map);
@@ -224,16 +225,16 @@ function drawTile(tile, x, y)
     ctx.drawImage(hexSpritesheet, spriteX, spriteY, spriteWidth, spriteHeight, x, y, width, height);
 }
 
-function loading() 
-{
-    loadedElements += 1;
-    console.log(`${loadedElements}/${elementsToBeLoaded} loaded ` + Math.round(loadedElements/elementsToBeLoaded*100) + "%");
-    if (loadedElements == elementsToBeLoaded) 
-    {
-        console.log(`${loadedElements}/${elementsToBeLoaded} loaded Game initializing`);
-        init();
-    }
-}
+// function loading() 
+// {
+//     loadedElements += 1;
+//     console.log(`${loadedElements}/${elementsToBeLoaded} loaded ` + Math.round(loadedElements/elementsToBeLoaded*100) + "%");
+//     if (loadedElements == elementsToBeLoaded) 
+//     {
+//         console.log(`${loadedElements}/${elementsToBeLoaded} loaded Game initializing`);
+//         init();
+//     }
+// }
 
 
 
@@ -256,7 +257,8 @@ function init()
 }
 
 /**
- * @param {Number} x x-coordinate of where you want to draw the 
+ * @param {Number} x x-coordinate of where you want to draw the hexagon.
+ * @param {Number} y y-coordinate of where you want to draw the hexagon.
  */
 
 function drawHexagon(x, y) 
@@ -266,8 +268,50 @@ function drawHexagon(x, y)
         ctx.lineTo(x + size * Math.cos(degrees60 * i), y + size * Math.sin(degrees60 * i));
     }
     ctx.closePath();
+    // ctx.fillStyle = getBiome(x, y);
+    // ctx.fill();
     ctx.stroke();
 }
+
+// function getBiome(x, y) {
+//     const freq = 5;
+//     noise.seed(mapSeed);
+//     const e = (noise.perlin2(freq * x, freq * y) + 1) / 2;
+//     noise.seed(mapSeed / 2);
+//     const m = (noise.perlin2(freq * x, freq * y) + 1) / 2;
+//     return biome(e, m);
+// }
+
+// function biome(e, m) {
+//     // console.log(`e: ${e}, m: ${m}`);
+//    if (e < 0.12) return "rgb(0, 0, 255)";
+//     if (e < 0.2) return "rgb(248, 240, 164)";
+
+//     if (e < 0.3) {
+//         if (m < 0.16) return "rgb(194, 178, 128)";
+//         if (m < 0.50) return "rgb(89, 149, 74)";
+//         if (m < 0.83) return "rgb(13, 55, 13)";
+//         else return "rgb(0, 46, 37)";
+//     }
+
+//     if (e < 0.6) {
+//       if (m < 0.33) return "rgb(194, 178, 128)";
+//       if (m < 0.66) return "rgb(65, 71, 34)";
+//       else return "rgb(255, 195, 11)";
+//     }
+
+//     if (e < 0.8) {
+//       if (m < 0.1) return "rgb(161, 102, 44)";
+//       if (m < 0.2) return "rgb(210, 105, 30)";
+//       if (m < 0.5) return "rgb(144, 102, 102)";
+//       return "rgb(255, 255, 255)";
+//   }
+
+//     if (m < 0.16) return "rgb(194, 178, 128)";
+//     if (m < 0.33) return "rgb(89, 149, 74)";
+//     if (m < 0.66) return "rgb(138, 183, 51)";
+//     else return "rgb(0, 46, 37)";
+// }
 
 /**
  * @param {Number} width width of the grid
@@ -363,8 +407,6 @@ document.onkeydown = keyHandlerDown;
 document.onkeyup = keyHandlerUp;
 document.onclick = mouseHandler;
 
-drawGrid(canvas.width, canvas.height);
-
 function gameLoop() {
     //Calculations
     origo.add(scrollSpeed);
@@ -376,14 +418,16 @@ function gameLoop() {
     drawGrid(canvas.width, canvas.height);
     ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
 
-    requestAnimationFrame(gameLoop)
+    requestAnimationFrame(gameLoop);
 }
 
-var hexSpritesheet = new Image();
-hexSpritesheet.src = "hexagonTerrain_sheet.png";
-hexSpritesheet.onload = loading();
+// var hexSpritesheet = new Image();
+// hexSpritesheet.src = "hexagonTerrain_sheet.png";
+// hexSpritesheet.onload = loading();
 
-var HUDSprite = new Image();
-HUDSprite.src = "hud.png";
-HUDSprite.onload = loading();
+// var HUDSprite = new Image();
+// HUDSprite.src = "hud.png";
+// HUDSprite.onload = loading();
 
+
+load();
