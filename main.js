@@ -132,7 +132,7 @@ class Hex
        
         return point;
     }
-
+}
 class HUD
 {
     buttonsList;
@@ -328,7 +328,6 @@ function keyHandlerUp(e)
 function mouseHandler(e)
 {
     pointerPos = new Point2D(e.clientX, e.clientY);
-<<<<<<< HEAD
     
     axialHex = Hex.PixelToHex(pointerPos);
     console.log("k");
@@ -349,10 +348,6 @@ function mouseHandler(e)
        }
        i++;
     }*/
-=======
-    // console.log(pointerPos);
-    console.log(Hex.pixelToHex(pointerPos));
->>>>>>> 6f3631786c5de042befa51f9db0633d1eea4f667
 }
 
 document.onkeydown = keyHandlerDown;
