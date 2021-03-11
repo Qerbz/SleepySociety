@@ -2,8 +2,8 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 const size = 32;
 const degrees60 = 2 * Math.PI / 6;
-const elementsToBeLoaded = 2;
-let loadedElements = 0;
+// const elementsToBeLoaded = 2;
+// let loadedElements = 0;
 let origo = new Vector(0,0);
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -197,7 +197,7 @@ for (let x = 0; x < 100; x++)
 let map = 
 {
     mapHexes: mapArray,
-    mapSeed: seed
+    mapSeed: mapSeed
 }
 //PROOF OF CONCEPT. DOESN'T SAVE ANYTHING OF NOTE AS NOTHING HAS YET HAPPENED IN THE GAME. TODO: ADD AUTOSAVE EVERY 5 MINUTESx
 let mapJSON = JSON.stringify(map);
@@ -217,16 +217,16 @@ function drawTile(tile, x, y)
     ctx.drawImage(hexSpritesheet, spriteX, spriteY, spriteWidth, spriteHeight, x, y, width, height);
 }
 
-function loading() 
-{
-    loadedElements += 1;
-    console.log(`${loadedElements}/${elementsToBeLoaded} loaded ` + Math.round(loadedElements/elementsToBeLoaded*100) + "%");
-    if (loadedElements == elementsToBeLoaded) 
-    {
-        console.log(`${loadedElements}/${elementsToBeLoaded} loaded Game initializing`);
-        init();
-    }
-}
+// function loading() 
+// {
+//     loadedElements += 1;
+//     console.log(`${loadedElements}/${elementsToBeLoaded} loaded ` + Math.round(loadedElements/elementsToBeLoaded*100) + "%");
+//     if (loadedElements == elementsToBeLoaded) 
+//     {
+//         console.log(`${loadedElements}/${elementsToBeLoaded} loaded Game initializing`);
+//         init();
+//     }
+// }
 
 
 
@@ -413,10 +413,13 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
-var hexSpritesheet = new Image();
-hexSpritesheet.src = "hexagonTerrain_sheet.png";
-hexSpritesheet.onload = loading();
+// var hexSpritesheet = new Image();
+// hexSpritesheet.src = "hexagonTerrain_sheet.png";
+// hexSpritesheet.onload = loading();
 
-var HUDSprite = new Image();
-HUDSprite.src = "hud.png";
-HUDSprite.onload = loading();
+// var HUDSprite = new Image();
+// HUDSprite.src = "hud.png";
+// HUDSprite.onload = loading();
+
+
+load();
