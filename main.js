@@ -10,7 +10,9 @@ canvas.height = window.innerHeight;
 let scrollSpeed = new Vector(0,0);
 const mapHeight = 100;
 const mapWidth = 100;
-let seed = 0.0001;
+const mapSeed = Math.random();
+
+
 
 // class Point2D 
 // {
@@ -247,7 +249,8 @@ function init()
 }
 
 /**
- * @param {Number} x x-coordinate of where you want to draw the 
+ * @param {Number} x x-coordinate of where you want to draw the hexagon.
+ * @param {Number} y y-coordinate of where you want to draw the hexagon.
  */
 
 function drawHexagon(x, y) 
@@ -257,8 +260,50 @@ function drawHexagon(x, y)
         ctx.lineTo(x + size * Math.cos(degrees60 * i), y + size * Math.sin(degrees60 * i));
     }
     ctx.closePath();
+    // ctx.fillStyle = getBiome(x, y);
+    // ctx.fill();
     ctx.stroke();
 }
+
+// function getBiome(x, y) {
+//     const freq = 5;
+//     noise.seed(mapSeed);
+//     const e = (noise.perlin2(freq * x, freq * y) + 1) / 2;
+//     noise.seed(mapSeed / 2);
+//     const m = (noise.perlin2(freq * x, freq * y) + 1) / 2;
+//     return biome(e, m);
+// }
+
+// function biome(e, m) {
+//     // console.log(`e: ${e}, m: ${m}`);
+//    if (e < 0.12) return "rgb(0, 0, 255)";
+//     if (e < 0.2) return "rgb(248, 240, 164)";
+
+//     if (e < 0.3) {
+//         if (m < 0.16) return "rgb(194, 178, 128)";
+//         if (m < 0.50) return "rgb(89, 149, 74)";
+//         if (m < 0.83) return "rgb(13, 55, 13)";
+//         else return "rgb(0, 46, 37)";
+//     }
+
+//     if (e < 0.6) {
+//       if (m < 0.33) return "rgb(194, 178, 128)";
+//       if (m < 0.66) return "rgb(65, 71, 34)";
+//       else return "rgb(255, 195, 11)";
+//     }
+
+//     if (e < 0.8) {
+//       if (m < 0.1) return "rgb(161, 102, 44)";
+//       if (m < 0.2) return "rgb(210, 105, 30)";
+//       if (m < 0.5) return "rgb(144, 102, 102)";
+//       return "rgb(255, 255, 255)";
+//   }
+
+//     if (m < 0.16) return "rgb(194, 178, 128)";
+//     if (m < 0.33) return "rgb(89, 149, 74)";
+//     if (m < 0.66) return "rgb(138, 183, 51)";
+//     else return "rgb(0, 46, 37)";
+// }
 
 /**
  * @param {Number} width width of the grid
@@ -354,8 +399,6 @@ document.onkeydown = keyHandlerDown;
 document.onkeyup = keyHandlerUp;
 document.onclick = mouseHandler;
 
-drawGrid(canvas.width, canvas.height);
-
 function gameLoop() {
     //Calculations
     origo.add(scrollSpeed);
@@ -367,7 +410,7 @@ function gameLoop() {
     drawGrid(canvas.width, canvas.height);
     //ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
 
-    requestAnimationFrame(gameLoop)
+    requestAnimationFrame(gameLoop);
 }
 
 var hexSpritesheet = new Image();
