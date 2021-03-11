@@ -173,11 +173,11 @@ function constructButton(startx,starty,width,height,name){
     listOfButtons.push(new Button(new Point2D(startx,starty), new Point2D(startx+width,starty+height),name));
 }
 
-let listOfButtons = [];
+const listOfButtons = [];
 constructButton(10,50,40,40,"testBuild")
 let hud = new HUD(listOfButtons,[]);
 
-let camera = 
+const camera = 
 {
     x: 100,
     y: 100
@@ -222,9 +222,9 @@ function drawTile(tile, point2D)
     const spriteX = width * tile.x;
     const spriteY = height * tile.y;
 
-    let pointCenter = Hex.hexToPixel(point2D);
+    const pointCenter = Hex.hexToPixel(point2D);
 
-    let pointStartTile = new Point2D(pointCenter.x-width/2,pointCenter.y-height/2);
+    const pointStartTile = new Point2D(pointCenter.x-width/2,pointCenter.y-height/2);
 
     ctx.drawImage(hexSpritesheet, spriteX, spriteY, spriteWidth, spriteHeight,pointStartTile.x,pointStartTile.y, width, height);
 }
@@ -314,18 +314,18 @@ function createGrid(width, height)
         for (i % 2 === 1 ? y = 2 * size * Math.sin(degrees60) + origo.y : y = size * Math.sin(degrees60) + origo.y; y + size * Math.sin(degrees60) <= height; y += 2 * size * Math.sin(degrees60)) 
         {
             const tileBiome = getBiome(x, y);
-            arr.push(new Array(tileBiome, x, y));
+            arr.push(new Array(tileBiome, new Point2D(x, y)));
         }
     }
-
+    console.log(arr);
     return arr;
 }
 
 function drawGrid(arr)
 {
     for (e in arr) {
-        drawTile(arr[e][0], new Point2D(arr[e][1] - arr[0][1], arr[e][2] - arr[0][2]));
-        drawHexagon(arr[e][1], arr[e][2]);
+        drawTile(arr[e][0], arr[e][1]);
+        drawHexagon(arr[e][1].x, arr[e][1].y);
     }
 }
 
@@ -408,7 +408,7 @@ document.onkeydown = keyHandlerDown;
 document.onkeyup = keyHandlerUp;
 document.onclick = mouseHandler;
 
-const gridArray = createGrid(canvas.width, canvas.height);
+const gridArray = createGrid(300, 300);
 
 function gameLoop() {
     //Calculations
@@ -416,8 +416,8 @@ function gameLoop() {
 
     //Animation
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawTile(tile.water,new Point2D(0,0));
-    drawTile(tile.sand,new Point2D(0,1));
+    // drawTile(tile.water,new Point2D(0,0));
+    // drawTile(tile.sand,new Point2D(0,1));
     drawGrid(gridArray);
     //ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
 
