@@ -148,20 +148,20 @@ const mapSeed = Math.random();
 
 class Button
 {
-    pointStart;
+    pointStartButton;
     pointEnd;
     name;
 
     constructor(point2DStart, point2DEnd, name)
     {
-        this.pointStart = point2DStart;
-        this.pointEnd = point2DEnd;
+        this.pointStartButton = point2DStart;
+        this.pointEndButton = point2DEnd;
         this.name = name;
     }
 
     pointIsWithin(point)
     {
-        if ((this.pointStart.x <= point.x && point.x <= this.pointEnd.x )&&(this.pointStart.y <= point.y && point.y <= this.pointEnd.y))
+        if ((this.pointStartButton.x <= point.x && point.x <= this.pointEndButton.x )&&(this.pointStartButton.y <= point.y && point.y <= this.pointEndButton.y))
         {
             return true;
         }
@@ -211,7 +211,7 @@ let map =
 let mapJSON = JSON.stringify(map);
 localStorage.setItem("mapJSON", mapJSON);
 
-function drawTile(tile, Point2D) 
+function drawTile(tile, point2D) 
 {
     const spriteWidth = 64
     const spriteHeight = 56
@@ -222,9 +222,11 @@ function drawTile(tile, Point2D)
     let spriteX = width * tile.x;
     let spriteY = height * tile.y;
 
-    let pointStart = Hex.hexToPixel(Point2D);
+    let pointCenter = Hex.hexToPixel(point2D);
 
-    ctx.drawImage(hexSpritesheet, spriteX, spriteY, spriteWidth, spriteHeight, pointStart.x-width/2+origo.x, pointStart.y-height/2+origo.y, width, height);
+    let pointStartTile = new Point2D(pointCenter.x-width/2,pointCenter.y-height/2);
+
+    ctx.drawImage(hexSpritesheet, spriteX, spriteY, spriteWidth, spriteHeight,pointStartTile.x,pointStartTile.y, width, height);
 }
 
 // function loading() 
@@ -415,10 +417,10 @@ function gameLoop() {
 
     //Animation
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawTile(tile.water,0,0);
-    drawTile(tile.sand,1,1)
+    drawTile(tile.water,new Point2D(0,0));
+    drawTile(tile.sand,new Point2D(0,1));
     drawGrid(canvas.width, canvas.height);
-    ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
+    //ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
 
     requestAnimationFrame(gameLoop);
 }
