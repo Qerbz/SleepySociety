@@ -149,20 +149,20 @@ ctx.lineWidth = 2;
 
 class Button
 {
-    pointStart;
+    pointStartButton;
     pointEnd;
     name;
 
     constructor(point2DStart, point2DEnd, name)
     {
-        this.pointStart = point2DStart;
-        this.pointEnd = point2DEnd;
+        this.pointStartButton = point2DStart;
+        this.pointEndButton = point2DEnd;
         this.name = name;
     }
 
     pointIsWithin(point)
     {
-        if ((this.pointStart.x <= point.x && point.x <= this.pointEnd.x )&&(this.pointStart.y <= point.y && point.y <= this.pointEnd.y))
+        if ((this.pointStartButton.x <= point.x && point.x <= this.pointEndButton.x )&&(this.pointStartButton.y <= point.y && point.y <= this.pointEndButton.y))
         {
             return true;
         }
@@ -212,7 +212,7 @@ const map =
 // const mapJSON = JSON.stringify(map);
 // localStorage.setItem("mapJSON", mapJSON);
 
-function drawTile(tile, x, y) 
+function drawTile(tile, point2D) 
 {
     const spriteWidth = 64;
     const spriteHeight = 56;
@@ -223,7 +223,11 @@ function drawTile(tile, x, y)
     const spriteX = width * tile.x;
     const spriteY = height * tile.y;
 
-    ctx.drawImage(hexSpritesheet, spriteX, spriteY, spriteWidth, spriteHeight, x, y, width, height);
+    let pointCenter = Hex.hexToPixel(point2D);
+
+    let pointStartTile = new Point2D(pointCenter.x-width/2,pointCenter.y-height/2);
+
+    ctx.drawImage(hexSpritesheet, spriteX, spriteY, spriteWidth, spriteHeight,pointStartTile.x,pointStartTile.y, width, height);
 }
 
 // function loading() 
@@ -412,10 +416,10 @@ function gameLoop() {
 
     //Animation
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawTile(tile.water,origo.x,origo.y);
-    drawTile(tile.sand,origo.x+47,origo.y+28)
+    drawTile(tile.water,new Point2D(0,0));
+    drawTile(tile.sand,new Point2D(0,1));
     drawGrid(canvas.width, canvas.height);
-    ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
+    //ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
 
     requestAnimationFrame(gameLoop);
 }
