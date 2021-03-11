@@ -62,7 +62,7 @@ class Hex
      */
     static hexToPixel(point2D) {
         let x = size * (3/2 * point2D.x) + size + origo.x; // creating an x-basis vector from origin to the hexagon that is clicked, giving its central x- coordinate
-        let y = size * (Math.sqrt(3)/2 * point2D.y  +  Math.sqrt(3) * point2D.y) + (size * Math.sin(Math.PI/3)) + origo.y; // creating an y-basis vector from origin to the hexagon that is clicked, giving its central y- coordinate
+        let y = size * (Math.sqrt(3)/2 * point2D.x  +  Math.sqrt(3) * point2D.y) + (size * Math.sin(Math.PI/3)) + origo.y; // creating an y-basis vector from origin to the hexagon that is clicked, giving its central y- coordinate
         return new Point2D(x, y);
     }
 
