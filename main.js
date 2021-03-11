@@ -211,7 +211,7 @@ let map =
 let mapJSON = JSON.stringify(map);
 localStorage.setItem("mapJSON", mapJSON);
 
-function drawTile(tile, x, y) 
+function drawTile(tile, Point2D) 
 {
     const spriteWidth = 64
     const spriteHeight = 56
@@ -222,7 +222,9 @@ function drawTile(tile, x, y)
     let spriteX = width * tile.x;
     let spriteY = height * tile.y;
 
-    ctx.drawImage(hexSpritesheet, spriteX, spriteY, spriteWidth, spriteHeight, x, y, width, height);
+    let pointStart = Hex.hexToPixel(Point2D);
+
+    ctx.drawImage(hexSpritesheet, spriteX, spriteY, spriteWidth, spriteHeight, pointStart.x-width/2+origo.x, pointStart.y-height/2+origo.y, width, height);
 }
 
 // function loading() 
@@ -413,8 +415,8 @@ function gameLoop() {
 
     //Animation
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawTile(tile.water,origo.x,origo.y);
-    drawTile(tile.sand,origo.x+47,origo.y+28)
+    drawTile(tile.water,0,0);
+    drawTile(tile.sand,1,1)
     drawGrid(canvas.width, canvas.height);
     ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
 
