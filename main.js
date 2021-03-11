@@ -10,8 +10,7 @@ canvas.height = window.innerHeight;
 let scrollSpeed = new Vector(0,0);
 const mapHeight = 100;
 const mapWidth = 100;
-
-
+let seed = 0.0001;
 
 class Point2D 
 {
@@ -54,10 +53,7 @@ class Hex
     constructor(point2D) 
     {
         this.point2D = point2D;
-        this.height = Math.sqrt(3) * size;
-        this.width = 2 * size;
-        
-
+        this.building = 0;
     }
     /**
      * 
@@ -137,18 +133,44 @@ class Hex
         return point;
     }
 
-    drawHexagon(tile) {
-        const spriteWidth = 64
-        const spriteHeight = 56
-    
-        let width = size * 2;
-        let height = size * Math.sqrt(3);
-    
-        let spriteX = width * tile.x;
-        let spriteY = height * tile.y;
-    
-        ctx.drawImage(hexSpritesheet, spriteX, spriteY, spriteWidth, spriteHeight, this.x, this.y, width, height);
+class HUD
+{
+    buttonsList;
+    infoLists;
+    constructor(buttonsList, infoLists)
+    {
+        this.buttonsList = buttonsList;
+        this.infoLists = infoLists;
     }
+}
+
+class button
+{
+    pointStart;
+    pointEnd;
+    name;
+
+    constructor(point2DStart, point2DEnd,name)
+    {
+        this.pointStart = point2DStart;
+        this.pointEnd = point2DEnd;
+        this.name = name;
+    }
+
+    pointIsWithin(point)
+    {
+        if ((this.pointStart.x <= point.x && point.x <= this.pointEnd.x )&&(this.pointStart.y <= point.y && point.y <= this.pointEnd.y))
+        {
+            return true;
+        }
+        else{return false;}
+    }
+}
+
+let camera = 
+{
+    x: 100,
+    y: 100
 }
 
 let tile = 
@@ -166,14 +188,18 @@ for (let x = 0; x < 100; x++)
     mapArray.push([]);
     for (let y = 0; y < 100; y++)
     {
-        mapArray.push(new Hex(new Point2D(x,7)))
+        mapArray[x].push(new Hex(new Point2D(x,y)))
     }
 }
 
 let map = 
 {
-    map: mapArray
+    mapHexes: mapArray,
+    mapSeed: seed
 }
+//PROOF OF CONCEPT. DOESN'T SAVE ANYTHING OF NOTE AS NOTHING HAS YET HAPPENED IN THE GAME. TODO: ADD AUTOSAVE EVERY 5 MINUTESx
+let mapJSON = JSON.stringify(map);
+localStorage.setItem("mapJSON", mapJSON);
 
 function drawTile(tile, x, y) 
 {
@@ -192,9 +218,11 @@ function drawTile(tile, x, y)
 function loading() 
 {
     loadedElements += 1;
-    if (loadedElements = elementsToBeLoaded) 
+    console.log(`${loadedElements}/${elementsToBeLoaded} loaded ` + Math.round(loadedElements/elementsToBeLoaded*100) + "%");
+    if (loadedElements == elementsToBeLoaded) 
     {
-        init()
+        console.log(`${loadedElements}/${elementsToBeLoaded} loaded Game initializing`);
+        init();
     }
 }
 
@@ -300,8 +328,31 @@ function keyHandlerUp(e)
 function mouseHandler(e)
 {
     pointerPos = new Point2D(e.clientX, e.clientY);
+<<<<<<< HEAD
+    
+    axialHex = Hex.PixelToHex(pointerPos);
+    console.log("k");
+   /* let i=0;
+    while(i<h.buttonsList.length)
+    {
+        console.log("b");
+       if(h.buttonsList[i].pointIsWithin(pointerPos))
+       {
+           switch (h.buttonsList[i].name) {
+               case "build":
+                   console.log("build");
+                   break;
+           
+               default:
+                   break;
+           }
+       }
+       i++;
+    }*/
+=======
     // console.log(pointerPos);
     console.log(Hex.pixelToHex(pointerPos));
+>>>>>>> 6f3631786c5de042befa51f9db0633d1eea4f667
 }
 
 document.onkeydown = keyHandlerDown;
@@ -319,11 +370,15 @@ function gameLoop() {
     drawTile(tile.water,origo.x,origo.y);
     drawTile(tile.sand,origo.x+47,origo.y+28)
     drawGrid(canvas.width, canvas.height);
-
+    //ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
 
     requestAnimationFrame(gameLoop)
 }
 
-let hexSpritesheet = new Image();
+var hexSpritesheet = new Image();
 hexSpritesheet.src = "hexagonTerrain_sheet.png";
 hexSpritesheet.onload = loading();
+
+var HUDSprite = new Image();
+HUDSprite.src = "hud.png";
+HUDSprite.onload = loading();
