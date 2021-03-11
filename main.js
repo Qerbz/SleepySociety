@@ -387,7 +387,7 @@ function mouseHandler(e)
     pointerPos = new Point2D(e.clientX, e.clientY);
     
     axialHex = Hex.pixelToHex(pointerPos);
-    console.log("k");
+    // console.log("k");
    let i=0;
     while(i<hud.buttonsList.length)
     {
