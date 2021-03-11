@@ -75,7 +75,7 @@ class Hex
         let px = point2D.x - size - origo.x; // Changing the initial x coordinate to the middle of the top left hexagon
         let py = point2D.y - ((Math.sqrt(3) * size)/2) - origo.y; // Changing the initial y coordinate to the middle of the top left hexagon
        
-        // console.log(`${origo.x}, ${origo.y}`)
+        
       
         let q = ( 2/3 * px) / size; // using the inverted function from hexToPixel function to get x from hex-coord
         let r = (-1/3 * px  +  Math.sqrt(3)/3 * py) / size; // using the inverted function from hexToPixel function to get y from hex-coord
