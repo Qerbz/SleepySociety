@@ -146,7 +146,7 @@ const mapSeed = Math.random();
 //     }
 // }
 
-class button
+class Button
 {
     pointStart;
     pointEnd;
@@ -168,6 +168,14 @@ class button
         else{return false;}
     }
 }
+
+function constructButton(startx,starty,width,height,name){
+    listOfButtons.push(new Button(new Point2D(startx,starty), new Point2D(startx+width,starty+height),name));
+}
+
+let listOfButtons = [];
+constructButton(10,50,40,40,"testBuild")
+let hud = new HUD(listOfButtons,[]);
 
 let camera = 
 {
@@ -375,14 +383,14 @@ function mouseHandler(e)
     pointerPos = new Point2D(e.clientX, e.clientY);
     
     axialHex = Hex.pixelToHex(pointerPos);
-    // console.log("k");
-   /* let i=0;
-    while(i<h.buttonsList.length)
+    console.log("k");
+   let i=0;
+    while(i<hud.buttonsList.length)
     {
-        console.log("b");
-       if(h.buttonsList[i].pointIsWithin(pointerPos))
+       if(hud.buttonsList[i].pointIsWithin(pointerPos))
        {
-           switch (h.buttonsList[i].name) {
+           console.log(hud.buttonsList[i].name);
+           switch (hud.buttonsList[i].name) {
                case "build":
                    console.log("build");
                    break;
@@ -392,7 +400,7 @@ function mouseHandler(e)
            }
        }
        i++;
-    }*/
+    }
 }
 
 document.onkeydown = keyHandlerDown;
@@ -408,7 +416,7 @@ function gameLoop() {
     drawTile(tile.water,origo.x,origo.y);
     drawTile(tile.sand,origo.x+47,origo.y+28)
     drawGrid(canvas.width, canvas.height);
-    //ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
+    ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
 
     requestAnimationFrame(gameLoop);
 }
