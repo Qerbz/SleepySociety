@@ -3,6 +3,7 @@ import { Point2D } from './libraries/point2d.js';
 import { Vector } from './libraries/vector.js';
 import { HUD, Button } from './libraries/hud.js';
 import { Point3D } from './libraries/point3d.js';
+import { loadHandler } from './loadHandler.js';
 
 const CANVAS = document.getElementById("CANVAS");
 const CTX = CANVAS.getContext("2d");
@@ -66,7 +67,7 @@ const map =
 // const mapJSON = JSON.stringify(map);
 // localStorage.setItem("mapJSON", mapJSON);
 
-function drawTile(tile, point2D) 
+function drawTile(tile, coords) 
 {
     const spriteWidth = 64;
     const spriteHeight = 56;
@@ -77,7 +78,7 @@ function drawTile(tile, point2D)
     const spriteX = width * tile.x;
     const spriteY = height * tile.y;
 
-    const pointCenter = Hex.hexToPixel(point2D);
+    const pointCenter = Hex.hexToPixel(coords);
 
     const pointStartTile = new Point2D(pointCenter.x-width/2,pointCenter.y-height/2);
 
@@ -102,6 +103,7 @@ for (let i = 0; i <= 5; i++)
 
 function init() 
 {
+
     gameLoop()
 }
 
@@ -112,11 +114,10 @@ function init()
  * @returns returns a tile.
  */
 
-function getBiome(x, y)
-{
+function getBiome(coords) {
     const freq = 0.01;
     noise.seed(mapSeed);
-    const e = (noise.perlin2(freq * x, freq * y) + 1) / 2;
+    const e = (noise.perlin2(freq * coords.x, freq * coords.y) + 1) / 2;
     // noise.seed(mapSeed / 2);
     // const m = (noise.perlin2(freq * x, freq * y) + 1) / 2;
     return biome(e);
@@ -136,6 +137,7 @@ function biome(e)
     else return tile.dirt;
 }
 
+//draws around centre
 function drawHexagon(x, y) 
 {
     CTX.beginPath();
@@ -151,13 +153,17 @@ function drawHexagon(x, y)
  * @param {Number} height height of the grid
  */
 
-
-
 function drawGrid(arr)
 {
-    for (e in arr) {
-        drawTile(arr[e][0], arr[e][1]);
-        drawHexagon(arr[e][1].x, arr[e][1].y);
+    let w = canvas.width/size;
+    let h = canvas.height/size;
+
+    for (let x = 0; x < w; x++) {
+        for (let y = 0; y < h; y++){
+            let hexCoord = Hex.hexToPixel(new Point2D(x,y));
+            drawTile(getBiome(new Point2D(x,y)), x, y);
+            drawHexagon(hexCoord.x,hexCoord.y);
+        }
     }
 }
 
@@ -215,8 +221,9 @@ function mouseHandler(e)
 {
     pointerPos = new Point2D(e.clientX, e.clientY);
     
+    console.log(pointerPos);
+    console.log(Hex.pixelToHex(pointerPos));
     axialHex = Hex.pixelToHex(pointerPos);
-    // console.log("k");
    let i=0;
     while(i<hud.buttonsList.length)
     {
@@ -240,20 +247,18 @@ document.onkeydown = keyHandlerDown;
 document.onkeyup = keyHandlerUp;
 document.onclick = mouseHandler;
 
-const gridArray = createGrid(300, 300);
-
 function gameLoop() {
     //Calculations
     origo.add(scrollSpeed);
 
     //Animation
     CTX.clearRect(0, 0, CANVAS.width, CANVAS.height);
-    // drawTile(tile.water,new Point2D(0,0));
-    // drawTile(tile.sand,new Point2D(0,1));
-    drawGrid(gridArray);
+    drawGrid();
     //CTX.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
 
     requestAnimationFrame(gameLoop);
 }
 
-load();
+if(loadHandler()) {
+    init();
+}

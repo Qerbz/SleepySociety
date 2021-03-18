@@ -12,3 +12,4 @@ function createGrid(width, height)
     console.log(arr);
     return arr;
 }
+
