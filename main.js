@@ -1,39 +1,28 @@
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-const size = 32;
-const degrees60 = 2 * Math.PI / 6;
+import { Hex } from './libraries/hex.js';
+import { Point2D } from './libraries/point2d.js';
+import { Vector } from './libraries/vector.js';
+import { HUD, Button } from './libraries/hud.js';
+import { Point3D } from './libraries/point3d.js';
+
+const CANVAS = document.getElementById("CANVAS");
+const CTX = CANVAS.getContext("2d");
+const SIZE = 32;
+const DEGREES60 = 2 * Math.PI / 6;
 // const elementsToBeLoaded = 2;
 // let loadedElements = 0;
 let origo = new Vector(0,0);
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+CANVAS.width = window.innerWidth;
+CANVAS.height = window.innerHeight;
 let scrollSpeed = new Vector(0,0);
 const mapHeight = 100;
 const mapWidth = 100;
 const mapSeed = Math.random();
 
-class Button
-{
-    pointStartButton;
-    pointEnd;
-    name;
 
-    constructor(point2DStart, point2DEnd, name)
-    {
-        this.pointStartButton = point2DStart;
-        this.pointEndButton = point2DEnd;
-        this.name = name;
-    }
 
-    pointIsWithin(point)
-    {
-        if ((this.pointStartButton.x <= point.x && point.x <= this.pointEndButton.x )&&(this.pointStartButton.y <= point.y && point.y <= this.pointEndButton.y))
-        {
-            return true;
-        }
-        else{return false;}
-    }
-}
+
+
+
 
 function constructButton(startx,starty,width,height,name){
     listOfButtons.push(new Button(new Point2D(startx,starty), new Point2D(startx+width,starty+height),name));
@@ -82,8 +71,8 @@ function drawTile(tile, point2D)
     const spriteWidth = 64;
     const spriteHeight = 56;
 
-    const width = size * 2;
-    const height = size * Math.sqrt(3);
+    const width = SIZE * 2;
+    const height = SIZE * Math.sqrt(3);
 
     const spriteX = width * tile.x;
     const spriteY = height * tile.y;
@@ -92,22 +81,22 @@ function drawTile(tile, point2D)
 
     const pointStartTile = new Point2D(pointCenter.x-width/2,pointCenter.y-height/2);
 
-    ctx.drawImage(hexSpritesheet, spriteX, spriteY, spriteWidth, spriteHeight,pointStartTile.x,pointStartTile.y, width, height);
+    CTX.drawImage(hexSpritesheet, spriteX, spriteY, spriteWidth, spriteHeight,pointStartTile.x,pointStartTile.y, width, height);
 }
 
 
 
 
-function hex_coords(center, size, number) 
+function hex_coords(center, SIZE, number) 
 {
     const angle = Math.PI / 180 * (60 * number);
-    return new Point2D(center.x + size * Math.cos(angle), center.y + size * Math.sin(angle));
+    return new Point2D(center.x + SIZE * Math.cos(angle), center.y + SIZE * Math.sin(angle));
 }
 
 const points = [];
 for (let i = 0; i <= 5; i++) 
 {
-    points.push(hex_coords(new Point2D(200, 200), size, i));
+    points.push(hex_coords(new Point2D(200, 200), SIZE, i));
 }
 
 
@@ -149,12 +138,12 @@ function biome(e)
 
 function drawHexagon(x, y) 
 {
-    ctx.beginPath();
+    CTX.beginPath();
     for (let i = 0; i < 6; i++) {
-        ctx.lineTo(x + size * Math.cos(degrees60 * i), y + size * Math.sin(degrees60 * i));
+        CTX.lineTo(x + SIZE * Math.cos(DEGREES60 * i), y + SIZE * Math.sin(DEGREES60 * i));
     }
-    ctx.closePath();
-    ctx.stroke();
+    CTX.closePath();
+    CTX.stroke();
 }
 
 /**
@@ -162,20 +151,7 @@ function drawHexagon(x, y)
  * @param {Number} height height of the grid
  */
 
-function createGrid(width, height) 
-{
-    const arr = new Array();
-    for (let x = size + origo.x, i = 0, y; x + size * (1 + Math.cos(degrees60)) <= width; x += size * (1 + Math.cos(degrees60)), i++) 
-    {
-        for (i % 2 === 1 ? y = 2 * size * Math.sin(degrees60) + origo.y : y = size * Math.sin(degrees60) + origo.y; y + size * Math.sin(degrees60) <= height; y += 2 * size * Math.sin(degrees60)) 
-        {
-            const tileBiome = getBiome(x, y);
-            arr.push(new Array(tileBiome, new Point2D(x, y)));
-        }
-    }
-    console.log(arr);
-    return arr;
-}
+
 
 function drawGrid(arr)
 {
@@ -271,11 +247,11 @@ function gameLoop() {
     origo.add(scrollSpeed);
 
     //Animation
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    CTX.clearRect(0, 0, CANVAS.width, CANVAS.height);
     // drawTile(tile.water,new Point2D(0,0));
     // drawTile(tile.sand,new Point2D(0,1));
     drawGrid(gridArray);
-    //ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
+    //CTX.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
 
     requestAnimationFrame(gameLoop);
 }

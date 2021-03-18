@@ -1,30 +1,7 @@
-var size = 32;
+import { Hex } from './libraries/hex.js';
+import { Point2D } from './libraries/point2d.js';
+// import Point3D from './libraries/point3d.js';
 
-class Point {
-    constructor(x,y) {
-        this.x = x;
-        this.y = y;
-    }
-}
+let hex = new Hex(new Point2D(2,2));
 
-class Hex {
-    constructor(point) {
-        this.q = point.x;
-        this.r = point.y;
-    }
-    static axialToCube(point2D) {
-        let x = point2D.x;
-        let z = point2D.y;
-        let y = x + z;
-        
-        return {x: x, y: y, z: z}
-    }
-}
-
-
-
-let point = new Point(1, 1);
-let hex = new Hex(point);
-let test = flat_hex_to_pixel(hex);
-console.log(test.x)
-console.log(test.y)
+console.log(hex.point2D);

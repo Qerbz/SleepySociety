@@ -22,3 +22,19 @@ function load() {
     hexSpritesheet.onload = loading();
     HUDSprite.onload = loading();
 }
+
+function gameLoop() {
+    //Calculations
+    origo.add(scrollSpeed);
+
+    //Animation
+    CTX.clearRect(0, 0, CANVAS.width, CANVAS.height);
+    // drawTile(tile.water,new Point2D(0,0));
+    // drawTile(tile.sand,new Point2D(0,1));
+    drawGrid(gridArray);
+    //CTX.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
+
+    requestAnimationFrame(gameLoop);
+}
+
+load();
