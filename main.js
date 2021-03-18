@@ -313,15 +313,15 @@ function drawGrid()
 {
     for 
     (
-        let x = Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).x/2; 
-        x < loadedWidth + Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).x/2; 
+        let x = Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).x/2); 
+        x < loadedWidth + Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).x/2); 
         x++
     ) 
     {
         for 
         (
-            let y = Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).y/2;
-            y < loadedHeight + Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).y/2; 
+            let y = Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).y/2);
+            y < loadedHeight + Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).y/2); 
             y++
         )
         {
