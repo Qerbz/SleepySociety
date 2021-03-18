@@ -11,7 +11,6 @@ let scrollSpeed = new Vector(0,0);
 const mapHeight = 100;
 const mapWidth = 100;
 const mapSeed = Math.random();
-ctx.lineWidth = 2;
 
 
 
@@ -174,11 +173,11 @@ function constructButton(startx,starty,width,height,name){
     listOfButtons.push(new Button(new Point2D(startx,starty), new Point2D(startx+width,starty+height),name));
 }
 
-let listOfButtons = [];
+const listOfButtons = [];
 constructButton(10,50,40,40,"testBuild")
 let hud = new HUD(listOfButtons,[]);
 
-let camera = 
+const camera = 
 {
     x: 100,
     y: 100
@@ -223,9 +222,13 @@ function drawTile(tile, coords)
     const spriteX = width * tile.x;
     const spriteY = height * tile.y;
 
+<<<<<<< HEAD
     let pointCenter = Hex.hexToPixel(coords);
+=======
+    const pointCenter = Hex.hexToPixel(point2D);
+>>>>>>> fe4ec56d329d110291b893635070ffa9cb75a79d
 
-    let pointStartTile = new Point2D(pointCenter.x-width/2,pointCenter.y-height/2);
+    const pointStartTile = new Point2D(pointCenter.x-width/2,pointCenter.y-height/2);
 
     ctx.drawImage(hexSpritesheet, spriteX, spriteY, spriteWidth, spriteHeight,pointStartTile.x,pointStartTile.y, width, height);
 }
@@ -269,7 +272,12 @@ function init()
  * @returns returns a tile.
  */
 
+<<<<<<< HEAD
 function getBiome(coords) {
+=======
+function getBiome(x, y)
+{
+>>>>>>> fe4ec56d329d110291b893635070ffa9cb75a79d
     const freq = 0.01;
     noise.seed(mapSeed);
     const e = (noise.perlin2(freq * coords.x, freq * coords.y) + 1) / 2;
@@ -284,8 +292,13 @@ function getBiome(coords) {
  * @returns Returns a tile based on the value of e.
  */
 
+<<<<<<< HEAD
 function biome(e) {
     //console.log(e);
+=======
+function biome(e)
+{
+>>>>>>> fe4ec56d329d110291b893635070ffa9cb75a79d
     if (e < 0.25) return tile.water;
     else if (e < 0.5) return tile.sand;
     else if (e < 0.75) return tile.grass;
@@ -308,6 +321,7 @@ function drawHexagon(x, y)
  * @param {Number} height height of the grid
  */
 
+<<<<<<< HEAD
 function drawGrid(arr)
 {
     let w = canvas.width/size;
@@ -319,6 +333,28 @@ function drawGrid(arr)
             drawTile(getBiome(new Point2D(x,y)), x, y);
             drawHexagon(hexCoord.x,hexCoord.y);
         }
+=======
+function createGrid(width, height) 
+{
+    const arr = new Array();
+    for (let x = size + origo.x, i = 0, y; x + size * (1 + Math.cos(degrees60)) <= width; x += size * (1 + Math.cos(degrees60)), i++) 
+    {
+        for (i % 2 === 1 ? y = 2 * size * Math.sin(degrees60) + origo.y : y = size * Math.sin(degrees60) + origo.y; y + size * Math.sin(degrees60) <= height; y += 2 * size * Math.sin(degrees60)) 
+        {
+            const tileBiome = getBiome(x, y);
+            arr.push(new Array(tileBiome, new Point2D(x, y)));
+        }
+    }
+    console.log(arr);
+    return arr;
+}
+
+function drawGrid(arr)
+{
+    for (e in arr) {
+        drawTile(arr[e][0], arr[e][1]);
+        drawHexagon(arr[e][1].x, arr[e][1].y);
+>>>>>>> fe4ec56d329d110291b893635070ffa9cb75a79d
     }
 }
 
@@ -403,15 +439,26 @@ document.onkeydown = keyHandlerDown;
 document.onkeyup = keyHandlerUp;
 document.onclick = mouseHandler;
 
+<<<<<<< HEAD
+=======
+const gridArray = createGrid(300, 300);
+
+>>>>>>> fe4ec56d329d110291b893635070ffa9cb75a79d
 function gameLoop() {
     //Calculations
     origo.add(scrollSpeed);
 
     //Animation
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+<<<<<<< HEAD
     drawTile(tile.water,new Point2D(0,0));
     drawTile(tile.sand,new Point2D(0,1));
     drawGrid(map.mapHexes);
+=======
+    // drawTile(tile.water,new Point2D(0,0));
+    // drawTile(tile.sand,new Point2D(0,1));
+    drawGrid(gridArray);
+>>>>>>> fe4ec56d329d110291b893635070ffa9cb75a79d
     //ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
 
     requestAnimationFrame(gameLoop);
