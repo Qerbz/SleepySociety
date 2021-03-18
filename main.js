@@ -321,7 +321,6 @@ function drawHexagon(x, y)
  * @param {Number} height height of the grid
  */
 
-<<<<<<< HEAD
 function drawGrid(arr)
 {
     let w = canvas.width/size;
@@ -333,28 +332,6 @@ function drawGrid(arr)
             drawTile(getBiome(new Point2D(x,y)), x, y);
             drawHexagon(hexCoord.x,hexCoord.y);
         }
-=======
-function createGrid(width, height) 
-{
-    const arr = new Array();
-    for (let x = size + origo.x, i = 0, y; x + size * (1 + Math.cos(degrees60)) <= width; x += size * (1 + Math.cos(degrees60)), i++) 
-    {
-        for (i % 2 === 1 ? y = 2 * size * Math.sin(degrees60) + origo.y : y = size * Math.sin(degrees60) + origo.y; y + size * Math.sin(degrees60) <= height; y += 2 * size * Math.sin(degrees60)) 
-        {
-            const tileBiome = getBiome(x, y);
-            arr.push(new Array(tileBiome, new Point2D(x, y)));
-        }
-    }
-    console.log(arr);
-    return arr;
-}
-
-function drawGrid(arr)
-{
-    for (e in arr) {
-        drawTile(arr[e][0], arr[e][1]);
-        drawHexagon(arr[e][1].x, arr[e][1].y);
->>>>>>> fe4ec56d329d110291b893635070ffa9cb75a79d
     }
 }
 
