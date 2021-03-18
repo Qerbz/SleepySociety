@@ -212,7 +212,7 @@ const map =
 // const mapJSON = JSON.stringify(map);
 // localStorage.setItem("mapJSON", mapJSON);
 
-function drawTile(tile, point2D) 
+function drawTile(tile, coords) 
 {
     const spriteWidth = 64;
     const spriteHeight = 56;
@@ -223,7 +223,7 @@ function drawTile(tile, point2D)
     const spriteX = width * tile.x;
     const spriteY = height * tile.y;
 
-    let pointCenter = Hex.hexToPixel(point2D);
+    let pointCenter = Hex.hexToPixel(coords);
 
     let pointStartTile = new Point2D(pointCenter.x-width/2,pointCenter.y-height/2);
 
@@ -258,6 +258,7 @@ for (let i = 0; i <= 5; i++)
 
 function init() 
 {
+
     gameLoop()
 }
 
@@ -268,10 +269,10 @@ function init()
  * @returns returns a tile.
  */
 
-function getBiome(x, y) {
+function getBiome(coords) {
     const freq = 0.01;
     noise.seed(mapSeed);
-    const e = (noise.perlin2(freq * x, freq * y) + 1) / 2;
+    const e = (noise.perlin2(freq * coords.x, freq * coords.y) + 1) / 2;
     // noise.seed(mapSeed / 2);
     // const m = (noise.perlin2(freq * x, freq * y) + 1) / 2;
     return biome(e);
@@ -284,13 +285,14 @@ function getBiome(x, y) {
  */
 
 function biome(e) {
-    console.log(e);
+    //console.log(e);
     if (e < 0.25) return tile.water;
     else if (e < 0.5) return tile.sand;
     else if (e < 0.75) return tile.grass;
     else return tile.dirt;
 }
 
+//draws around centre
 function drawHexagon(x, y) 
 {
     ctx.beginPath();
@@ -306,26 +308,17 @@ function drawHexagon(x, y)
  * @param {Number} height height of the grid
  */
 
-function createGrid(width, height) 
-{
-    const arr = new Array();
-    for (let x = size + origo.x, i = 0, y; x + size * (1 + Math.cos(degrees60)) <= width; x += size * (1 + Math.cos(degrees60)), i++) 
-    {
-        for (i % 2 === 1 ? y = 2 * size * Math.sin(degrees60) + origo.y : y = size * Math.sin(degrees60) + origo.y; y + size * Math.sin(degrees60) <= height; y += 2 * size * Math.sin(degrees60)) 
-        {
-            const tileBiome = getBiome(x, y);
-            arr.push(new Array(tileBiome, x, y));
-        }
-    }
-
-    return arr;
-}
-
 function drawGrid(arr)
 {
-    for (e in arr) {
-        drawTile(arr[e][0], arr[e][1] - arr[0][1], arr[e][2] - arr[0][2]);
-        drawHexagon(arr[e][1], arr[e][2]);
+    let w = canvas.width/size;
+    let h = canvas.height/size;
+
+    for (let x = 0; x < w; x++) {
+        for (let y = 0; y < h; y++){
+            let hexCoord = Hex.hexToPixel(new Point2D(x,y));
+            drawTile(getBiome(new Point2D(x,y)), x, y);
+            drawHexagon(hexCoord.x,hexCoord.y);
+        }
     }
 }
 
@@ -383,6 +376,8 @@ function mouseHandler(e)
 {
     pointerPos = new Point2D(e.clientX, e.clientY);
     
+    console.log(pointerPos);
+    console.log(Hex.pixelToHex(pointerPos));
     axialHex = Hex.pixelToHex(pointerPos);
     // console.log("k");
    let i=0;
@@ -408,8 +403,6 @@ document.onkeydown = keyHandlerDown;
 document.onkeyup = keyHandlerUp;
 document.onclick = mouseHandler;
 
-const gridArray = createGrid(canvas.width, canvas.height);
-
 function gameLoop() {
     //Calculations
     origo.add(scrollSpeed);
@@ -418,7 +411,7 @@ function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawTile(tile.water,new Point2D(0,0));
     drawTile(tile.sand,new Point2D(0,1));
-    drawGrid(canvas.width, canvas.height);
+    drawGrid(map.mapHexes);
     //ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
 
     requestAnimationFrame(gameLoop);
