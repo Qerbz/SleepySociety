@@ -2,7 +2,7 @@
 
 // const elementsToBeLoaded = 2;
 // let loadedElements = 0;
-import {size, ctx, mapSeed, origo, hexSpritesheet, HUDSprite, degrees60, loadedHeight, loadedWidth } from './constants/index.js'
+import { scrollSpeed, size, ctx, mapSeed, origo, hexSpritesheet, HUDSprite, degrees60, loadedHeight, loadedWidth } from './constants/index.js'
 import { Hex } from './libraries/hex.js';
 import { Point2D } from './libraries/point2d.js';
 import { Vector } from './libraries/vector.js';
@@ -15,11 +15,11 @@ HUDSprite.src = "img/hud.png";
 let lastCalledTime;
 let fps;
 let delta;
-let scrollSpeed = new Vector(0,0);
 
-// let origo = new Vector(0,0);
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+ctx.font = "20px Arial"
+
+
+
 
 
 ctx.lineWidth = 2;
@@ -185,15 +185,15 @@ function drawGrid()
 {
     for 
     (
-        let x = Math.floor(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).x/2)-1; 
-        x < loadedWidth + Math.floor(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).x/2); 
+        let x = Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).x/2)-1; 
+        x < loadedWidth + Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).x/2); 
         x++
     ) 
     {
         for 
         (
-            let y = Math.floor(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).y/2)-1;
-            y < loadedHeight + Math.floor(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).y/2); 
+            let y = Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).y/2)-1;
+            y < loadedHeight + Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).y/2); 
             y++
         )
         {
@@ -207,6 +207,9 @@ function drawGrid()
 // document.addEventListener('mousemove', (event) => {
 //     console.log(`Mouse X: ${event.clientX}, Mouse Y: ${event.clientY}`);
 // });
+
+
+
 
 function gameLoop() {
     //Calculations
@@ -224,6 +227,12 @@ function gameLoop() {
     //Animation
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawGrid();
+    //fps
+    ctx.fillStyle = "white";
+    ctx.fillRect(0,0,60,40);
+    ctx.fillStyle = "black";
+    ctx.fillText(Math.round(fps),10,30);
+
     // ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
 
     requestAnimationFrame(gameLoop);
