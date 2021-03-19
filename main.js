@@ -2,7 +2,7 @@
 
 // const elementsToBeLoaded = 2;
 // let loadedElements = 0;
-import {size, ctx, mapSeed, origo, hexSpritesheet, HUDSprite, degrees60, loadedHeight, loadedWidth } from './constants/index.js'
+import { scrollSpeed, size, ctx, mapSeed, origo, hexSpritesheet, HUDSprite, degrees60, loadedHeight, loadedWidth } from './constants/index.js'
 import { Hex } from './libraries/hex.js';
 import { Point2D } from './libraries/point2d.js';
 import { Vector } from './libraries/vector.js';
@@ -13,11 +13,9 @@ import { keyHandlerDown, keyHandlerUp } from './libraries/inputHandler.js';
 hexSpritesheet.src = "img/hexagonTerrain_sheet.png";
 HUDSprite.src = "img/hud.png";
 
-let scrollSpeed = new Vector(0,0);
 
-// let origo = new Vector(0,0);
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+
+
 
 
 ctx.lineWidth = 2;
@@ -185,15 +183,15 @@ function drawGrid()
 {
     for 
     (
-        let x = Math.floor(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).x/2)-1; 
-        x < loadedWidth + Math.floor(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).x/2); 
+        let x = Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).x/2)-1; 
+        x < loadedWidth + Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).x/2); 
         x++
     ) 
     {
         for 
         (
-            let y = Math.floor(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).y/2)-1;
-            y < loadedHeight + Math.floor(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).y/2); 
+            let y = Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).y/2)-1;
+            y < loadedHeight + Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).y/2); 
             y++
         )
         {
@@ -213,15 +211,15 @@ function drawGrid()
 
 function gameLoop() {
     //Calculations
-    origo.add(scrollSpeed.normalize()*10);
+    origo.add(scrollSpeed);
     
-    if(!lastCalledTime){
-        lastCalledTime = Date.now();
-        fps = 0;
-    }
-    delta = (Date.now() - lastCalledTime)/1000;
-    lastCalledTime = Date.now();
-    fps = 1/delta;
+    // if(!lastCalledTime){
+    //     lastCalledTime = Date.now();
+    //     fps = 0;
+    // }
+    // delta = (Date.now() - lastCalledTime)/1000;
+    // lastCalledTime = Date.now();
+    // fps = 1/delta;
 
 
     //Animation

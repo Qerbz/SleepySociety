@@ -65,6 +65,11 @@ export class Vector
 		this.scale(1/this.length);
 	}
 
+	get normalized ()
+	{
+		return this.scale(1/this.length);
+	}
+	
 	static clone ( vector ) 
 	{
 		return new Vector(vector.x,vector.y);
