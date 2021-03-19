@@ -343,19 +343,19 @@ function keyHandlerDown(e)
 {
     if (e.key == "ArrowDown")
     {
-        scrollSpeed.y = -1;
+        scrollSpeed.y = -10;
     }
     else if (e.key == "ArrowUp")
     {
-        scrollSpeed.y = 1;
+        scrollSpeed.y = 10;
     }
     else if (e.key == "ArrowRight")
     {
-        scrollSpeed.x = -1;
+        scrollSpeed.x = -10;
     }
     else if (e.key == "ArrowLeft")
     {
-        scrollSpeed.x = 1;
+        scrollSpeed.x = 10;
     }
     else 
     {
@@ -418,7 +418,7 @@ document.onclick = mouseHandler;
 
 function gameLoop() {
     //Calculations
-    origo.add(scrollSpeed.normalize()*10);
+    origo.add(scrollSpeed);
     
     if(!lastCalledTime){
         lastCalledTime = Date.now();
