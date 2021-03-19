@@ -11,8 +11,9 @@ let scrollSpeed = new Vector(0,0);
 const mapHeight = 100;
 const mapWidth = 100;
 const mapSeed = Math.random();
+const loadedWidth = (Math.ceil(canvas.width/((3/2)*size))+1);
+const loadedHeight = (Math.ceil(canvas.height/(size*(Math.sqrt(3))))+1);
 ctx.lineWidth = 2;
-
 
 
 // class Point2D 
@@ -212,7 +213,7 @@ const map =
 // const mapJSON = JSON.stringify(map);
 // localStorage.setItem("mapJSON", mapJSON);
 
-function drawTile(tile, point2D) 
+function drawTile(tile, coords) 
 {
     const spriteWidth = 64;
     const spriteHeight = 56;
@@ -223,7 +224,7 @@ function drawTile(tile, point2D)
     const spriteX = width * tile.x;
     const spriteY = height * tile.y;
 
-    const pointCenter = Hex.hexToPixel(point2D);
+    const pointCenter = Hex.hexToPixel(coords);
 
     const pointStartTile = new Point2D(pointCenter.x-width/2,pointCenter.y-height/2);
 
@@ -258,6 +259,7 @@ for (let i = 0; i <= 5; i++)
 
 function init() 
 {
+
     gameLoop()
 }
 
@@ -268,14 +270,10 @@ function init()
  * @returns returns a tile.
  */
 
-function getBiome(x, y)
-{
-    const point = Hex.pixelToHex(new Point2D(x,y));
-    x = point.x;
-    y = point.y;
+function getBiome(coords) {
     const freq = 0.1;
     noise.seed(mapSeed);
-    const e = (noise.perlin2(freq * x, freq * y) + 1) / 2;
+    const e = (noise.perlin2(freq * coords.x, freq * coords.y) + 1) / 2;
     // noise.seed(mapSeed / 2);
     // const m = (noise.perlin2(freq * x, freq * y) + 1) / 2;
     return biome(e);
@@ -295,6 +293,7 @@ function biome(e)
     else return tile.dirt;
 }
 
+//draws around centre
 function drawHexagon(x, y) 
 {
     ctx.beginPath();
@@ -310,25 +309,26 @@ function drawHexagon(x, y)
  * @param {Number} height height of the grid
  */
 
-function createGrid(width, height) 
+function drawGrid()
 {
-    const arr = new Array();
-    for (let x = size + origo.x, i = 0, y; x + size * (1 + Math.cos(degrees60)) <= width; x += size * (1 + Math.cos(degrees60)), i++) 
+    for 
+    (
+        let x = Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).x/2); 
+        x < loadedWidth + Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).x/2); 
+        x++
+    ) 
     {
-        for (i % 2 === 1 ? y = 2 * size * Math.sin(degrees60) + origo.y : y = size * Math.sin(degrees60) + origo.y; y + size * Math.sin(degrees60) <= height; y += 2 * size * Math.sin(degrees60)) 
+        for 
+        (
+            let y = Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).y/2);
+            y < loadedHeight + Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).y/2); 
+            y++
+        )
         {
-            const tileBiome = getBiome(x, y);
-            arr.push(new Array(tileBiome, x, y));
+            let hexCoord = Hex.hexToPixel(new Point2D(x,y));
+            drawTile(getBiome(new Point2D(x,y)), new Point2D(x,y));
+            drawHexagon(hexCoord.x,hexCoord.y);
         }
-    }
-    return arr;
-}
-
-function drawGrid(arr)
-{
-    for (e in arr) {
-        drawTile(arr[e][0], arr[e][1] - arr[0][1], arr[e][2] - arr[0][2]);
-        drawHexagon(arr[e][1], arr[e][2]);
     }
 }
 
@@ -386,6 +386,8 @@ function mouseHandler(e)
 {
     pointerPos = new Point2D(e.clientX, e.clientY);
     
+    console.log(pointerPos);
+    console.log(Hex.pixelToHex(pointerPos));
     axialHex = Hex.pixelToHex(pointerPos);
     // console.log("k");
    let i=0;
@@ -411,18 +413,13 @@ document.onkeydown = keyHandlerDown;
 document.onkeyup = keyHandlerUp;
 document.onclick = mouseHandler;
 
-const gridArray = createGrid(300, 300);
-console.log(gridArray);
-
 function gameLoop() {
     //Calculations
     origo.add(scrollSpeed);
 
     //Animation
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // drawTile(tile.water,new Point2D(0,0));
-    // drawTile(tile.sand,new Point2D(0,1));
-    drawGrid(gridArray);
+    drawGrid();
     //ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
 
     requestAnimationFrame(gameLoop);
