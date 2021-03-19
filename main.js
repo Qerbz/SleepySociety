@@ -2,19 +2,13 @@
 
 // const elementsToBeLoaded = 2;
 // let loadedElements = 0;
-let origo = new Vector(0,0);
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-let scrollSpeed = new Vector(0,0);
-const mapHeight = 100;
-const mapWidth = 100;
-const mapSeed = Math.random();
-const loadedWidth = (Math.ceil(canvas.width/((3/2)*size))+1);
-const loadedHeight = (Math.ceil(canvas.height/(size*(Math.sqrt(3))))+1);
-let lastCalledTime;
-let fps;
-ctx.lineWidth = 2;
-ctx.font = "30px Arial";
+import {size, ctx, mapSeed, origo, hexSpritesheet, HUDSprite, degrees60, loadedHeight, loadedWidth } from './constants/index.js'
+import { Hex } from './libraries/hex.js';
+import { Point2D } from './libraries/point2d.js';
+import { Vector } from './libraries/vector.js';
+import { HUD, Button } from './libraries/hud.js';
+import { loadHandler } from './loadHandler.js';
+import { keyHandlerDown, keyHandlerUp } from './libraries/inputHandler.js';
 
 hexSpritesheet.src = "img/hexagonTerrain_sheet.png";
 HUDSprite.src = "img/hud.png";
@@ -214,28 +208,6 @@ function drawGrid()
 //     console.log(`Mouse X: ${event.clientX}, Mouse Y: ${event.clientY}`);
 // });
 
-function keyHandlerDown(e)
-{
-    if (e.key == "ArrowDown")
-    {
-        scrollSpeed.y = -1;
-    }
-    else if (e.key == "ArrowUp")
-    {
-        scrollSpeed.y = 1;
-    }
-    else if (e.key == "ArrowRight")
-    {
-        scrollSpeed.x = -1;
-    }
-    else if (e.key == "ArrowLeft")
-    {
-        scrollSpeed.x = 1;
-    }
-    else 
-    {
-    }
-}
 
 
 
@@ -255,12 +227,7 @@ function gameLoop() {
     //Animation
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawGrid();
-    ctx.fillStyle = "white";
-    ctx.fillRect(0,0,60,40);
-    ctx.fillStyle = "black";
-    ctx.fillText(Math.round(fps),10,30);
-
-    //ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
+    // ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
 
     requestAnimationFrame(gameLoop);
 }
