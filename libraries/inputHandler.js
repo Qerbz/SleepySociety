@@ -1,5 +1,3 @@
-import { Hex } from './hex.js';
-import { Point2D } from './point2d.js';
 import { scrollSpeed } from '../constants/index.js';
 
 
