@@ -177,7 +177,7 @@ function constructButton(startx,starty,width,height,name){
 
 const listOfButtons = [];
 constructButton(10,50,40,40,"testBuild")
-let hud = new HUD(listOfButtons,[]);
+const hud = new HUD(listOfButtons,[]);
 
 const camera = 
 {
@@ -273,10 +273,12 @@ function init()
 function getBiome(coords) {
     const freq = 0.1;
     noise.seed(mapSeed);
-    const e = (noise.perlin2(freq * coords.x, freq * coords.y) + 1) / 2;
-    // noise.seed(mapSeed / 2);
-    // const m = (noise.perlin2(freq * x, freq * y) + 1) / 2;
-    return biome(e);
+    const e =  (1 * noise.perlin2(1 * coords.x, 1 * coords.y) +  0.5 * noise.perlin2(2 * coords.x, 2 * coords.y) + 0.25 * noise.perlin2(4 * coords.x, 4 * coords.y) + 1) / 2;
+    const elevation = e / (1 + 0.5 + 0.25);
+    noise.seed(mapSeed / 2);
+    const m = (1 * noise.perlin2(1 * coords.x, 1 * coords.y) +  0.5 * noise.perlin2(2 * coords.x, 2 * coords.y) + 0.25 * noise.perlin2(4 * coords.x, 4 * coords.y) + 1) / 2;
+    const magnitude = m / (1 + 0.5 + 0.25);
+    return biome(elevation);
 }
 
 /**
@@ -327,7 +329,7 @@ function drawGrid()
         {
             let hexCoord = Hex.hexToPixel(new Point2D(x,y));
             drawTile(getBiome(new Point2D(x,y)), new Point2D(x,y));
-            drawHexagon(hexCoord.x,hexCoord.y);
+            // drawHexagon(hexCoord.x,hexCoord.y);
         }
     }
 }
