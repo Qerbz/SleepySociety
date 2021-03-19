@@ -1,37 +1,55 @@
+
+
+// const elementsToBeLoaded = 2;
+// let loadedElements = 0;
+import {size, ctx, mapSeed, origo, hexSpritesheet, HUDSprite, degrees60, loadedHeight, loadedWidth } from './constants/index.js'
 import { Hex } from './libraries/hex.js';
 import { Point2D } from './libraries/point2d.js';
 import { Vector } from './libraries/vector.js';
 import { HUD, Button } from './libraries/hud.js';
-import { Point3D } from './libraries/point3d.js';
 import { loadHandler } from './loadHandler.js';
+import { keyHandlerDown, keyHandlerUp } from './libraries/inputHandler.js';
 
-const CANVAS = document.getElementById("CANVAS");
-const CTX = CANVAS.getContext("2d");
-const SIZE = 32;
-const DEGREES60 = 2 * Math.PI / 6;
-// const elementsToBeLoaded = 2;
-// let loadedElements = 0;
-let origo = new Vector(0,0);
-CANVAS.width = window.innerWidth;
-CANVAS.height = window.innerHeight;
+hexSpritesheet.src = "img/hexagonTerrain_sheet.png";
+HUDSprite.src = "img/hud.png";
+
 let scrollSpeed = new Vector(0,0);
-const mapHeight = 100;
-const mapWidth = 100;
-const mapSeed = Math.random();
+
+// let origo = new Vector(0,0);
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
 
+ctx.lineWidth = 2;
 
-
-
-
-
-function constructButton(startx,starty,width,height,name){
-    listOfButtons.push(new Button(new Point2D(startx,starty), new Point2D(startx+width,starty+height),name));
-}
 
 const listOfButtons = [];
-constructButton(10,50,40,40,"testBuild")
+Button.constructButton(listOfButtons, 10,50,40,40,"testBuild")
 let hud = new HUD(listOfButtons,[]);
+
+function mouseHandler(e)
+{
+   
+    let pointerPos = new Point2D(e.clientX, e.clientY);
+
+    console.log(pointerPos);
+    console.log(Hex.pixelToHex(pointerPos));
+    for (let i = 0; i < hud.buttonsList.length; i++) {
+        if(hud.buttonsList[i].pointIsWithin(pointerPos)) {
+            console.log(hud.buttonsList[i].name);
+            if (hud.buttonsList[i].name == "build") {
+                console.log("build");
+            }
+        }
+    }
+}
+
+
+
+
+document.onkeydown = keyHandlerDown;
+document.onkeyup = keyHandlerUp;
+document.onclick = mouseHandler;
 
 const camera = 
 {
@@ -63,6 +81,7 @@ const map =
     mapHexes: mapArray,
     mapSeed: mapSeed
 }
+
 //PROOF OF CONCEPT. DOESN'T SAVE ANYTHING OF NOTE AS NOTHING HAS YET HAPPENED IN THE GAME. TODO: ADD AUTOSAVE EVERY 5 MINUTESx
 // const mapJSON = JSON.stringify(map);
 // localStorage.setItem("mapJSON", mapJSON);
@@ -72,8 +91,8 @@ function drawTile(tile, coords)
     const spriteWidth = 64;
     const spriteHeight = 56;
 
-    const width = SIZE * 2;
-    const height = SIZE * Math.sqrt(3);
+    const width = size * 2;
+    const height = size * Math.sqrt(3);
 
     const spriteX = width * tile.x;
     const spriteY = height * tile.y;
@@ -82,30 +101,37 @@ function drawTile(tile, coords)
 
     const pointStartTile = new Point2D(pointCenter.x-width/2,pointCenter.y-height/2);
 
-    CTX.drawImage(hexSpritesheet, spriteX, spriteY, spriteWidth, spriteHeight,pointStartTile.x,pointStartTile.y, width, height);
+    ctx.drawImage(hexSpritesheet, spriteX, spriteY, spriteWidth, spriteHeight,pointStartTile.x,pointStartTile.y, width, height);
 }
 
 
 
 
-function hex_coords(center, SIZE, number) 
+// function hex_coords(center, size, number) 
+// {
+//     const angle = Math.PI / 180 * (60 * number);
+//     return new Point2D(center.x + size * Math.cos(angle), center.y + size * Math.sin(angle));
+// }
+
+// const points = [];
+// for (let i = 0; i <= 5; i++) 
+// {
+//     points.push(hex_coords(new Point2D(200, 200), size, i));
+// }
+
+
+function hex_coords(center, size) 
 {
-    const angle = Math.PI / 180 * (60 * number);
-    return new Point2D(center.x + SIZE * Math.cos(angle), center.y + SIZE * Math.sin(angle));
+    const angle = degrees60;
+    return new Point2D(center.x + size * Math.cos(angle), center.y + size * Math.sin(angle));
 }
 
 const points = [];
 for (let i = 0; i <= 5; i++) 
 {
-    points.push(hex_coords(new Point2D(200, 200), SIZE, i));
+    points.push(hex_coords(new Point2D(200, 200), size));
 }
 
-
-function init() 
-{
-
-    gameLoop()
-}
 
 /**
  * 
@@ -115,7 +141,7 @@ function init()
  */
 
 function getBiome(coords) {
-    const freq = 0.01;
+    const freq = 0.1;
     noise.seed(mapSeed);
     const e = (noise.perlin2(freq * coords.x, freq * coords.y) + 1) / 2;
     // noise.seed(mapSeed / 2);
@@ -140,12 +166,12 @@ function biome(e)
 //draws around centre
 function drawHexagon(x, y) 
 {
-    CTX.beginPath();
+    ctx.beginPath();
     for (let i = 0; i < 6; i++) {
-        CTX.lineTo(x + SIZE * Math.cos(DEGREES60 * i), y + SIZE * Math.sin(DEGREES60 * i));
+        ctx.lineTo(x + size * Math.cos(degrees60 * i), y + size * Math.sin(degrees60 * i));
     }
-    CTX.closePath();
-    CTX.stroke();
+    ctx.closePath();
+    ctx.stroke();
 }
 
 /**
@@ -153,15 +179,24 @@ function drawHexagon(x, y)
  * @param {Number} height height of the grid
  */
 
-function drawGrid(arr)
+function drawGrid()
 {
-    let w = canvas.width/size;
-    let h = canvas.height/size;
-
-    for (let x = 0; x < w; x++) {
-        for (let y = 0; y < h; y++){
+    for 
+    (
+        let x = Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).x/2); 
+        x < loadedWidth + Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).x/2); 
+        x++
+    ) 
+    {
+        for 
+        (
+            let y = Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).y/2);
+            y < loadedHeight + Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).y/2); 
+            y++
+        )
+        {
             let hexCoord = Hex.hexToPixel(new Point2D(x,y));
-            drawTile(getBiome(new Point2D(x,y)), x, y);
+            drawTile(getBiome(new Point2D(x,y)), new Point2D(x,y));
             drawHexagon(hexCoord.x,hexCoord.y);
         }
     }
@@ -171,92 +206,24 @@ function drawGrid(arr)
 //     console.log(`Mouse X: ${event.clientX}, Mouse Y: ${event.clientY}`);
 // });
 
-function keyHandlerDown(e)
-{
-    if (e.key == "ArrowDown")
-    {
-        scrollSpeed.y = -10;
-    }
-    else if (e.key == "ArrowUp")
-    {
-        scrollSpeed.y = 10;
-    }
-    else if (e.key == "ArrowRight")
-    {
-        scrollSpeed.x = -10;
-    }
-    else if (e.key == "ArrowLeft")
-    {
-        scrollSpeed.x = 10;
-    }
-    else 
-    {
-    }
-}
 
-function keyHandlerUp(e)
-{
-    if (e.key == "ArrowDown")
-    {
-        scrollSpeed.y = 0;
-    }
-    else if (e.key == "ArrowUp")
-    {
-        scrollSpeed.y = 0;
-    }
-    else if (e.key == "ArrowRight")
-    {
-        scrollSpeed.x = 0;
-    }
-    else if (e.key == "ArrowLeft")
-    {
-        scrollSpeed.x = 0;
-    }
-    else 
-    {
-    }
-}
 
-function mouseHandler(e)
-{
-    pointerPos = new Point2D(e.clientX, e.clientY);
-    
-    console.log(pointerPos);
-    console.log(Hex.pixelToHex(pointerPos));
-    axialHex = Hex.pixelToHex(pointerPos);
-   let i=0;
-    while(i<hud.buttonsList.length)
-    {
-       if(hud.buttonsList[i].pointIsWithin(pointerPos))
-       {
-           console.log(hud.buttonsList[i].name);
-           switch (hud.buttonsList[i].name) {
-               case "build":
-                   console.log("build");
-                   break;
-           
-               default:
-                   break;
-           }
-       }
-       i++;
-    }
-}
-
-document.onkeydown = keyHandlerDown;
-document.onkeyup = keyHandlerUp;
-document.onclick = mouseHandler;
 
 function gameLoop() {
     //Calculations
     origo.add(scrollSpeed);
 
     //Animation
-    CTX.clearRect(0, 0, CANVAS.width, CANVAS.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawGrid();
-    //CTX.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
+    // ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
 
     requestAnimationFrame(gameLoop);
+}
+
+function init() 
+{
+    gameLoop()
 }
 
 if(loadHandler()) {

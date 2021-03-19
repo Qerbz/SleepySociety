@@ -1,3 +1,7 @@
+import { size, origo } from '../constants/index.js'
+import { Point2D } from './point2d.js';
+import { Point3D } from './point3d.js';
+
 export class Hex 
 {
     /**

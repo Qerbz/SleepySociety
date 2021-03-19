@@ -1,12 +1,10 @@
-const elementsToBeLoaded = 2;
-let loadedElements = 0;
-var hexSpritesheet = new Image();
-hexSpritesheet.src = "img/hexagonTerrain_sheet.png";
-var HUDSprite = new Image();
-HUDSprite.src = "img/hud.png";
+import { elementsToBeLoaded, HUDSprite, hexSpritesheet } from './constants/index.js';
+
 
 
 export function loadHandler() {
+   
+    let loadedElements = 0;
     function loading() 
     {
         loadedElements += 1;

@@ -1,3 +1,5 @@
+import { Point2D } from './point2d.js';
+
 export class HUD
 {
     buttonsList;
@@ -29,5 +31,8 @@ export class Button
             return true;
         }
         else{return false;}
+    }
+    static constructButton(listOfButtons, startx,starty,width,height,name){
+        listOfButtons.push(new Button(new Point2D(startx,starty), new Point2D(startx+width,starty+height),name));
     }
 }
