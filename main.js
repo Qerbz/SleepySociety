@@ -2,7 +2,7 @@
 
 // const elementsToBeLoaded = 2;
 // let loadedElements = 0;
-import { scrollSpeed, size, ctx, mapSeed, origo, hexSpritesheet, HUDSprite, degrees60, loadedHeight, loadedWidth } from './constants/index.js'
+import { scrollSpeed, size, ctx, mapSeed, origo, hexSpritesheet, HUDSprite, degrees60, loadedHeight, loadedWidth, player, mapWidth, mapHeight } from './constants/index.js'
 import { Hex } from './libraries/hex.js';
 import { Point2D } from './libraries/point2d.js';
 import { Vector } from './libraries/vector.js';
@@ -33,16 +33,25 @@ function mouseHandler(e)
 {
    
     let pointerPos = new Point2D(e.clientX, e.clientY);
-
-    console.log(pointerPos);
-    console.log(Hex.pixelToHex(pointerPos));
-    for (let i = 0; i < hud.buttonsList.length; i++) {
-        if(hud.buttonsList[i].pointIsWithin(pointerPos)) {
-            console.log(hud.buttonsList[i].name);
-            if (hud.buttonsList[i].name == "build") {
-                console.log("build");
+    for (let i = 0; i < hud.buttonsList.length; i++) 
+    {
+        if(hud.buttonsList[i].pointIsWithin(pointerPos)) 
+        {
+            if (hud.buttonsList[i].name == "testBuild") 
+            {
+                player.currentAction = "build";
+                console.log(player.currentAction);
+                return 0;
             }
         }
+
+    }
+    if (player.currentAction == "build")
+    {
+        let hexCoords = Hex.pixelToHex(pointerPos);
+        console.log("built on " + hexCoords.x + ", " + hexCoords.y);
+        map.mapHexes[hexCoords.x][hexCoords.y].building = 1;
+        player.currentAction = 0;
     }
 }
 
@@ -69,10 +78,10 @@ const tile =
 
 const mapArray = [];
 
-for (let x = 0; x < 100; x++)
+for (let x = 0; x < mapWidth; x++)
 {
     mapArray.push([]);
-    for (let y = 0; y < 100; y++)
+    for (let y = 0; y < mapHeight; y++)
     {
         mapArray[x].push(new Hex(new Point2D(x,y)))
     }
@@ -186,19 +195,22 @@ function drawGrid()
     for 
     (
         let x = Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).x/2)-1; 
-        x < loadedWidth + Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).x/2); 
+        x < loadedWidth + Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).x/2+1); 
         x++
     ) 
     {
         for 
         (
             let y = Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).y/2)-1;
-            y < loadedHeight + Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).y/2); 
+            y < loadedHeight + Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).y/2+1); 
             y++
         )
-        {
+        {   
             let hexCoord = Hex.hexToPixel(new Point2D(x,y));
             drawTile(getBiome(new Point2D(x,y)), new Point2D(x,y));
+            if (map.mapHexes[x][y].building == 1){
+                ctx.fillRect(hexCoord.x-5,hexCoord.y-5,10,10)
+            }
             //drawHexagon(hexCoord.x,hexCoord.y);
         }
     }
@@ -227,13 +239,16 @@ function gameLoop() {
     //Animation
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawGrid();
+    ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
+
+
     //fps
     ctx.fillStyle = "white";
     ctx.fillRect(0,0,60,40);
     ctx.fillStyle = "black";
     ctx.fillText(Math.round(fps),10,30);
 
-    // ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
+
 
     requestAnimationFrame(gameLoop);
 }
