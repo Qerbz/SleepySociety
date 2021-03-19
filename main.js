@@ -11,6 +11,7 @@ let scrollSpeed = new Vector(0,0);
 const mapHeight = 100;
 const mapWidth = 100;
 const mapSeed = Math.random();
+ctx.lineWidth = 2;
 
 
 
@@ -269,7 +270,10 @@ function init()
 
 function getBiome(x, y)
 {
-    const freq = 0.01;
+    const point = Hex.pixelToHex(new Point2D(x,y));
+    x = point.x;
+    y = point.y;
+    const freq = 0.1;
     noise.seed(mapSeed);
     const e = (noise.perlin2(freq * x, freq * y) + 1) / 2;
     // noise.seed(mapSeed / 2);
@@ -314,18 +318,17 @@ function createGrid(width, height)
         for (i % 2 === 1 ? y = 2 * size * Math.sin(degrees60) + origo.y : y = size * Math.sin(degrees60) + origo.y; y + size * Math.sin(degrees60) <= height; y += 2 * size * Math.sin(degrees60)) 
         {
             const tileBiome = getBiome(x, y);
-            arr.push(new Array(tileBiome, new Point2D(x, y)));
+            arr.push(new Array(tileBiome, x, y));
         }
     }
-    console.log(arr);
     return arr;
 }
 
 function drawGrid(arr)
 {
     for (e in arr) {
-        drawTile(arr[e][0], arr[e][1]);
-        drawHexagon(arr[e][1].x, arr[e][1].y);
+        drawTile(arr[e][0], arr[e][1] - arr[0][1], arr[e][2] - arr[0][2]);
+        drawHexagon(arr[e][1], arr[e][2]);
     }
 }
 
@@ -409,6 +412,7 @@ document.onkeyup = keyHandlerUp;
 document.onclick = mouseHandler;
 
 const gridArray = createGrid(300, 300);
+console.log(gridArray);
 
 function gameLoop() {
     //Calculations
