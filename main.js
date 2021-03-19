@@ -12,7 +12,11 @@ import { keyHandlerDown, keyHandlerUp } from './libraries/inputHandler.js';
 
 hexSpritesheet.src = "img/hexagonTerrain_sheet.png";
 HUDSprite.src = "img/hud.png";
+let lastCalledTime;
+let fps;
+let delta;
 
+ctx.font = "20px Arial"
 
 
 
@@ -217,18 +221,24 @@ function gameLoop() {
     //Calculations
     origo.add(scrollSpeed);
     
-    // if(!lastCalledTime){
-    //     lastCalledTime = Date.now();
-    //     fps = 0;
-    // }
-    // delta = (Date.now() - lastCalledTime)/1000;
-    // lastCalledTime = Date.now();
-    // fps = 1/delta;
+    if(!lastCalledTime){
+        lastCalledTime = Date.now();
+        fps = 0;
+    }
+    delta = (Date.now() - lastCalledTime)/1000;
+    lastCalledTime = Date.now();
+    fps = 1/delta;
 
 
     //Animation
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawGrid();
+    //fps
+    ctx.fillStyle = "white";
+    ctx.fillRect(0,0,60,40);
+    ctx.fillStyle = "black";
+    ctx.fillText(Math.round(fps),10,30);
+
     // ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
 
     requestAnimationFrame(gameLoop);
