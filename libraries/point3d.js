@@ -1,20 +1,4 @@
-class Point2D 
-{
-    /**
-     * 
-     * @param {int} x 
-     * @param {int} y 
-     */
-    constructor(x, y)  
-    {
-        this.x = x;
-        this.y = y;
-    }
-}
-
-
-
-class Point3D 
+export class Point3D 
 {
     /**
      * 

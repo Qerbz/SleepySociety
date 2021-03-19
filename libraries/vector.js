@@ -1,4 +1,4 @@
-class Vector
+export class Vector
 {
 
 	x;
