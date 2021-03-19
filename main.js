@@ -139,28 +139,32 @@ for (let i = 0; i <= 5; i++)
  */
 
 function getBiome(coords) {
-    const freq = 0.15;
+    const freq = 0.1;
     noise.seed(mapSeed);
-    const e =  (1 * noise.perlin2(1 * coords.x, 1 * coords.y) +  0.5 * noise.perlin2(2 * coords.x, 2 * coords.y) + 0.25 * noise.perlin2(4 * coords.x, 4 * coords.y) + 1) / 2;
-    const elevation = e / (1 + 0.5 + 0.25);
+    const e = (noise.perlin2(coords.x * freq, coords.y * freq) + 1) / 2;
     noise.seed(mapSeed / 2);
-    const m = (1 * noise.perlin2(1 * coords.x, 1 * coords.y) +  0.5 * noise.perlin2(2 * coords.x, 2 * coords.y) + 0.25 * noise.perlin2(4 * coords.x, 4 * coords.y) + 1) / 2;
-    const magnitude = m / (1 + 0.5 + 0.25);
-    return biome(elevation);
+    const m = (noise.perlin2(coords.x * freq, coords.y * freq) + 1) / 2;
+    return biome(e, m);
 }
 
 /**
  * 
  * @param {Number} e A value between 0 and 1.
- * @returns Returns a tile based on the value of e.
+ * @param {Number} m A value between 0 and 1.
+ * @returns Returns a tile based on the value of e and m.
  */
 
-function biome(e)
+function biome(e, m)
 {
-    if (e < 0.25) return tile.water;
-    else if (e < 0.5) return tile.sand;
-    else if (e < 0.75) return tile.grass;
-    else return tile.dirt;
+    if (e < 0.3) return tile.water;
+    if (e < 0.45) return tile.sand;
+
+    else {
+        if (m < 0.1) return tile.sand;
+        if (m < 0.7) return tile.dirt;
+        if (m < 0.9) return tile.grass;
+        else return tile.water;
+    }
 }
 
 //draws around centre
