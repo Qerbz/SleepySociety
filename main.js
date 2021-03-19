@@ -15,10 +15,8 @@ HUDSprite.src = "img/hud.png";
 
 
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
 
-console.log(loadedWidth)
+
 
 ctx.lineWidth = 2;
 
@@ -119,7 +117,6 @@ function drawTile(tile, coords)
 //     points.push(hex_coords(new Point2D(200, 200), size, i));
 // }
 
-console.log(loadedHeight)
 
 function hex_coords(center, size) 
 {
@@ -207,54 +204,6 @@ function drawGrid()
 //     console.log(`Mouse X: ${event.clientX}, Mouse Y: ${event.clientY}`);
 // });
 
-<<<<<<< HEAD
-function keyHandlerDown(e)
-{
-    if (e.key == "ArrowDown")
-    {
-        scrollSpeed.y = -10;
-    }
-    else if (e.key == "ArrowUp")
-    {
-        scrollSpeed.y = 10;
-    }
-    else if (e.key == "ArrowRight")
-    {
-        scrollSpeed.x = -10;
-    }
-    else if (e.key == "ArrowLeft")
-    {
-        scrollSpeed.x = 10;
-    }
-    else 
-    {
-    }
-}
-
-function keyHandlerUp(e)
-{
-    if (e.key == "ArrowDown")
-    {
-        scrollSpeed.y = 0;
-    }
-    else if (e.key == "ArrowUp")
-    {
-        scrollSpeed.y = 0;
-    }
-    else if (e.key == "ArrowRight")
-    {
-        scrollSpeed.x = 0;
-    }
-    else if (e.key == "ArrowLeft")
-    {
-        scrollSpeed.x = 0;
-    }
-    else 
-    {
-    }
-}
-=======
->>>>>>> 42175149fb7ae14d4173248dfda5529675b57be4
 
 
 
