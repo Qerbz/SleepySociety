@@ -12,7 +12,9 @@ import { keyHandlerDown, keyHandlerUp } from './libraries/inputHandler.js';
 
 hexSpritesheet.src = "img/hexagonTerrain_sheet.png";
 HUDSprite.src = "img/hud.png";
-
+let lastCalledTime;
+let fps;
+let delta;
 let scrollSpeed = new Vector(0,0);
 
 // let origo = new Vector(0,0);
@@ -205,57 +207,6 @@ function drawGrid()
 // document.addEventListener('mousemove', (event) => {
 //     console.log(`Mouse X: ${event.clientX}, Mouse Y: ${event.clientY}`);
 // });
-
-<<<<<<< HEAD
-function keyHandlerDown(e)
-{
-    if (e.key == "ArrowDown")
-    {
-        scrollSpeed.y = -10;
-    }
-    else if (e.key == "ArrowUp")
-    {
-        scrollSpeed.y = 10;
-    }
-    else if (e.key == "ArrowRight")
-    {
-        scrollSpeed.x = -10;
-    }
-    else if (e.key == "ArrowLeft")
-    {
-        scrollSpeed.x = 10;
-    }
-    else 
-    {
-    }
-}
-
-function keyHandlerUp(e)
-{
-    if (e.key == "ArrowDown")
-    {
-        scrollSpeed.y = 0;
-    }
-    else if (e.key == "ArrowUp")
-    {
-        scrollSpeed.y = 0;
-    }
-    else if (e.key == "ArrowRight")
-    {
-        scrollSpeed.x = 0;
-    }
-    else if (e.key == "ArrowLeft")
-    {
-        scrollSpeed.x = 0;
-    }
-    else 
-    {
-    }
-}
-=======
->>>>>>> 42175149fb7ae14d4173248dfda5529675b57be4
-
-
 
 function gameLoop() {
     //Calculations
