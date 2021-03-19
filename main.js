@@ -2,6 +2,7 @@
 
 // const elementsToBeLoaded = 2;
 // let loadedElements = 0;
+<<<<<<< HEAD
 import {size, ctx, mapSeed, origo, hexSpritesheet, HUDSprite, degrees60, loadedHeight, loadedWidth } from './constants/index.js'
 import { Hex } from './libraries/hex.js';
 import { Point2D } from './libraries/point2d.js';
@@ -9,6 +10,21 @@ import { Vector } from './libraries/vector.js';
 import { HUD, Button } from './libraries/hud.js';
 import { loadHandler } from './loadHandler.js';
 import { keyHandlerDown, keyHandlerUp } from './libraries/inputHandler.js';
+=======
+let origo = new Vector(0,0);
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+let scrollSpeed = new Vector(0,0);
+const mapHeight = 100;
+const mapWidth = 100;
+const mapSeed = Math.random();
+const loadedWidth = (Math.ceil(canvas.width/((3/2)*size))+1);
+const loadedHeight = (Math.ceil(canvas.height/(size*(Math.sqrt(3))))+1);
+let lastCalledTime;
+let fps;
+ctx.lineWidth = 2;
+ctx.font = "30px Arial";
+>>>>>>> bb25790644f8403d1ab1b0a3998ec396b34d8628
 
 hexSpritesheet.src = "img/hexagonTerrain_sheet.png";
 HUDSprite.src = "img/hud.png";
@@ -141,7 +157,7 @@ for (let i = 0; i <= 5; i++)
  */
 
 function getBiome(coords) {
-    const freq = 0.1;
+    const freq = 0.15;
     noise.seed(mapSeed);
     const e = (noise.perlin2(freq * coords.x, freq * coords.y) + 1) / 2;
     // noise.seed(mapSeed / 2);
@@ -183,21 +199,21 @@ function drawGrid()
 {
     for 
     (
-        let x = Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).x/2); 
-        x < loadedWidth + Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).x/2); 
+        let x = Math.floor(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).x/2)-1; 
+        x < loadedWidth + Math.floor(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).x/2); 
         x++
     ) 
     {
         for 
         (
-            let y = Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).y/2);
-            y < loadedHeight + Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).y/2); 
+            let y = Math.floor(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).y/2)-1;
+            y < loadedHeight + Math.floor(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).y/2); 
             y++
         )
         {
             let hexCoord = Hex.hexToPixel(new Point2D(x,y));
             drawTile(getBiome(new Point2D(x,y)), new Point2D(x,y));
-            drawHexagon(hexCoord.x,hexCoord.y);
+            //drawHexagon(hexCoord.x,hexCoord.y);
         }
     }
 }
@@ -206,17 +222,60 @@ function drawGrid()
 //     console.log(`Mouse X: ${event.clientX}, Mouse Y: ${event.clientY}`);
 // });
 
+<<<<<<< HEAD
+=======
+function keyHandlerDown(e)
+{
+    if (e.key == "ArrowDown")
+    {
+        scrollSpeed.y = -1;
+    }
+    else if (e.key == "ArrowUp")
+    {
+        scrollSpeed.y = 1;
+    }
+    else if (e.key == "ArrowRight")
+    {
+        scrollSpeed.x = -1;
+    }
+    else if (e.key == "ArrowLeft")
+    {
+        scrollSpeed.x = 1;
+    }
+    else 
+    {
+    }
+}
+>>>>>>> bb25790644f8403d1ab1b0a3998ec396b34d8628
 
 
 
 function gameLoop() {
     //Calculations
-    origo.add(scrollSpeed);
+    origo.add(scrollSpeed.normalize()*10);
+    
+    if(!lastCalledTime){
+        lastCalledTime = Date.now();
+        fps = 0;
+    }
+    delta = (Date.now() - lastCalledTime)/1000;
+    lastCalledTime = Date.now();
+    fps = 1/delta;
+
 
     //Animation
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawGrid();
+<<<<<<< HEAD
     // ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
+=======
+    ctx.fillStyle = "white";
+    ctx.fillRect(0,0,60,40);
+    ctx.fillStyle = "black";
+    ctx.fillText(Math.round(fps),10,30);
+
+    //ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
+>>>>>>> bb25790644f8403d1ab1b0a3998ec396b34d8628
 
     requestAnimationFrame(gameLoop);
 }
