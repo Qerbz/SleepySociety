@@ -1,82 +1,35 @@
-
-
-// const elementsToBeLoaded = 2;
-// let loadedElements = 0;
-import { scrollSpeed, size, ctx, mapSeed, origo, hexSpritesheet, HUDSprite, degrees60, loadedHeight, loadedWidth, player, mapWidth, mapHeight } from './constants/index.js'
+import { map, camera, mapArray, tile, listOfButtons, biomes, scrollSpeed, size, ctx, mapSeed, origo, hexSpritesheet, HUDSprite, degrees60, loadedHeight, loadedWidth, player, mapWidth, mapHeight } from './constants/index.js'
 import { Hex } from './libraries/hex.js';
 import { Point2D } from './libraries/point2d.js';
-import { Vector } from './libraries/vector.js';
+// import { Vector } from './libraries/vector.js';
 import { HUD, Button } from './libraries/hud.js';
 import { loadHandler } from './loadHandler.js';
-import { keyHandlerDown, keyHandlerUp } from './libraries/inputHandler.js';
+import { keyHandlerDown, keyHandlerUp, mouseHandler } from './libraries/inputHandler.js';
+import { fpsCounter } from './libraries/fpsCounter.js';
+
+
+ctx.webkitImageSmoothingEnabled = false;
+ctx.mozImageSmoothingEnabled = false;
+ctx.imageSmoothingEnabled = false;
+ctx.font = "20px Arial"
+ctx.lineWidth = 2;
 
 hexSpritesheet.src = "img/hexagonTerrain_sheet.png";
 HUDSprite.src = "img/hud.png";
-let lastCalledTime;
-let fps;
-let delta;
-
-ctx.font = "20px Arial"
 
 
 
 
 
-ctx.lineWidth = 2;
 
-
-const listOfButtons = [];
 Button.constructButton(listOfButtons, 10,50,40,40,"testBuild")
-let hud = new HUD(listOfButtons,[]);
-
-function mouseHandler(e)
-{
-   
-    let pointerPos = new Point2D(e.clientX, e.clientY);
-    for (let i = 0; i < hud.buttonsList.length; i++) 
-    {
-        if(hud.buttonsList[i].pointIsWithin(pointerPos)) 
-        {
-            if (hud.buttonsList[i].name == "testBuild") 
-            {
-                player.currentAction = "build";
-                console.log(player.currentAction);
-                return 0;
-            }
-        }
-
-    }
-    if (player.currentAction == "build")
-    {
-        let hexCoords = Hex.pixelToHex(pointerPos);
-        console.log("built on " + hexCoords.x + ", " + hexCoords.y);
-        map.mapHexes[hexCoords.x][hexCoords.y].building = 1;
-        player.currentAction = 0;
-    }
-}
+const hud = new HUD(listOfButtons,[]);
 
 
+document.addEventListener("keyup", keyHandlerUp)
+document.addEventListener("keydown", keyHandlerDown)
+document.addEventListener("click", function(e) {mouseHandler(e, hud)})
 
-
-document.onkeydown = keyHandlerDown;
-document.onkeyup = keyHandlerUp;
-document.onclick = mouseHandler;
-
-const camera = 
-{
-    x: 100,
-    y: 100
-}
-
-const tile = 
-{
-    water: new Point2D(0, 0),
-    sand: new Point2D(1, 0),
-    grass: new Point2D(2, 0),
-    dirt: new Point2D(3, 0)
-}
-
-const mapArray = [];
 
 for (let x = 0; x < mapWidth; x++)
 {
@@ -87,11 +40,7 @@ for (let x = 0; x < mapWidth; x++)
     }
 }
 
-const map = 
-{
-    mapHexes: mapArray,
-    mapSeed: mapSeed
-}
+
 
 //PROOF OF CONCEPT. DOESN'T SAVE ANYTHING OF NOTE AS NOTHING HAS YET HAPPENED IN THE GAME. TODO: ADD AUTOSAVE EVERY 5 MINUTESx
 // const mapJSON = JSON.stringify(map);
@@ -111,6 +60,8 @@ function drawTile(tile, coords)
     const pointCenter = Hex.hexToPixel(coords);
 
     const pointStartTile = new Point2D(pointCenter.x-width/2,pointCenter.y-height/2);
+
+    // console.log(`${hexSpritesheet}, ${spriteX}, ${spriteY}, ${spriteWidth}, ${spriteHeight},${pointStartTile.x},${pointStartTile.y}, ${width}, ${height}`)
 
     ctx.drawImage(hexSpritesheet, spriteX, spriteY, spriteWidth, spriteHeight,pointStartTile.x,pointStartTile.y, width, height);
 }
@@ -137,11 +88,11 @@ function hex_coords(center, size)
     return new Point2D(center.x + size * Math.cos(angle), center.y + size * Math.sin(angle));
 }
 
-const points = [];
-for (let i = 0; i <= 5; i++) 
-{
-    points.push(hex_coords(new Point2D(200, 200), size));
-}
+// const points = [];
+// for (let i = 0; i <= 5; i++) 
+// {
+//     points.push(hex_coords(new Point2D(200, 200), size));
+// }
 
 
 /**
@@ -181,15 +132,15 @@ function biome(e, m)
 }
 
 //draws around centre
-function drawHexagon(x, y) 
-{
-    ctx.beginPath();
-    for (let i = 0; i < 6; i++) {
-        ctx.lineTo(x + size * Math.cos(degrees60 * i), y + size * Math.sin(degrees60 * i));
-    }
-    ctx.closePath();
-    ctx.stroke();
-}
+// function drawHexagon(x, y) 
+// {
+//     ctx.beginPath();
+//     for (let i = 0; i < 6; i++) {
+//         ctx.lineTo(x + size * Math.cos(degrees60 * i), y + size * Math.sin(degrees60 * i));
+//     }
+//     ctx.closePath();
+//     ctx.stroke();
+// }
 
 /**
  * @param {Number} width width of the grid
@@ -213,19 +164,15 @@ function drawGrid()
         )
         {   
             let hexCoord = Hex.hexToPixel(new Point2D(x,y));
-            drawTile(getBiome(new Point2D(x,y)), new Point2D(x,y));
+
+            drawTile(biomes[x][y], new Point2D(x,y));
             if (map.mapHexes[x][y].building == 1){
                 ctx.fillRect(hexCoord.x-5,hexCoord.y-5,10,10)
             }
-            //drawHexagon(hexCoord.x,hexCoord.y);
+
         }
     }
 }
-
-// document.addEventListener('mousemove', (event) => {
-//     console.log(`Mouse X: ${event.clientX}, Mouse Y: ${event.clientY}`);
-// });
-
 
 
 
@@ -233,37 +180,31 @@ function gameLoop() {
     //Calculations
     origo.add(scrollSpeed);
     
-    if(!lastCalledTime){
-        lastCalledTime = Date.now();
-        fps = 0;
-    }
-    delta = (Date.now() - lastCalledTime)/1000;
-    lastCalledTime = Date.now();
-    fps = 1/delta;
-
-
+    
+    
     //Animation
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawGrid();
     ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
-
-
-    //fps
-    ctx.fillStyle = "white";
-    ctx.fillRect(0,0,60,40);
-    ctx.fillStyle = "black";
-    ctx.fillText(Math.round(fps),10,30);
-
-
-
+    
+    fpsCounter()
     requestAnimationFrame(gameLoop);
 }
 
-function init() 
-{
-    gameLoop()
+
+function loadMap() {
+    for (let x = 0; x <= mapWidth; x++) {
+        biomes.push([]);
+        for (let y = 0; y <= mapHeight; y++) {   
+            biomes[x][y] = getBiome(new Point2D(x,y));
+        }
+    }
 }
 
+
 if(loadHandler()) {
-    init();
+
+    loadMap();
+    gameLoop();
 }
+
