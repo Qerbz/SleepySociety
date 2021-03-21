@@ -9,7 +9,6 @@ import { fpsCounter } from './libraries/fpsCounter.js';
 
 
 ctx.webkitImageSmoothingEnabled = false;
-ctx.mozImageSmoothingEnabled = false;
 ctx.imageSmoothingEnabled = false;
 ctx.font = "20px Arial"
 ctx.lineWidth = 2;
