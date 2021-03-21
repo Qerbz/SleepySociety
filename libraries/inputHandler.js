@@ -66,6 +66,7 @@ export function mouseHandler(e, hud) {
     if (player.currentAction == "build") {
         let hexCoords = Hex.pixelToHex(pointerPos);
         console.log("built on " + hexCoords.x + ", " + hexCoords.y);
+        console.log(map.mapHexes[hexCoords.x][hexCoords.y])
         map.mapHexes[hexCoords.x][hexCoords.y].building = 1;
         player.currentAction = 0;
     }
