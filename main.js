@@ -2,7 +2,7 @@
 
 // const elementsToBeLoaded = 2;
 // let loadedElements = 0;
-import { scrollSpeed, size, ctx, mapSeed, origo, hexSpritesheet, HUDSprite, degrees60, loadedHeight, loadedWidth } from './constants/index.js'
+import { scrollSpeed, size, ctx, mapSeed, origo, hexSpritesheet, HUDSprite, degrees60, loadedHeight, loadedWidth, mapWidth, mapHeight } from './constants/index.js'
 import { Hex } from './libraries/hex.js';
 import { Point2D } from './libraries/point2d.js';
 import { Vector } from './libraries/vector.js';
@@ -18,6 +18,11 @@ let delta;
 
 ctx.font = "20px Arial"
 
+
+// let array = [
+//     [getbiome(0,0), getBiome(0,1)],
+//     [getbiome(1,0), getBiome(1,1)],
+//     [getbiome(2,0),getBiome(2,1)]]
 
 
 
@@ -181,6 +186,8 @@ function drawHexagon(x, y)
  * @param {Number} height height of the grid
  */
 
+
+
 function drawGrid()
 {
     for 
@@ -197,12 +204,22 @@ function drawGrid()
             y++
         )
         {
-            let hexCoord = Hex.hexToPixel(new Point2D(x,y));
-            drawTile(getBiome(new Point2D(x,y)), new Point2D(x,y));
+            // biomes[x] = [];
+            // biomes[x][y] = [];
+            // // biomes[x].push()
+            // // console.log(biomes[x])
+            // // let hexCoord = Hex.hexToPixel(new Point2D(x,y));
+            // biomes[x][y] = getBiome(new Point2D(x,y));
+            // biomes[x][y] = getBiome(new Point2D(x,y));
+            // console.log(x)
+            // console.log(y)
             //drawHexagon(hexCoord.x,hexCoord.y);
         }
     }
 }
+
+
+
 
 // document.addEventListener('mousemove', (event) => {
 //     console.log(`Mouse X: ${event.clientX}, Mouse Y: ${event.clientY}`);
@@ -239,8 +256,22 @@ function gameLoop() {
 }
 
 function init() 
-{
+{   
+    loadMap();
     gameLoop()
+}
+
+const biomes = [];
+function loadMap() {
+    for (let x = 0; x <= mapWidth; x++) {
+        biomes.push([])
+        for (let y = 0; y <= mapHeight; y++) {
+            biomes[x].push(getBiome(new Point2D(x,y)));
+            console.log(biomes[x])
+        }
+    }
+    
+    
 }
 
 if(loadHandler()) {
