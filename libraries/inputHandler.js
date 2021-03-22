@@ -1,14 +1,12 @@
+import { scrollSpeed, player, map } from '../constants/index.js';
 import { Hex } from './hex.js';
 import { Point2D } from './point2d.js';
-import { scrollSpeed } from '../constants/index.js';
-
-
 
 export function keyHandlerDown(e)
-{
-    if (e.key == "ArrowDown")
-    {
-        scrollSpeed.y = -10;
+{  
+ 
+    if (e.key == "ArrowDown") {
+         scrollSpeed.y = -10;
     }
     else if (e.key == "ArrowUp")
     {
@@ -50,3 +48,25 @@ export function keyHandlerUp(e)
     }
 }
 
+export function mouseHandler(e, hud) {
+    let pointerPos = new Point2D(e.clientX, e.clientY);
+    for (let i = 0; i < hud.buttonsList.length; i++) 
+    {
+        if(hud.buttonsList[i].pointIsWithin(pointerPos)) 
+        {
+            if (hud.buttonsList[i].name == "testBuild") 
+            {
+                player.currentAction = "build";
+                console.log(player.currentAction);
+                return 0;
+            }
+        }
+
+    }
+    if (player.currentAction == "build") {
+        let hexCoords = Hex.pixelToHex(pointerPos);
+        console.log("built on " + hexCoords.x + ", " + hexCoords.y);
+        map.mapHexes[hexCoords.x][hexCoords.y].building = 1;
+        player.currentAction = 0;
+    }
+}
