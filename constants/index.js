@@ -9,8 +9,8 @@ export const ctx = canvas.getContext("2d");
 export const size = 32;
 export const degrees60 = 2 * Math.PI / 6;
 
-export const mapHeight = 1000;
-export const mapWidth = 1000;
+export const mapHeight = 100;
+export const mapWidth = 100;
 export const mapSeed = Math.random();
 
 export const origo = new Vector(-100, -100);
@@ -23,7 +23,7 @@ export const loadedHeight = (Math.ceil(canvas.height/(size*(Math.sqrt(3))))+1);
 
 export const scrollSpeed = new Vector(0,0);
 export const player = new Player();
-export const biomes = [];
+export const biomes = new Array(mapWidth);
 
 
 export const listOfButtons = [];

@@ -30,23 +30,13 @@ document.addEventListener("keydown", keyHandlerDown)
 document.addEventListener("click", function(e) {mouseHandler(e, hud)})
 
 
-for (let x = 0; x < mapWidth; x++)
-{
-    mapArray.push([]);
-    for (let y = 0; y < mapHeight; y++)
-    {
-        mapArray[x].push(new Hex(new Point2D(x,y)))
-    }
-}
-
-
-
 //PROOF OF CONCEPT. DOESN'T SAVE ANYTHING OF NOTE AS NOTHING HAS YET HAPPENED IN THE GAME. TODO: ADD AUTOSAVE EVERY 5 MINUTESx
 // const mapJSON = JSON.stringify(map);
 // localStorage.setItem("mapJSON", mapJSON);
 
 function drawTile(tile, coords) 
 {
+
     const spriteWidth = 64;
     const spriteHeight = 56;
 
@@ -164,10 +154,25 @@ function drawGrid()
             y++
         )
         {   
-            let hexCoord = Hex.hexToPixel(new Point2D(x,y));
-
+            // if(x < 0) {
+            //     // console.log(y)
+            //     biomes[x] = [];
+            //     mapArray[x] = [];
+            //     biomes[x][y] = getBiome(new Point2D(x,y));
+            
+            //     mapArray[x][y] = new Hex(new Point2D(x,y));
+            // //    console.log(biomes[x][y])
+            //     drawTile(biomes[x][y], new Point2D(x,y));
+            // }
+            // if (y < 0) {
+            //     console.log(biomes[x][y].y)
+            //     console.log(biomes[x][y].x)
+            // }
             drawTile(biomes[x][y], new Point2D(x,y));
+
+            let hexCoord = Hex.hexToPixel(new Point2D(x,y));
             if (map.mapHexes[x][y].building == 1){
+                // console.log(mapArray[x][y])
                 ctx.fillRect(hexCoord.x-5,hexCoord.y-5,10,10)
             }
 
@@ -192,14 +197,16 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
-
 function loadMap() {
-    for (let x = 0; x <= mapWidth; x++) {
-        biomes.push([]);
-        for (let y = 0; y <= mapHeight; y++) {   
+    for (let x = mapWidth; x > -mapWidth; x--) {
+        mapArray[x] = new Array(mapHeight);
+        biomes[x] = new Array(mapHeight);
+        for (let y = mapHeight; y > -mapHeight; y--) {   
+            mapArray[x][y] = new Hex(new Point2D(x,y));
             biomes[x][y] = getBiome(new Point2D(x,y));
         }
     }
+ 
 }
 
 
