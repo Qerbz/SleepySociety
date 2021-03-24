@@ -6,6 +6,8 @@ import { HUD, Button } from './libraries/hud.js';
 import { loadHandler } from './loadHandler.js';
 import { keyHandlerDown, keyHandlerUp, mouseHandler } from './libraries/inputHandler.js';
 import { fpsCounter } from './libraries/fpsCounter.js';
+import { drawGrid } from './libraries/draw.js';
+
 
 
 ctx.webkitImageSmoothingEnabled = false;
@@ -34,26 +36,7 @@ document.addEventListener("click", function(e) {mouseHandler(e, hud)})
 // const mapJSON = JSON.stringify(map);
 // localStorage.setItem("mapJSON", mapJSON);
 
-function drawTile(tile, coords) 
-{
 
-    const spriteWidth = 64;
-    const spriteHeight = 56;
-
-    const width = size * 2;
-    const height = size * Math.sqrt(3);
-
-    const spriteX = width * tile.x;
-    const spriteY = height * tile.y;
-
-    const pointCenter = Hex.hexToPixel(coords);
-
-    const pointStartTile = new Point2D(pointCenter.x-width/2,pointCenter.y-height/2);
-
-    // console.log(`${hexSpritesheet}, ${spriteX}, ${spriteY}, ${spriteWidth}, ${spriteHeight},${pointStartTile.x},${pointStartTile.y}, ${width}, ${height}`)
-
-    ctx.drawImage(hexSpritesheet, spriteX, spriteY, spriteWidth, spriteHeight,pointStartTile.x,pointStartTile.y, width, height);
-}
 
 
 
@@ -120,65 +103,11 @@ function biome(e, m)
     }
 }
 
-//draws around centre
-// function drawHexagon(x, y) 
-// {
-//     ctx.beginPath();
-//     for (let i = 0; i < 6; i++) {
-//         ctx.lineTo(x + size * Math.cos(degrees60 * i), y + size * Math.sin(degrees60 * i));
-//     }
-//     ctx.closePath();
-//     ctx.stroke();
-// }
-
 /**
  * @param {Number} width width of the grid
  * @param {Number} height height of the grid
  */
 
-
-
-function drawGrid()
-{
-    for 
-    (
-        let x = Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).x/2)-1; 
-        x < loadedWidth + Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).x/2+1); 
-        x++
-    ) 
-    {
-        for 
-        (
-            let y = Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).y/2)-1;
-            y < loadedHeight + Math.round(Hex.pixelToHex(new Point2D(-origo.x,-origo.y)).y/2+1); 
-            y++
-        )
-        {   
-            // if(x < 0) {
-            //     // console.log(y)
-            //     biomes[x] = [];
-            //     mapArray[x] = [];
-            //     biomes[x][y] = getBiome(new Point2D(x,y));
-            
-            //     mapArray[x][y] = new Hex(new Point2D(x,y));
-            // //    console.log(biomes[x][y])
-            //     drawTile(biomes[x][y], new Point2D(x,y));
-            // }
-            // if (y < 0) {
-            //     console.log(biomes[x][y].y)
-            //     console.log(biomes[x][y].x)
-            // }
-            drawTile(biomes[x][y], new Point2D(x,y));
-
-            let hexCoord = Hex.hexToPixel(new Point2D(x,y));
-            if (map.mapHexes[x][y].building == 1){
-                // console.log(mapArray[x][y])
-                ctx.fillRect(hexCoord.x-5,hexCoord.y-5,10,10)
-            }
-
-        }
-    }
-}
 
 
 
@@ -198,10 +127,10 @@ function gameLoop() {
 }
 
 function loadMap() {
-    for (let x = mapWidth; x > -mapWidth; x--) {
+    for (let x = mapWidth; x > 0; x--) {
         mapArray[x] = new Array(mapHeight);
         biomes[x] = new Array(mapHeight);
-        for (let y = mapHeight; y > -mapHeight; y--) {   
+        for (let y = mapHeight; y > 0; y--) {   
             mapArray[x][y] = new Hex(new Point2D(x,y));
             biomes[x][y] = getBiome(new Point2D(x,y));
         }
@@ -211,7 +140,6 @@ function loadMap() {
 
 
 if(loadHandler()) {
-
     loadMap();
     gameLoop();
 }
