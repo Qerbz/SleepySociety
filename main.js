@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { map, camera, mapArray, tile, building, listOfButtons, biomes, scrollSpeed, size, ctx, mapSeed, origo, hexSpritesheet, HUDSprite, degrees60, loadedHeight, loadedWidth, player, mapWidth, mapHeight } from './constants/index.js'
-=======
-import { map, mapArray, tile, listOfButtons, biomes, scrollSpeed, size, ctx, mapSeed, origo, hexSpritesheet, HUDSprite, degrees60, loadedHeight, loadedWidth, mapWidth, mapHeight } from './constants/index.js'
->>>>>>> 0e1d70e8382f0b64f5afa15cde15ed0d62572417
+import { map, mapArray, tile, building, listOfButtons, biomes, scrollSpeed, size, ctx, mapSeed, origo, hexSpritesheet, HUDSprite, degrees60, loadedHeight, loadedWidth, mapWidth, mapHeight } from './constants/index.js'
 import { Hex } from './libraries/hex.js';
 import { Point2D } from './libraries/point2d.js';
 // import { Vector } from './libraries/vector.js';
@@ -39,42 +35,6 @@ document.addEventListener("click", function(e) {mouseHandler(e, hud)})
 //PROOF OF CONCEPT. DOESN'T SAVE ANYTHING OF NOTE AS NOTHING HAS YET HAPPENED IN THE GAME. TODO: ADD AUTOSAVE EVERY 5 MINUTESx
 // const mapJSON = JSON.stringify(map);
 // localStorage.setItem("mapJSON", mapJSON);
-
-<<<<<<< HEAD
-function drawTile(tile, coords) 
-{
-
-    const spriteWidth = 64;
-    const spriteHeight = 56;
-
-    const width = size * 2;
-    const height = 56;
-
-    const spriteX = width * tile.x;
-    const spriteY = height * tile.y;
-
-    const pointCenter = Hex.hexToPixel(coords);
-
-    const pointStartTile = new Point2D(pointCenter.x-width/2,pointCenter.y-height/2);
-
-    // console.log(`${hexSpritesheet}, ${spriteX}, ${spriteY}, ${spriteWidth}, ${spriteHeight},${pointStartTile.x},${pointStartTile.y}, ${width}, ${height}`)
-
-    ctx.drawImage(hexSpritesheet, spriteX, spriteY, spriteWidth, spriteHeight,pointStartTile.x,pointStartTile.y, width, height);
-}
-
-function drawBuilding(tile, coords) 
-{
-
-    const spriteWidth = 64;
-    const spriteHeight = 56;
-
-    const width = size * 2;
-    const height = size * Math.sqrt(3);
-
-    const spriteX = width * tile.x;
-    const spriteY = height * tile.y;
-=======
->>>>>>> 0e1d70e8382f0b64f5afa15cde15ed0d62572417
 
 
 

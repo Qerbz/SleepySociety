@@ -9,8 +9,8 @@ export const ctx = canvas.getContext("2d");
 export const size = 32;
 export const degrees60 = 2 * Math.PI / 6;
 
-export const mapHeight = 500;
-export const mapWidth = 500;
+export const mapHeight = 100;
+export const mapWidth = 100;
 export const mapSeed = Math.random();
 
 export const origo = new Vector(-100, -100);
