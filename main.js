@@ -1,4 +1,4 @@
-import { map, camera, mapArray, tile, listOfButtons, biomes, scrollSpeed, size, ctx, mapSeed, origo, hexSpritesheet, HUDSprite, degrees60, loadedHeight, loadedWidth, player, mapWidth, mapHeight } from './constants/index.js'
+import { map, camera, mapArray, tile, building, listOfButtons, biomes, scrollSpeed, size, ctx, mapSeed, origo, hexSpritesheet, HUDSprite, degrees60, loadedHeight, loadedWidth, player, mapWidth, mapHeight } from './constants/index.js'
 import { Hex } from './libraries/hex.js';
 import { Point2D } from './libraries/point2d.js';
 // import { Vector } from './libraries/vector.js';
@@ -35,6 +35,27 @@ document.addEventListener("click", function(e) {mouseHandler(e, hud)})
 // localStorage.setItem("mapJSON", mapJSON);
 
 function drawTile(tile, coords) 
+{
+
+    const spriteWidth = 64;
+    const spriteHeight = 56;
+
+    const width = size * 2;
+    const height = 56;
+
+    const spriteX = width * tile.x;
+    const spriteY = height * tile.y;
+
+    const pointCenter = Hex.hexToPixel(coords);
+
+    const pointStartTile = new Point2D(pointCenter.x-width/2,pointCenter.y-height/2);
+
+    // console.log(`${hexSpritesheet}, ${spriteX}, ${spriteY}, ${spriteWidth}, ${spriteHeight},${pointStartTile.x},${pointStartTile.y}, ${width}, ${height}`)
+
+    ctx.drawImage(hexSpritesheet, spriteX, spriteY, spriteWidth, spriteHeight,pointStartTile.x,pointStartTile.y, width, height);
+}
+
+function drawBuilding(tile, coords) 
 {
 
     const spriteWidth = 64;

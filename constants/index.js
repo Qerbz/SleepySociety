@@ -9,13 +9,13 @@ export const ctx = canvas.getContext("2d");
 export const size = 32;
 export const degrees60 = 2 * Math.PI / 6;
 
-export const mapHeight = 100;
-export const mapWidth = 100;
+export const mapHeight = 500;
+export const mapWidth = 500;
 export const mapSeed = Math.random();
 
 export const origo = new Vector(-100, -100);
 
-export const elementsToBeLoaded = 2;
+export const elementsToBeLoaded = 3;
 export const hexSpritesheet = new Image();
 export const HUDSprite = new Image();
 export const loadedWidth = (Math.ceil(canvas.width/((3/2)*size))+1);
@@ -41,6 +41,13 @@ export const tile = {
     forestDeep: new Point2D(0,2),
     scorched: new Point2D(1,2),
     desert: new Point2D(2,2)
+}
+
+export const building = {
+    house: new Point2D(0,0),
+    farm: new Point2D(1,0),
+    church: new Point2D(2,0),
+    barn: new Point2D(3,0)
 }
 
 export const mapArray = [];

@@ -1,7 +1,7 @@
 import { elementsToBeLoaded, HUDSprite, hexSpritesheet } from './constants/index.js';
 
 
-
+//FIX: INITS BEFORE EVERYTHING IS LOADED
 export function loadHandler() {
    
     let loadedElements = 0;
@@ -12,7 +12,10 @@ export function loadHandler() {
         if (loadedElements == elementsToBeLoaded) 
         {
             console.log(`${loadedElements}/${elementsToBeLoaded} loaded Game initializing`);
-            
+            return true;
+        }
+        else{
+            return false;
         }
     }
 
