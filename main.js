@@ -109,21 +109,29 @@ function getBiome(coords) {
 
 function biome(e, m)
 {
-    if (e < 0.2) {
+    if (e < 0.3) {
         if (m < 0.3) return tile.water;
         else return tile.oceanDeep;
     } 
-    if (e < 0.25) return tile.sand;
+    if (e < 0.4) return tile.sand;
 
-    else if (e < 0.3) {
+    if (e < 0.5) {
         if (m < 0.16) return tile.sand;
         if (m < 0.5) return tile.grass;
         if (m < 0.83) return tile.forestDeep;
-        else return tile.water;
+        else return tile.jungle;
     }
 
-    else if (e < 0.6) {
-        if (m < 0.33) return tile.desert;
+    if (e < 0.7) {
+        if (m < 0.2) return tile.desert;
+        if (m < 0.4) return tile.dirt;
+        if (m < 0.66) return tile.grass;
+        else return tile.mountain;
+    }
+
+    else if (e <= 1) {
+        if (m < 0.8) return tile.mountain;
+        else return tile.snow;
     }
 }
 
