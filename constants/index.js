@@ -33,7 +33,14 @@ export const tile = {
     water: new Point2D(0, 0),
     sand: new Point2D(1, 0),
     grass: new Point2D(2, 0),
-    dirt: new Point2D(3, 0)
+    dirt: new Point2D(3, 0),
+    snow: new Point2D(0,1),
+    mountain: new Point2D(1,1),
+    jungle: new Point2D(2,1),
+    oceanDeep: new Point2D(0,1),
+    forestDeep: new Point2D(0,2),
+    scorched: new Point2D(1,2),
+    desert: new Point2D(2,2)
 }
 
 export const mapArray = [];
