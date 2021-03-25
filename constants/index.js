@@ -37,7 +37,7 @@ export const tile = {
     snow: new Point2D(0,1),
     mountain: new Point2D(1,1),
     jungle: new Point2D(2,1),
-    oceanDeep: new Point2D(0,1),
+    oceanDeep: new Point2D(3,1),
     forestDeep: new Point2D(0,2),
     scorched: new Point2D(1,2),
     desert: new Point2D(2,2)

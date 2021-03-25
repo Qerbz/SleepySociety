@@ -1,6 +1,7 @@
-import { elementsToBeLoaded, HUDSprite, hexSpritesheet } from './constants/index.js';
-
-
+import { mapArray, mapWidth, mapHeight, biomes, elementsToBeLoaded, HUDSprite, hexSpritesheet } from './constants/index.js';
+import { Hex } from './libraries/hex.js';
+import { Point2D } from './libraries/point2d.js';
+import getBiome from './libraries/biomes.js';
 
 export function loadHandler() {
    
@@ -12,6 +13,7 @@ export function loadHandler() {
         if (loadedElements == elementsToBeLoaded) 
         {
             console.log(`${loadedElements}/${elementsToBeLoaded} loaded Game initializing`);
+            return true;
             
         }
     }
@@ -21,7 +23,19 @@ export function loadHandler() {
     
         hexSpritesheet.onload = loading();
         HUDSprite.onload = loading();
+        loadMap();
         return true;
+    }
+    function loadMap() {
+        for (let x = mapWidth; x > 0; x--) {
+            mapArray[x] = new Array(mapHeight);
+            biomes[x] = new Array(mapHeight);
+            for (let y = mapHeight; y > 0; y--) {   
+                mapArray[x][y] = new Hex(new Point2D(x,y));
+                biomes[x][y] = getBiome(new Point2D(x,y));
+            }
+        }
+     
     }
     if(load()) {
         return true;
