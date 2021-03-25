@@ -1,4 +1,4 @@
-import { scrollSpeed, player, map } from '../constants/index.js';
+import { scrollSpeedVector,scrollSpeed, player, map } from '../constants/index.js';
 import { Hex } from './hex.js';
 import { Point2D } from './point2d.js';
 
@@ -6,19 +6,19 @@ export function keyHandlerDown(e)
 {  
  
     if (e.key == "ArrowDown") {
-         scrollSpeed.y = -10;
+         scrollSpeedVector.y = -scrollSpeed;
     }
     else if (e.key == "ArrowUp")
     {
-        scrollSpeed.y = 10;
+        scrollSpeedVector.y = scrollSpeed;
     }
     else if (e.key == "ArrowRight")
     {
-        scrollSpeed.x = -10;
+        scrollSpeedVector.x = -scrollSpeed;
     }
     else if (e.key == "ArrowLeft")
     {
-        scrollSpeed.x = 10;
+        scrollSpeedVector.x = scrollSpeed;
     }
     else 
     {
@@ -29,19 +29,19 @@ export function keyHandlerUp(e)
 {
     if (e.key == "ArrowDown")
     {
-        scrollSpeed.y = 0;
+        scrollSpeedVector.y = 0;
     }
     else if (e.key == "ArrowUp")
     {
-        scrollSpeed.y = 0;
+        scrollSpeedVector.y = 0;
     }
     else if (e.key == "ArrowRight")
     {
-        scrollSpeed.x = 0;
+        scrollSpeedVector.x = 0;
     }
     else if (e.key == "ArrowLeft")
     {
-        scrollSpeed.x = 0;
+        scrollSpeedVector.x = 0;
     }
     else 
     {

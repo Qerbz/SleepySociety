@@ -1,4 +1,4 @@
-import { map, mapArray, tile, building, listOfButtons, biomes, scrollSpeed, size, ctx, mapSeed, origo, hexSpritesheet, HUDSprite, degrees60, loadedHeight, loadedWidth, mapWidth, mapHeight } from './constants/index.js'
+import { map, mapArray, tile, building, hexHeight, hexWidth, listOfButtons, biomes, scrollSpeedVector, size, ctx, mapSeed, origo, hexSpritesheet, HUDSprite, degrees60, loadedHeight, loadedWidth, mapWidth, mapHeight, canvas } from './constants/index.js'
 import { Hex } from './libraries/hex.js';
 import { Point2D } from './libraries/point2d.js';
 // import { Vector } from './libraries/vector.js';
@@ -124,8 +124,11 @@ function biome(e, m)
 
 function gameLoop() {
     //Calculations
-    origo.add(scrollSpeed);
-    
+    origo.add(scrollSpeedVector);
+    if (origo.x > -100) origo.x = -100;
+    if (origo.y > -100) origo.y = -100;
+    if (origo.y < -Hex.hexToPixel(new Point2D(0,mapHeight)).y+origo.y+canvas.height+size*4)origo.y = -Hex.hexToPixel(new Point2D(0,mapHeight)).y+origo.y+canvas.height+size*4;
+    if (origo.x < -Hex.hexToPixel(new Point2D(mapWidth,0)).x+origo.x+canvas.width+size*4)origo.x = -Hex.hexToPixel(new Point2D(mapWidth,0)).x+origo.x+canvas.width+size*4;
     
     
     //Animation
