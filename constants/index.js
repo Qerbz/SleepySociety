@@ -23,7 +23,7 @@ export const loadedHeight = (Math.ceil(canvas.height/(size*(Math.sqrt(3))))+1);
 
 export const scrollSpeed = new Vector(0,0);
 export const player = new Player();
-export const biomes = new Array(mapWidth);
+// export const biomes = new Array(mapWidth);
 
 
 export const listOfButtons = [];
