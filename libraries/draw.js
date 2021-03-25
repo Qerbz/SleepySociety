@@ -24,7 +24,7 @@ function drawTile(tile, coords)
     ctx.drawImage(hexSpritesheet, spriteX, spriteY, spriteWidth, spriteHeight,pointStartTile.x,pointStartTile.y, width, height);
 }
 
-export function drawGrid()
+export default function drawGrid()
 {
     for 
     (
