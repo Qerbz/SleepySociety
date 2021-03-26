@@ -4,7 +4,6 @@ import { loadHandler } from './loadHandler.js';
 import { keyHandlerDown, keyHandlerUp, mouseHandler } from './libraries/inputHandler.js';
 import { fpsCounter } from './libraries/fpsCounter.js';
 import drawGrid from './libraries/draw.js';
-import Resource from './libraries/resources.js';
 import { Hex } from './libraries/hex.js';
 import { Point2D } from './libraries/point2d.js';
 
@@ -55,7 +54,7 @@ function gameLoop() {
     drawGrid();
     ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
     
-    //fpsCounter()
+    // fpsCounter()
     requestAnimationFrame(gameLoop);
 }
 
