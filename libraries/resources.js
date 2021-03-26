@@ -17,3 +17,25 @@ export default class Resource {
         ctx.fillText(`${this.value}`, this.x, this.y);
     }
 }
+
+class ResourcesStored 
+{
+    gold;
+    timber;
+    stone;
+    firewood;
+    Iron;
+    Food;
+    Livestock;
+
+    constructor()
+    {
+        gold = 0;
+        timber = 0;
+        stone = 0;
+        firewood = 0;
+        Iron = 0;
+        Food = 0;
+        Livestock = 0;
+    }
+}
