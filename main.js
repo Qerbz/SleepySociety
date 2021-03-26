@@ -1,10 +1,9 @@
-import { map, mapArray, mapHeight, mapWidth, size, listOfButtons,scrollSpeedVector, ctx, origo, hexSpritesheet, HUDSprite, canvas, buildingsSprite } from './constants/index.js'
+import { map, mapArray, mapHeight, mapWidth, size, listOfButtons,scrollSpeedVector, ctx, origo, hexSpritesheet, HUDSprite, canvas, buildingsSprite, buildingHUDSprite, player } from './constants/index.js'
 import { HUD, Button } from './libraries/hud.js';
 import { isLoaded, load} from './loadHandler.js';
 import { keyHandlerDown, keyHandlerUp, mouseHandler } from './libraries/inputHandler.js';
 import { fpsCounter } from './libraries/fpsCounter.js';
 import drawGrid from './libraries/draw.js';
-import Resource from './libraries/resources.js';
 import { Hex } from './libraries/hex.js';
 import { Point2D } from './libraries/point2d.js';
 
@@ -15,11 +14,14 @@ ctx.imageSmoothingEnabled = false;
 ctx.font = "20px Arial"
 ctx.lineWidth = 2;
 
-hexSpritesheet.src = "img/hexagonTerrain_sheet.png";
-HUDSprite.src = "img/hud.png";
-buildingsSprite.src = "img/buildings.png"
+hexSpritesheet.src = "./img/hexagonTerrain_sheet.png";
+HUDSprite.src = "./img/hud.png";
+buildingsSprite.src = "./img/buildings.png";
+buildingHUDSprite.src = "./img/buildingHUD.png";
 
-Button.constructButton(listOfButtons, 10,50,40,40,"testBuild")
+
+Button.constructButton(listOfButtons, 75, 63, 28, 27, "build");
+Button.constructButton(listOfButtons, 10,50,40,40,"buildMenu");
 const hud = new HUD(listOfButtons,[]);
 
 
@@ -49,8 +51,11 @@ function gameLoop() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawGrid();
     ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
+    if (player.currentAction === "buildMenu") {
+        ctx.drawImage(buildingHUDSprite, 67, 54);
+    }
     
-    //fpsCounter()
+    // fpsCounter()
     requestAnimationFrame(gameLoop);
 }
 

@@ -2,19 +2,26 @@ import { ctx } from "../constants/index.js";
 
 export default class Resource {
     value;
-    x;
-    y;
 
-    constructor(value, x, y) {
+    /**
+     * 
+     * @param {Number} value The amount of the resource the player has. 
+     */
+
+    constructor(value) {
         this.value = value;
-        this.x = x;
-        this.y = y;
     }
 
-    draw() {
+    /**
+     * 
+     * @param {Number} x x-coordinate of where to draw the value.
+     * @param {Number} y y-coordinate of where to draw the value.
+     */
+
+    draw(x, y) {
         ctx.font = "bold 18px Arial";
         ctx.fillStyle = "#FFFFFF";
-        ctx.fillText(`${this.value}`, this.x, this.y);
+        ctx.fillText(`${this.value}`, x, y);
     }
 }
 
