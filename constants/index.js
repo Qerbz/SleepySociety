@@ -17,10 +17,9 @@ export const mapSeed = Math.random();
 
 export const origo = new Vector(-500, -500);
 
-export const elementsToBeLoaded = 4;
+export const elementsToBeLoaded = 3;
 export const hexSpritesheet = new Image();
 export const HUDSprite = new Image();
-export const buildingsSprite = new Image();
 export const loadedWidth = (Math.ceil(canvas.width/((3/2)*size))+1);
 export const loadedHeight = (Math.ceil(canvas.height/(size*(Math.sqrt(3))))+1);
 
