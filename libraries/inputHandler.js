@@ -49,14 +49,20 @@ export function keyHandlerUp(e)
 
 export function mouseHandler(e, hud) {
     let pointerPos = new Point2D(e.clientX, e.clientY);
+    console.log(pointerPos)
     for (let i = 0; i < hud.buttonsList.length; i++) 
     {
         if(hud.buttonsList[i].pointIsWithin(pointerPos)) 
         {
-            if (hud.buttonsList[i].name == "testBuild") 
+            if (hud.buttonsList[i].name === "buildMenu") 
             {
+                player.currentAction = "buildMenu";
+                // console.log(player.currentAction);
+                return 0;
+            }
+            if (hud.buttonsList[i].name === "build") {
                 player.currentAction = "build";
-                console.log(player.currentAction);
+
                 return 0;
             }
         }
