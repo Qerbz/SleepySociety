@@ -49,7 +49,6 @@ export function keyHandlerUp(e)
 
 export function mouseHandler(e, hud) {
     let pointerPos = new Point2D(e.clientX, e.clientY);
-    console.log(pointerPos)
     for (let i = 0; i < hud.buttonsList.length; i++) 
     {
         if(hud.buttonsList[i].pointIsWithin(pointerPos)) 
@@ -73,6 +72,7 @@ export function mouseHandler(e, hud) {
         console.log("built on " + hexCoords.x + ", " + hexCoords.y);
         console.log(map.mapHexes[hexCoords.x][hexCoords.y])
         map.mapHexes[hexCoords.x][hexCoords.y].building = 1;
-        player.currentAction = 0;
+        
     }
+    player.currentAction = 0;
 }
