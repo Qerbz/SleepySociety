@@ -1,4 +1,4 @@
-import { map, mapArray, mapHeight, mapWidth, size, listOfButtons,scrollSpeedVector, ctx, origo, hexSpritesheet, HUDSprite, canvas } from './constants/index.js'
+import { buildingHUDSprite, map, mapArray, mapHeight, mapWidth, size, listOfButtons,scrollSpeedVector, ctx, origo, hexSpritesheet, HUDSprite, canvas } from './constants/index.js'
 import { HUD, Button } from './libraries/hud.js';
 import { loadHandler } from './loadHandler.js';
 import { keyHandlerDown, keyHandlerUp, mouseHandler } from './libraries/inputHandler.js';
@@ -14,9 +14,11 @@ ctx.imageSmoothingEnabled = false;
 ctx.font = "20px Arial"
 ctx.lineWidth = 2;
 
+buildingHUDSprite.src = "img/buildingHud.png";
 hexSpritesheet.src = "img/hexagonTerrain_sheet.png";
 HUDSprite.src = "img/hud.png";
 
+Button.constructButton(listOfButtons, 10,50,40,40,"testBuild")
 Button.constructButton(listOfButtons, 10,50,40,40,"testBuild")
 const hud = new HUD(listOfButtons,[]);
 
