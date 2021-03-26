@@ -1,5 +1,9 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { buildingHUDSprite, map, mapArray, mapHeight, mapWidth, size, listOfButtons,scrollSpeedVector, ctx, origo, hexSpritesheet, HUDSprite, canvas } from './constants/index.js'
+=======
+import { map, mapArray, mapHeight, mapWidth, size, listOfButtons,scrollSpeedVector, ctx, origo, hexSpritesheet, HUDSprite, canvas } from './constants/index.js'
+>>>>>>> parent of ae48fda (Merge branch 'main' of https://github.com/FlyingRainbowPotato/SleepySociety)
 =======
 import { map, mapArray, mapHeight, mapWidth, size, listOfButtons,scrollSpeedVector, ctx, origo, hexSpritesheet, HUDSprite, canvas } from './constants/index.js'
 >>>>>>> parent of ae48fda (Merge branch 'main' of https://github.com/FlyingRainbowPotato/SleepySociety)
