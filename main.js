@@ -43,7 +43,6 @@ function gameLoop() {
 
 
 
-
 if(loadHandler()) {
     gameLoop();
 }
