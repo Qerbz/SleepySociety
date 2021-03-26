@@ -1,7 +1,7 @@
 import { ctx } from '../constants/index.js';
 
 export default class Building {
-    // img;
+    img;
     x;
     y;
 
@@ -12,22 +12,36 @@ export default class Building {
      * @param {Number} y The y-coordinate of the building.
      */
 
-    constructor(x, y) {
-        // this.img = img;
+    constructor(img, x, y) {
+        this.img = img;
         this.x = x;
         this.y = y;
     }
 
+    /**
+     * @description Draws the image of the building.
+     */
+
     draw() {
         ctx.beginPath()
-        ctx.fillRect(this.x, this.y, 20, 20);
+        ctx.drawImage(this.img, this.x, this.y);
         ctx.closePath();
     }
 }
 
 export class House extends Building {
-    constructor(x, y, price, inhabitants) {
-        super(x, y);
+
+    /**
+     * 
+     * @param {Image} img The image of the house.
+     * @param {Number} x The x-coordinate of the house.
+     * @param {*} y The y-coordinate of the house.
+     * @param {*} price The price to buy a house.
+     * @param {*} inhabitants The amount of people living in the house.
+     */
+    
+    constructor(img, x, y, price, inhabitants) {
+        super(img, x, y);
         this.price = price;
         this.inhabitants = inhabitants;
     }
