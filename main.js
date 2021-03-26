@@ -4,6 +4,12 @@ import { loadHandler } from './loadHandler.js';
 import { keyHandlerDown, keyHandlerUp, mouseHandler } from './libraries/inputHandler.js';
 import { fpsCounter } from './libraries/fpsCounter.js';
 import drawGrid from './libraries/draw.js';
+<<<<<<< HEAD
+=======
+import Resource from './libraries/resources.js';
+import { Hex } from './libraries/hex.js';
+import { Point2D } from './libraries/point2d.js';
+>>>>>>> d051d71cd7aa0dd428b015553c1d47dbb00061ee
 
 
 
