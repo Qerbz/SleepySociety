@@ -16,27 +16,27 @@ export default function getBiome(coords) {
  * @returns Returns a tile based on the value of e and m.
  */
 
- function biome(e, m)
- {
-     if (e < 0.2) return tile.water; 
-     if (e < 0.3) return tile.sand;
- 
-     if (e < 0.5) {
-         if (m < 0.2) return tile.scorched;
-         if (m < 0.5) return tile.grass;
-         if (m < 0.74) return tile.forestDeep;
-         else return tile.jungle;
-     }
- 
-     if (e < 0.78) {
-         if (m < 0.2) return tile.desert;
-         if (m < 0.3) return tile.dirt;
-         if (m < 0.6) return tile.grass;
-         else return tile.mountain;
-     }
- 
-     else {
-         if (m < 0.7) return tile.mountain;
-         else return tile.snow;
-     }
- }
+function biome(e, m)
+{
+    if (e < 0.2) return tile.water; 
+    if (e < 0.3) return tile.sand;
+
+    if (e < 0.5) {
+        if (m < 0.2) return tile.scorched;
+        if (m < 0.5) return tile.grass;
+        if (m < 0.74) return tile.forestDeep;
+        else return tile.jungle;
+    }
+
+    if (e < 0.78) {
+        if (m < 0.2) return tile.desert;
+        if (m < 0.3) return tile.dirt;
+        if (m < 0.6) return tile.grass;
+        else return tile.mountain;
+    }
+
+    else {
+        if (m < 0.7) return tile.mountain;
+        else return tile.snow;
+    }
+}
