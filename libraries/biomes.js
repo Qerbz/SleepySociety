@@ -26,7 +26,7 @@ function biome(e, m)
 
     if (e < 0.5) {
         if (m < 0.2) return tile.scorched;
-        if (m < 0.6) return tile.grass;
+        if (m < 0.4) return tile.grass;
         if (m < 0.74) return tile.forestDeep;
         else return tile.jungle;
     }
