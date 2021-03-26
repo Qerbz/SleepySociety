@@ -4,6 +4,7 @@ import { loadHandler } from './loadHandler.js';
 import { keyHandlerDown, keyHandlerUp, mouseHandler } from './libraries/inputHandler.js';
 import { fpsCounter } from './libraries/fpsCounter.js';
 import drawGrid from './libraries/draw.js';
+import Resource from './libraries/resources.js';
 
 
 
@@ -23,12 +24,9 @@ document.addEventListener("keyup", keyHandlerUp)
 document.addEventListener("keydown", keyHandlerDown)
 document.addEventListener("click", function(e) {mouseHandler(e, hud)})
 
-
 //PROOF OF CONCEPT. DOESN'T SAVE ANYTHING OF NOTE AS NOTHING HAS YET HAPPENED IN THE GAME. TODO: ADD AUTOSAVE EVERY 5 MINUTESx
 // const mapJSON = JSON.stringify(map);
 // localStorage.setItem("mapJSON", mapJSON);
-
-
 
 function gameLoop() {
     //Calculations
