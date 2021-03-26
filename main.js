@@ -35,9 +35,9 @@ function gameLoop() {
     //Animation
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawGrid();
-    // ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
+    ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
     
-    // fpsCounter()
+    fpsCounter()
     requestAnimationFrame(gameLoop);
 }
 
