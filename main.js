@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { buildingHUDSprite, map, mapArray, mapHeight, mapWidth, size, listOfButtons,scrollSpeedVector, ctx, origo, hexSpritesheet, HUDSprite, canvas } from './constants/index.js'
+=======
+import { map, mapArray, mapHeight, mapWidth, size, listOfButtons,scrollSpeedVector, ctx, origo, hexSpritesheet, HUDSprite, canvas } from './constants/index.js'
+>>>>>>> parent of ae48fda (Merge branch 'main' of https://github.com/FlyingRainbowPotato/SleepySociety)
 import { HUD, Button } from './libraries/hud.js';
 import { loadHandler } from './loadHandler.js';
 import { keyHandlerDown, keyHandlerUp, mouseHandler } from './libraries/inputHandler.js';
