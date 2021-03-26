@@ -1,12 +1,11 @@
-import { map, mapArray, tile, building, hexHeight, hexWidth, listOfButtons, biomes, scrollSpeedVector, size, ctx, mapSeed, origo, hexSpritesheet, HUDSprite, degrees60, loadedHeight, loadedWidth, mapWidth, mapHeight, canvas } from './constants/index.js'
-import { Hex } from './libraries/hex.js';
-import { Point2D } from './libraries/point2d.js';
-// import { Vector } from './libraries/vector.js';
+import { map, mapArray, mapHeight, mapWidth, size, listOfButtons,scrollSpeedVector, ctx, origo, hexSpritesheet, HUDSprite, canvas } from './constants/index.js'
 import { HUD, Button } from './libraries/hud.js';
 import { loadHandler } from './loadHandler.js';
 import { keyHandlerDown, keyHandlerUp, mouseHandler } from './libraries/inputHandler.js';
 import { fpsCounter } from './libraries/fpsCounter.js';
-import { drawGrid } from './libraries/draw.js';
+import drawGrid from './libraries/draw.js';
+import { Hex } from './libraries/hex.js';
+import { Point2D } from './libraries/point2d.js';
 
 
 
@@ -18,143 +17,51 @@ ctx.lineWidth = 2;
 hexSpritesheet.src = "img/hexagonTerrain_sheet.png";
 HUDSprite.src = "img/hud.png";
 
-
-
-
-
-
 Button.constructButton(listOfButtons, 10,50,40,40,"testBuild")
 const hud = new HUD(listOfButtons,[]);
 
 
-document.addEventListener("keyup", keyHandlerUp)
-document.addEventListener("keydown", keyHandlerDown)
-document.addEventListener("click", function(e) {mouseHandler(e, hud)})
+document.addEventListener("keyup", keyHandlerUp);
+document.addEventListener("keydown", keyHandlerDown);
+document.addEventListener("click", function(e) {mouseHandler(e, hud)});
 
 
-//PROOF OF CONCEPT. DOESN'T SAVE ANYTHING OF NOTE AS NOTHING HAS YET HAPPENED IN THE GAME. TODO: ADD AUTOSAVE EVERY 5 MINUTESx
-// const mapJSON = JSON.stringify(map);
-// localStorage.setItem("mapJSON", mapJSON);
-
-
-
-
-
-// function hex_coords(center, size, number) 
-// {
-//     const angle = Math.PI / 180 * (60 * number);
-//     return new Point2D(center.x + size * Math.cos(angle), center.y + size * Math.sin(angle));
-// }
-
-// const points = [];
-// for (let i = 0; i <= 5; i++) 
-// {
-//     points.push(hex_coords(new Point2D(200, 200), size, i));
-// }
-
-
-function hex_coords(center, size) 
-{
-    const angle = degrees60;
-    return new Point2D(center.x + size * Math.cos(angle), center.y + size * Math.sin(angle));
-}
-
-// const points = [];
-// for (let i = 0; i <= 5; i++) 
-// {
-//     points.push(hex_coords(new Point2D(200, 200), size));
-// }
-
-
-/**
- * 
- * @param {Number} x x-coordinate of the tile.
- * @param {Number} y y-coordinate of the tile.
- * @returns returns a tile.
- */
-
-function getBiome(coords) {
-    const freq = 0.1;
-    noise.seed(mapSeed);
-    const e = (noise.perlin2(coords.x * freq, coords.y * freq) + 1) / 2;
-    noise.seed(mapSeed / 2);
-    const m = (noise.perlin2(coords.x * freq, coords.y * freq) + 1) / 2;
-    return biome(e, m);
-}
-
-/**
- * 
- * @param {Number} e A value between 0 and 1.
- * @param {Number} m A value between 0 and 1.
- * @returns Returns a tile based on the value of e and m.
- */
-
-function biome(e, m)
-{
-    if (e < 0.2) return tile.water; 
-    if (e < 0.3) return tile.sand;
-
-    if (e < 0.5) {
-        if (m < 0.2) return tile.scorched;
-        if (m < 0.5) return tile.grass;
-        if (m < 0.74) return tile.forestDeep;
-        else return tile.jungle;
-    }
-
-    if (e < 0.78) {
-        if (m < 0.2) return tile.desert;
-        if (m < 0.3) return tile.dirt;
-        if (m < 0.6) return tile.grass;
-        else return tile.mountain;
-    }
-
-    else {
-        if (m < 0.7) return tile.mountain;
-        else return tile.snow;
-    }
-}
-
-/**
- * @param {Number} width width of the grid
- * @param {Number} height height of the grid
- */
-
-
-
+//PROOF OF CONCEPT. DOESN'T SAVE ANYTHING OF NOTE AS NOTHING HAS YET HAPPENED IN THE GAME. TODO: ADD AUTOSAVE EVERY 5 MINUTES
+const mapJSON = JSON.stringify(map);
+localStorage.setItem("mapJSON", mapJSON);
 
 function gameLoop() {
     //Calculations
     origo.add(scrollSpeedVector);
     if (origo.x > -100) origo.x = -100;
     if (origo.y > -100) origo.y = -100;
-    if (origo.y < -Hex.hexToPixel(new Point2D(0,mapHeight)).y+origo.y+canvas.height+size*4)origo.y = -Hex.hexToPixel(new Point2D(0,mapHeight)).y+origo.y+canvas.height+size*4;
-    if (origo.x < -Hex.hexToPixel(new Point2D(mapWidth,0)).x+origo.x+canvas.width+size*4)origo.x = -Hex.hexToPixel(new Point2D(mapWidth,0)).x+origo.x+canvas.width+size*4;
+
+    console.log(origo.y + " " + (-Hex.hexToPixel(new Point2D(0,mapHeight)).y+origo.y + canvas.height+200));
+
+    if (origo.y < -Hex.hexToPixel(new Point2D(0,mapHeight)).y + origo.y + canvas.height + 200) {
     
+        origo.y = -Hex.hexToPixel(new Point2D(0,mapHeight)).y + origo.y + canvas.height + 200;
     
+    }
+
+    if (origo.x < -Hex.hexToPixel(new Point2D(mapWidth,0)).x + origo.x + canvas.width + 200) {
+    
+        origo.x = -Hex.hexToPixel(new Point2D(mapWidth,0)).x + origo.x + canvas.width + 200;
+    
+    }
     //Animation
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawGrid();
     ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
     
-    fpsCounter()
+    //fpsCounter()
     requestAnimationFrame(gameLoop);
 }
 
-function loadMap() {
-    for (let x = mapWidth; x > 0; x--) {
-        mapArray[x] = new Array(mapHeight);
-        biomes[x] = new Array(mapHeight);
-        for (let y = mapHeight; y > 0; y--) {   
-            mapArray[x][y] = new Hex(new Point2D(x,y));
-            biomes[x][y] = getBiome(new Point2D(x,y));
-        }
-    }
- 
-}
+
 
 
 if(loadHandler()) {
-    loadMap();
     gameLoop();
 }
 
