@@ -53,10 +53,15 @@ export function mouseHandler(e, hud) {
     {
         if(hud.buttonsList[i].pointIsWithin(pointerPos)) 
         {
-            if (hud.buttonsList[i].name == "testBuild") 
+            if (hud.buttonsList[i].name === "buildMenu") 
             {
+                player.currentAction = "buildMenu";
+                // console.log(player.currentAction);
+                return 0;
+            }
+            if (hud.buttonsList[i].name === "build") {
                 player.currentAction = "build";
-                console.log(player.currentAction);
+
                 return 0;
             }
         }
@@ -67,6 +72,7 @@ export function mouseHandler(e, hud) {
         console.log("built on " + hexCoords.x + ", " + hexCoords.y);
         console.log(map.mapHexes[hexCoords.x][hexCoords.y])
         map.mapHexes[hexCoords.x][hexCoords.y].building = 1;
-        player.currentAction = 0;
+        
     }
+    player.currentAction = 0;
 }
