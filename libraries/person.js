@@ -6,10 +6,12 @@ class Person
   height;
   haircolor;
   religion;
-  parents;
+  mother;
+  father;
   siblings;
+  children;
   actionqueue;
-  resources;
+  inventory;
   coordinates;
 
   constructor(father,mother)
@@ -26,7 +28,35 @@ class Person
     else this.height += 7
 
     //haircolor
-    this.haircolor = 
+    let haircolorNum = Math.round(Math.random());
+    if (genderNum===0) this.haircolor = father.haircolor;
+    else this.haircolor = mother.haircolor;
+
+    //religion
+    this.religion = mother.religion;
+
+    //parents
+    this.mother = mother;
+    this.father = father;
+
+    //siblings
+    this.siblings = mother.children; //NOT DESIGNED FOR DIVORCE, BASTARD CHILDREN OR UNFAITHFULNESS
+
+    //children
+    this.children = []; //people usually don't have children at birth
+
+    //actionqueue
+    this.actionqueue = [];
+
+    //inventory
+    this.inventory = [];
+
+    //coordinates
+    this.coordinates = mother.coordinates; //people usually get born with their mother
+  }
+  draw()
+  {
+    
   }
 }
 
