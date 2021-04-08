@@ -1,4 +1,4 @@
 export class Player
 {
-  currentAction;
+  currentAction = 0;
 }

@@ -33,8 +33,11 @@ export const scrollSpeed = 10;
 export const player = new Player();
 // export const biomes = new Array(mapWidth);
 
+export const buildings = ["House", "Commercial", "Agriculture", "Education", "Entertainment", "Government", "Health", "Religious"]
 
 export const listOfButtons = [];
+export const buildingButtons = [];
+
 export const camera = { x: 100, y: 100 }
 
 export const tile = {
