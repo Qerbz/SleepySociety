@@ -4,6 +4,7 @@ class Building {
     img;
     x;
     y;
+    upgradeable;
     level;
 
     /**
@@ -17,6 +18,7 @@ class Building {
         this.img = img;
         this.x = x;
         this.y = y;
+        this.upgradeable = false;
         this.level = 0;
     }
 
