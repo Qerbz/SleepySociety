@@ -33,17 +33,29 @@ class Building {
     }
 }
 
-class Housing extends Building {
+export class Housing extends Building {
+
+    price;
+    inhabitants;
+    level;
 
     /**
      * 
      * @param {Image} img The image of the house.
      * @param {Number} x The x-coordinate of the house.
-     * @param {*} y The y-coordinate of the house.
+     * @param {Number} y The y-coordinate of the house.
+     * @param {Number} price The price of building the building
      */
     
     constructor(img, x, y) {
         super(img, x, y);
+        this.price = {
+            work: 1,
+            wood: 30
+        };
+        this.inhabitants = inhabitants;
+        this.people = new Uint16Array(this.inhabitants);
+        this.level = 0;
     }
 
     upgrade(img, inhabitants) {
@@ -53,27 +65,6 @@ class Housing extends Building {
     }
 }
 
-export class House extends Housing {
-
-    level;
-
-    /**
-     * 
-     * @param {Image} img The image of the house
-     * @param {*} x 
-     * @param {*} y 
-     * @param {*} price 
-     * @param {*} inhabitants 
-     */
-
-    constructor(img, x, y, price, inhabitants) {
-        super(img, x, y);
-        this.price = price;
-        this.inhabitants = inhabitants;
-        this.people = new Uint16Array(this.inhabitants);
-        this.level = 0;
-    }
-}
 
 class Workplace extends Building {
     constructor(img, x, y, price, maxWorkers) {
