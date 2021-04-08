@@ -1,9 +1,10 @@
 import { ctx } from '../constants/index.js';
 
-export default class Building {
+class Building {
     img;
     x;
     y;
+    level;
 
     /**
      * 
@@ -16,6 +17,7 @@ export default class Building {
         this.img = img;
         this.x = x;
         this.y = y;
+        this.level = 0;
     }
 
     /**
@@ -29,20 +31,70 @@ export default class Building {
     }
 }
 
-export class House extends Building {
+class Housing extends Building {
 
     /**
      * 
      * @param {Image} img The image of the house.
      * @param {Number} x The x-coordinate of the house.
      * @param {*} y The y-coordinate of the house.
-     * @param {*} price The price to buy a house.
-     * @param {*} inhabitants The amount of people living in the house.
      */
     
+    constructor(img, x, y) {
+        super(img, x, y);
+    }
+
+    upgrade(img, inhabitants) {
+        this.level++;
+        this.img = img;
+        this.inhabitants = inhabitants;
+    }
+}
+
+export class House extends Housing {
+
+    level;
+
+    /**
+     * 
+     * @param {Image} img The image of the house
+     * @param {*} x 
+     * @param {*} y 
+     * @param {*} price 
+     * @param {*} inhabitants 
+     */
+
     constructor(img, x, y, price, inhabitants) {
         super(img, x, y);
         this.price = price;
         this.inhabitants = inhabitants;
+        this.people = new Uint16Array(this.inhabitants);
+        this.level = 0;
     }
 }
+
+class Workplace extends Building {
+    constructor(img, x, y, price, maxWorkers) {
+        super(img, x, y);
+        this.price = price;
+        this.maxWorkers = 
+        this.workers = Uint16Array(this.maxWorkers);
+    }
+}
+
+export class Store extends Workplace {
+
+    /**
+     * 
+     * @param {Image} img 
+     * @param {Number} x 
+     * @param {Number} y 
+     * @param {Number} price 
+     * @param {Number} workers 
+     */
+
+    constructor(img, x, y, price, workers) {
+        super(img, x, y, price, workers);
+    }
+}
+
