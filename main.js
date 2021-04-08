@@ -20,7 +20,7 @@ buildingsSprite.src = "./img/buildings.png";
 buildingHUDSprite.src = "./img/buildingHUD.png";
 
 
-Button.constructButton(listOfButtons, 75, 63, 28, 27, "build");
+
 Button.constructButton(listOfButtons, 10,50,40,40,"buildMenu");
 const hud = new HUD(listOfButtons,[]);
 
@@ -54,6 +54,7 @@ function gameLoop() {
     if (player.currentAction === "buildMenu") {
         ctx.drawImage(buildingHUDSprite, 67, 54);
     }
+   
     
     // fpsCounter()
     requestAnimationFrame(gameLoop);
