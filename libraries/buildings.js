@@ -36,8 +36,8 @@ class Building {
         this.inhabitants = inhabitants;
     }
 
-    draw(frameX, frameY, canvasX, canvasY) {
-        ctx.drawImage(this.img, frameX * this.width, frameY * this.height, this.width, this.height, canvasX, canvasY, this.width, this.height);
+    draw(frameX, frameY) {
+        ctx.drawImage(this.img, frameX * this.width, frameY * this.height, this.width, this.height, this.x, this.y, this.width, this.height);
     }
 }
 
