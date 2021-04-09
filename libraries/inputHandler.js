@@ -2,6 +2,7 @@ import { buildings, houses, buildingButtons, scrollSpeedVector, listOfButtons, s
 import { Hex } from './hex.js';
 import { Point2D } from './point2d.js';
 import { Button } from './hud.js';
+import { Vector } from './vector.js';
 import { Housing } from './buildings.js'
 
 export function keyHandlerDown(e)
@@ -55,48 +56,51 @@ export function keyHandlerUp(e)
 export function mouseHandler(e, hud) {
     const pointerPos = new Point2D(e.clientX, e.clientY);
 
-    if (player.currentAction === 0) {
-        for (let i = 0; i < hud.buttonsList.length; i++) 
-        {
-            if(hud.buttonsList[i].pointIsWithin(pointerPos)) 
+    if (e.which == 3){
+        player.avatar.newDestination(new Vector (pointerPos.x - origo.x, pointerPos.y - origo.y));
+    }
+    else{
+        if (player.currentAction === 0) {
+            for (let i = 0; i < hud.buttonsList.length; i++) 
             {
-                if (hud.buttonsList[i].name === "buildMenu") 
-              {
-                  player.currentAction = "buildMenu";
-            
-                  return 0;  
+                if(hud.buttonsList[i].pointIsWithin(pointerPos)) 
+                {
+                    if (hud.buttonsList[i].name === "buildMenu") 
+                    {
+                      player.currentAction = "buildMenu";
+                
+                      return 0;  
+                    }
                 }
             }
         }
-    }
-    else if (player.currentAction === "buildMenu") {
-   
-        makeBuildingButtons();
-
-        for (let j = 0; j < buildingButtons.length; j++) {
-            if (buildingButtons[j].pointIsWithin(pointerPos)) {
-                player.currentAction = buildingButtons[j].name
-                Button.constructButton(hud.buttonsList, 1, 43, 119, 358, "hudButton");
-
-                return 0;
+        else if (player.currentAction === "buildMenu") {
+       
+            makeBuildingButtons();
+    
+            for (let j = 0; j < buildingButtons.length; j++) {
+                if (buildingButtons[j].pointIsWithin(pointerPos)) {
+                    player.currentAction = buildingButtons[j].name
+                    Button.constructButton(hud.buttonsList, 1, 43, 119, 358, "hudButton");
+    
+                    return 0;
+                }
             }
         }
-    }
-    else if (player.currentAction === "buildHouse") {
-        if(hud.buttonsList[1].pointIsWithin(pointerPos)) {
-            player.currentAction = 0;
+        else if (player.currentAction === "buildHouse") {
+            if(hud.buttonsList[1].pointIsWithin(pointerPos)) {
+                player.currentAction = 0;
+            }
+            else {
+    
+                let hexCoords = Hex.pixelToHex(pointerPos);
+                map.mapHexes[hexCoords.x][hexCoords.y].building = 1;
+            }
+            
         }
-        else {
-
-            let hexCoords = Hex.pixelToHex(pointerPos);
-            map.mapHexes[hexCoords.x][hexCoords.y].building = 1;
-        }
-        
+        buildingButtons.length = 0;
+        player.currentAction = 0;
     }
-    buildingButtons.length = 0;
-    player.currentAction = 0;
-
-
 }  
 
 

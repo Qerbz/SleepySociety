@@ -1,6 +1,7 @@
 import { ctx } from "../constants/index.js";
 
-export default class Resource {
+
+export class Resource {
     value;
 
     /**
@@ -25,7 +26,7 @@ export default class Resource {
     }
 }
 
-class ResourcesStored 
+export class ResourcesStored 
 {
     gold;
     timber;

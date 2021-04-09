@@ -36,7 +36,14 @@ class Building {
         this.inhabitants = inhabitants;
     }
 
+    /**
+     * 
+     * @param {Number} frameX The frame you wish to draw along the x-axis.
+     * @param {Number} frameY The frame you wish to draw along the y-axis.
+     */
+
     draw(frameX, frameY) {
+        console.log(`x: ${frameX}, y: ${frameY}`);
         ctx.drawImage(this.img, frameX * this.width, frameY * this.height, this.width, this.height, this.x, this.y, this.width, this.height);
     }
 }
