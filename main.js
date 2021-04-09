@@ -1,4 +1,4 @@
-import { map, mapArray, mapHeight, mapWidth, size, listOfButtons,scrollSpeedVector, ctx, origo, hexSpritesheet, HUDSprite, canvas, buildingsSprite, buildingHUDSprite, player } from './constants/index.js'
+import { map, mapArray, mapHeight, mapWidth, size, listOfButtons,scrollSpeedVector, ctx, origo, hexSpritesheet, HUDSprite, canvas, buildingsSprite, buildingHUDSprite, player} from './constants/index.js'
 import { HUD, Button } from './libraries/hud.js';
 import { isLoaded, load} from './loadHandler.js';
 import { keyHandlerDown, keyHandlerUp, mouseHandler } from './libraries/inputHandler.js';
@@ -6,6 +6,8 @@ import { fpsCounter } from './libraries/fpsCounter.js';
 import drawGrid from './libraries/draw.js';
 import { Hex } from './libraries/hex.js';
 import { Point2D } from './libraries/point2d.js';
+import { Person } from './libraries/person.js';
+import { Vector } from './libraries/vector.js';
 
 
 
@@ -27,12 +29,26 @@ const hud = new HUD(listOfButtons,[]);
 
 document.addEventListener("keyup", keyHandlerUp);
 document.addEventListener("keydown", keyHandlerDown);
-document.addEventListener("click", function(e) {mouseHandler(e, hud)});
+document.addEventListener("mousedown", function(e) {mouseHandler(e, hud)});
 
 
 //PROOF OF CONCEPT. DOESN'T SAVE ANYTHING OF NOTE AS NOTHING HAS YET HAPPENED IN THE GAME. TODO: ADD AUTOSAVE EVERY 5 MINUTES
 //const mapJSON = JSON.stringify(map);
 //localStorage.setItem("mapJSON", mapJSON);
+player.avatar.destination = new Vector (3000,3000);
+function sleep(milliseconds) {
+    const date = Date.now();
+    let currentDate = null;
+    do {
+      currentDate = Date.now();
+    } while (currentDate - date < milliseconds);
+}
+
+canvas.addEventListener('contextmenu', function(ev) {
+    ev.preventDefault();
+    
+    return false;
+}, false);
 
 function gameLoop() {
     //Calculations
@@ -50,13 +66,16 @@ function gameLoop() {
     //Animation
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawGrid();
+    player.avatar.draw(ctx);
+    if (typeof player.avatar.destination !== 'undefined'){
+        player.avatar.move();
+    }
+    
     ctx.drawImage(HUDSprite, 0, 0, 1920, 1080, 0, 0, 1920, 1080);
     if (player.currentAction === "buildMenu") {
         ctx.drawImage(buildingHUDSprite, 67, 54);
     }
-   
-    
-    // fpsCounter()
+    fpsCounter()
     requestAnimationFrame(gameLoop);
 }
 

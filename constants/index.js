@@ -16,6 +16,7 @@ export const mapWidth = 200;
 export const mapSeed = Math.random();
 
 export const origo = new Vector(-500, -500);
+export const player = new Player()
 
 export const elementsToBeLoaded = 4;
 
@@ -30,7 +31,6 @@ export const loadedHeight = (Math.ceil(canvas.height/(size*(Math.sqrt(3))))+1);
 
 export const scrollSpeedVector = new Vector(0,0);
 export const scrollSpeed = 10;
-export const player = new Player();
 
 
 export const houses = [];
