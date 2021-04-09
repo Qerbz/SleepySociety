@@ -15,8 +15,8 @@ export function fpsCounter() {
 
     //fps
     ctx.fillStyle = "white";
-    ctx.fillRect(0,0,60,40);
+    ctx.fillRect(1700,900,60,40);
     ctx.fillStyle = "black";
-    ctx.fillText(Math.round(fps),10,30);
+    ctx.fillText(Math.round(fps),10+1700,30+900);
 
 }
