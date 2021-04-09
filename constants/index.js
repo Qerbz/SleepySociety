@@ -31,6 +31,9 @@ export const loadedHeight = (Math.ceil(canvas.height/(size*(Math.sqrt(3))))+1);
 export const scrollSpeedVector = new Vector(0,0);
 export const scrollSpeed = 10;
 export const player = new Player();
+
+
+export const houses = [];
 // export const biomes = new Array(mapWidth);
 
 export const buildings = ["House", "Commercial", "Agriculture", "Education", "Entertainment", "Government", "Health", "Religious"]
