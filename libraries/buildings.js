@@ -6,6 +6,8 @@ class Building {
     y;
     upgradeable;
     level;
+    width;
+    height;
 
     /**
      * 
@@ -34,14 +36,8 @@ class Building {
         this.inhabitants = inhabitants;
     }
 
-    /**
-     * @description Draws the image of the building.
-     */
-
-    draw() {
-        ctx.beginPath()
-        ctx.drawImage(this.img, this.x, this.y);
-        ctx.closePath();
+    draw(frameX, frameY, canvasX, canvasY) {
+        ctx.drawImage(this.img, frameX * this.width, frameY * this.height, this.width, this.height, canvasX, canvasY, this.width, this.height);
     }
 }
 
