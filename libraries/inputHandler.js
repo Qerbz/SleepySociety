@@ -1,4 +1,4 @@
-import { buildings, houses, buildingButtons, scrollSpeedVector, listOfButtons, scrollSpeed, player, map, origo, mapWidth, mapHeight } from '../constants/index.js';
+import { buildingsSprite, buildings, houses, buildingButtons, scrollSpeedVector, scrollSpeed, player, map, origo } from '../constants/index.js';
 import { Hex } from './hex.js';
 import { Point2D } from './point2d.js';
 import { Button } from './hud.js';
@@ -95,6 +95,10 @@ export function mouseHandler(e, hud) {
     
                 let hexCoords = Hex.pixelToHex(pointerPos);
                 map.mapHexes[hexCoords.x][hexCoords.y].building = 1;
+                houses[hexCoords.x] = [];
+                houses[hexCoords.x][hexCoords.y] = new Housing(buildingsSprite, hexCoords.x, hexCoords.y)
+          
+                // console.log(houses[hexCoords.x][hexCoords.y])
             }
             
         }
