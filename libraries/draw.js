@@ -43,6 +43,8 @@ export default function drawGrid()
         {   
             drawTile(mapArray[x][y].tile, new Point2D(x,y));
             if (map.mapHexes[x][y].building == 1){
+                console.log(`${x}, ${y}`)
+    
                 houses[x][y].draw(0, 0);
             }
 

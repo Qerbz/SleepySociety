@@ -97,7 +97,8 @@ export function mouseHandler(e, hud) {
                 map.mapHexes[hexCoords.x][hexCoords.y].building = 1;
                 houses[hexCoords.x] = [];
                 houses[hexCoords.x][hexCoords.y] = new Housing(buildingsSprite, hexCoords.x, hexCoords.y)
-          
+                // console.log(hexCoords)
+                // console.log(houses[hexCoords.x][hexCoords.y])
                 // console.log(houses[hexCoords.x][hexCoords.y])
             }
             

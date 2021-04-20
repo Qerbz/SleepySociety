@@ -1,7 +1,7 @@
 import { mapSeed, tile } from '../constants/index.js';
 
 export default function getBiome(coords) {
-    const freq = 0.1;
+    const freq = 0.07;
     noise.seed(mapSeed);
     const e = (noise.perlin2(coords.x * freq, coords.y * freq) + 1) / 2;
     noise.seed(mapSeed / 2);
