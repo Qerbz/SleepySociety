@@ -125,12 +125,16 @@ export class Person
   }
   move()
   {
-    let clonedVector = Vector.clone(this.destination);
-    clonedVector.subtract(this.coordinates);
-    
-    clonedVector.normalize();
-    clonedVector.scale( (this.dexterity+5)/5 )
-    this.coordinates.add( clonedVector );
+
+    // console.log(this.destination)
+    if (Math.floor(this.coordinates.x) !== this.destination.x && Math.floor(this.coordinates.y) !== this.destination.y) {
+      let clonedVector = Vector.clone(this.destination);
+      clonedVector.subtract(this.coordinates);
+      
+      clonedVector.normalize();
+      clonedVector.scale( (this.dexterity+5)/5 )
+      this.coordinates.add( clonedVector );
+    }
   }
   newDestination(v)
   {
