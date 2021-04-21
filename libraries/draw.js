@@ -1,6 +1,6 @@
 import { Hex } from './hex.js';
 import { Point2D } from './point2d.js';
-import { ctx, loadedHeight, loadedWidth, origo, hexSpritesheet, map, size, mapArray } from '../constants/index.js';
+import { ctx, loadedHeight, loadedWidth, origo, hexSpritesheet, map, size, mapArray, player, tileInteract } from '../constants/index.js';
 
 
 function drawTile(tile, coords) 
@@ -51,5 +51,10 @@ export default function drawGrid()
             }
 
         }
+    }
+    if (player.currentAction.name == "interact")
+    {
+        let pixelCoords = Hex.hexToPixel(player.currentAction.hexCoords);
+        ctx.drawImage(tileInteract, pixelCoords.x, pixelCoords.y);
     }
 }

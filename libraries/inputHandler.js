@@ -67,12 +67,19 @@ export function mouseHandler(e, hud) {
                 {
                     if (hud.buttonsList[i].name === "buildMenu") 
                     {
-                      player.currentAction = "buildMenu";
-                
-                      return 0;  
+                        player.currentAction = "buildMenu";
+                        
+                        return 0;  
                     }
                 }
             }
+            let hexCoords = Hex.pixelToHex(pointerPos);
+            player.currentAction = 
+            {
+                name: "interact",
+                hexCoords: new Point2D(hexCoords.x,hexCoords.y)
+            };
+            return 0;
         }
         else if (player.currentAction === "buildMenu") {
        

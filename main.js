@@ -1,4 +1,4 @@
-import { map, mapArray, mapHeight, mapWidth, size, listOfButtons,scrollSpeedVector, ctx, origo, hexSpritesheet, HUDSprite, canvas, buildingsSprite, buildingHUDSprite, player} from './constants/index.js'
+import { map, mapArray, mapHeight, mapWidth, size, listOfButtons,scrollSpeedVector, ctx, origo, hexSpritesheet, HUDSprite, canvas, buildingsSprite, buildingHUDSprite, player, tileInteract} from './constants/index.js'
 import { HUD, Button } from './libraries/hud.js';
 import { isLoaded, load} from './loadHandler.js';
 import { keyHandlerDown, keyHandlerUp, mouseHandler } from './libraries/inputHandler.js';
@@ -20,6 +20,7 @@ hexSpritesheet.src = "./img/hexagonTerrain_sheet.png";
 HUDSprite.src = "./img/hud.png";
 buildingsSprite.src = "./img/buildings.png";
 buildingHUDSprite.src = "./img/buildingHUD.png";
+tileInteract.src = "./img/tileInteract.png"
 
 
 

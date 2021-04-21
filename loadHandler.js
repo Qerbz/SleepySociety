@@ -1,4 +1,4 @@
-import { mapArray, mapWidth, mapHeight, elementsToBeLoaded, HUDSprite, hexSpritesheet, buildingsSprite } from './constants/index.js';
+import { mapArray, mapWidth, mapHeight, elementsToBeLoaded, HUDSprite, hexSpritesheet, buildingsSprite, tileInteract } from './constants/index.js';
 import { Hex } from './libraries/hex.js';
 import { Point2D } from './libraries/point2d.js';
 import getBiome from './libraries/biomes.js';
@@ -24,6 +24,7 @@ export function load() {
     hexSpritesheet.onload = loading();
     HUDSprite.onload = loading();
     buildingsSprite.onload = loading();
+    tileInteract.onload = loading();
     if(loadMap())   loading();
 }
 
