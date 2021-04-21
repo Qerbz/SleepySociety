@@ -1,6 +1,6 @@
 import { Hex } from './hex.js';
 import { Point2D } from './point2d.js';
-import { ctx, loadedHeight, loadedWidth, origo, hexSpritesheet, map, size, mapArray, player, tileInteract } from '../constants/index.js';
+import { ctx, loadedHeight, loadedWidth, origo, hexSpritesheet, map, size, mapArray, player, tileInteract, buildings } from '../constants/index.js';
 
 
 function drawTile(tile, coords) 
@@ -43,11 +43,10 @@ export default function drawGrid()
         )
         {   
             drawTile(mapArray[x][y].tile, new Point2D(x,y));
-
-            let hexCoord = Hex.hexToPixel(new Point2D(x,y));
             if (map.mapHexes[x][y].building == 1){
-                // console.log(mapArray[x][y])
-                ctx.fillRect(hexCoord.x-5,hexCoord.y-5,10,10)
+                
+    
+                buildings[x][y].draw(0, 0);
             }
 
         }

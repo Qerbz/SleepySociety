@@ -1,4 +1,6 @@
 import { ctx } from '../constants/index.js';
+import { Hex } from './hex.js';
+import { Point2D } from './point2d.js'; 
 
 class Building {
     img;
@@ -12,8 +14,8 @@ class Building {
     /**
      * 
      * @param {Image} img The image of the building.
-     * @param {Number} x The x-coodinate of the building.
-     * @param {Number} y The y-coordinate of the building.
+     * @param {Number} x The x-coodinate of the building (hex).
+     * @param {Number} y The y-coordinate of the building (hex).
      */
 
     constructor(img, x, y) {
@@ -22,6 +24,8 @@ class Building {
         this.y = y;
         this.upgradeable = false;
         this.level = 0;
+        this.width = 64;
+        this.height = 64;
         }
     
     /**
@@ -36,8 +40,16 @@ class Building {
         this.inhabitants = inhabitants;
     }
 
+    /**
+     * 
+     * @param {Number} frameX The frame you wish to draw along the x-axis.
+     * @param {Number} frameY The frame you wish to draw along the y-axis.
+     */
+
     draw(frameX, frameY) {
-        ctx.drawImage(this.img, frameX * this.width, frameY * this.height, this.width, this.height, this.x, this.y, this.width, this.height);
+        this.pixelPos = Hex.hexToPixel(new Point2D(this.x, this.y))
+        ctx.drawImage(this.img, this.width * frameX, 0, this.width, this.height, this.pixelPos.x-32, this.pixelPos.y-32, this.width, this.height)
+  
     }
 }
 

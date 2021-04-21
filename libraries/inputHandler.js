@@ -1,4 +1,4 @@
-import { buildings, houses, buildingButtons, scrollSpeedVector, listOfButtons, scrollSpeed, player, map, origo, mapWidth, mapHeight, ctx } from '../constants/index.js';
+import { buildingsSprite,  buildingTypes, buildings, buildingButtons, scrollSpeedVector, scrollSpeed, player, map, origo } from '../constants/index.js';
 import { Hex } from './hex.js';
 import { Point2D } from './point2d.js';
 import { Button } from './hud.js';
@@ -101,11 +101,15 @@ export function mouseHandler(e, hud) {
             else {
     
                 let hexCoords = Hex.pixelToHex(pointerPos);
-                let house = new Image(256, 256);
-                house.src = "../img/buildings.png";
-                let pixelCoords = Hex.hexToPixel(hexCoords);
-                houses.push(new Housing(house, pixelCoords.x, pixelCoords.y));
-                houses[0].draw(0, 0)
+                map.mapHexes[hexCoords.x][hexCoords.y].building = 1;
+               
+                if(typeof(buildings[hexCoords.x]) !== "object") {
+                    buildings[hexCoords.x] = [];
+                }
+                if (typeof(buildings[hexCoords.x][hexCoords.y]) !== "object" ) {
+                    buildings[hexCoords.x][hexCoords.y] = new Housing(buildingsSprite, hexCoords.x, hexCoords.y)
+                    
+                }
             }
             
         }
@@ -123,7 +127,7 @@ function makeBuildingButtons() {
     for (let i = 0; i < 4; i++) {
         let xInit = 75;
         for (let j = 0; j < 2; j++ ) {
-            Button.constructButton(buildingButtons, xInit, yInit, 28, 27, `build${buildings[building]}`);
+            Button.constructButton(buildingButtons, xInit, yInit, 28, 27, `build${buildingTypes[building]}`);
             
             
             building += 1;
