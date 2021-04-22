@@ -90,4 +90,3 @@ function init(){
         gameLoop();
     }
 }
-
