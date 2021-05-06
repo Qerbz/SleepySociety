@@ -127,7 +127,7 @@ export class Person
   {
 
     // console.log(this.destination)
-    if (Math.floor(this.coordinates.x) !== this.destination.x && Math.floor(this.coordinates.y) !== this.destination.y) {
+    if (Math.round(this.coordinates.x) !== this.destination.x || Math.round(this.coordinates.y) !== this.destination.y) {
       let clonedVector = Vector.clone(this.destination);
       clonedVector.subtract(this.coordinates);
       
@@ -142,7 +142,43 @@ export class Person
   }
 }
 
-class personAction
+export class PersonAction {
+  actionName;
+  coordinates;
+
+  constructor(actionName, coordinates) {
+    this.actionName = actionName;
+    this.coordinates = coordinates;
+  }
+
+}
+
+export class Queue
 {
-  
+  actionQueue;
+
+  constructor() {
+    this.actionQueue = [];
+  }
+
+  queueAdd(action) {
+    this.actionQueue.push(action)
+  }
+
+  queueShift() {
+    this.actionQueue.shift();
+  }
+  queueRemove(action) {
+    let index = this.actionQueue.map(actions => actions.coordinates).indexOf(action.coordinates);
+
+    if (index > -1) {
+      this.actionQueue.splice(index, 1);
+    }
+    else {
+      console.log("no action")
+    }
+  }
+  queuePeek() {
+    return this.actionQueue[0];
+  }
 }

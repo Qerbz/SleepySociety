@@ -51,9 +51,5 @@ export default function drawGrid()
 
         }
     }
-    if (player.currentAction.name == "interact")
-    {
-        let pixelCoords = Hex.hexToPixel(player.currentAction.hexCoords);
-        ctx.drawImage(tileInteract, pixelCoords.x, pixelCoords.y);
-    }
+
 }

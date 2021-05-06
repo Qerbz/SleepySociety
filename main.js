@@ -6,7 +6,7 @@ import { fpsCounter } from './libraries/fpsCounter.js';
 import drawGrid from './libraries/draw.js';
 import { Hex } from './libraries/hex.js';
 import { Point2D } from './libraries/point2d.js';
-import { Person } from './libraries/person.js';
+import { Person, Queue, PersonAction } from './libraries/person.js';
 import { Vector } from './libraries/vector.js';
 
 
@@ -76,9 +76,15 @@ function gameLoop() {
     if (player.currentAction === "buildMenu") {
         ctx.drawImage(buildingHUDSprite, 67, 54);
     }
+    if (player.currentAction.name == "interact")
+    {
+        let pixelCoords = Hex.hexToPixel(player.currentAction.hexCoords);
+        ctx.drawImage(tileInteract, pixelCoords.x, pixelCoords.y);
+    }
     fpsCounter()
     requestAnimationFrame(gameLoop);
 }
+
 
 load();
 let isLoadedLoop;
