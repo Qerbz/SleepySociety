@@ -1,7 +1,7 @@
 import { map, mapArray, mapHeight, mapWidth, size, listOfButtons,scrollSpeedVector, ctx, origo, hexSpritesheet, HUDSprite, canvas, buildingsSprite, buildingHUDSprite, player, tileInteract} from './constants/index.js'
 import { HUD, Button } from './libraries/hud.js';
 import { isLoaded, load} from './loadHandler.js';
-import { keyHandlerDown, keyHandlerUp, mouseHandler } from './libraries/inputHandler.js';
+import { cameraMovement, mouseHandler } from './libraries/inputHandler.js';
 import { fpsCounter } from './libraries/fpsCounter.js';
 import drawGrid from './libraries/draw.js';
 import { Hex } from './libraries/hex.js';
@@ -27,11 +27,20 @@ tileInteract.src = "./img/tileInteract.png"
 Button.constructButton(listOfButtons, 10,50,40,40,"buildMenu");
 const hud = new HUD(listOfButtons,[]);
 
+const keys = new Array();
 
-document.addEventListener("keyup", keyHandlerUp);
-document.addEventListener("keydown", keyHandlerDown);
+document.addEventListener("keydown", function(e) {
+    keys[e.key] = true;
+    console.log(keys);
+});
+
+document.addEventListener("keyup", function(e) {
+    delete keys[e.key];
+    scrollSpeedVector.x = 0;
+    scrollSpeedVector.y = 0;
+});
+
 document.addEventListener("mousedown", function(e) {mouseHandler(e, hud)});
-
 
 //PROOF OF CONCEPT. DOESN'T SAVE ANYTHING OF NOTE AS NOTHING HAS YET HAPPENED IN THE GAME. TODO: ADD AUTOSAVE EVERY 5 MINUTES
 //const mapJSON = JSON.stringify(map);
@@ -76,7 +85,8 @@ function gameLoop() {
     if (player.currentAction === "buildMenu") {
         ctx.drawImage(buildingHUDSprite, 67, 54);
     }
-    fpsCounter()
+    cameraMovement(keys);
+    fpsCounter();
     requestAnimationFrame(gameLoop);
 }
 
