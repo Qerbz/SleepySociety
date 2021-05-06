@@ -116,7 +116,7 @@ export function mouseHandler(e, hud) {
         buildingButtons.length = 0;
         player.currentAction = 0;
     }
-}  
+}
 
 
 function makeBuildingButtons() {
