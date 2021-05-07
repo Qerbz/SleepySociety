@@ -8,13 +8,13 @@ import { Queue } from './person.js';
 
 
 export function cameraMovement(keys) {
-    if (keys.indexOf("ArrowUp") !== -1 && keys.indexOf("ArrowUp") > keys.indexOf("ArrowDown")) scrollSpeedVector.y = scrollSpeed;
+    if (keys["ArrowUp"]) scrollSpeedVector.y = scrollSpeed;
 
-    if (keys.indexOf("ArrowDown") !== -1 && keys.indexOf("ArrowDown") > keys.indexOf("ArrowUp")) scrollSpeedVector.y = -scrollSpeed;
+    if (keys["ArrowDown"]) scrollSpeedVector.y = -scrollSpeed;
 
-    if (keys.indexOf("ArrowRight") !== -1 && keys.indexOf("ArrowRight") > keys.indexOf("ArrowLeft")) scrollSpeedVector.x = -scrollSpeed;
+    if (keys["ArrowRight"]) scrollSpeedVector.x = -scrollSpeed;
     
-    if (keys.indexOf("ArrowLeft") !== -1 && keys.indexOf("ArrowLeft") > keys.indexOf("ArrowRight")) scrollSpeedVector.x = scrollSpeed;
+    if (keys["ArrowLeft"]) scrollSpeedVector.x = scrollSpeed;
 }
 
 export function mouseHandler(e, hud) {
@@ -86,12 +86,11 @@ export function mouseHandler(e, hud) {
             else {
                 map.mapHexes[hexCoords.x][hexCoords.y].building = 1;
                
-                if(checkHouse(hexCoords)) buildings[hexCoords.x][hexCoords.y] = new Commercial(buildingsSprite, hexCoords.x, hexCoords.y)
+                if(checkHouse(hexCoords)) buildings[hexCoords.x][hexCoords.y] = new Commercial(buildingsSprite, hexCoords.x, hexCoords.y);
             }
-            
+        }
 
-
-        buildingButtons.splice(0, buildingButtons.length);
+        buildingButtons.length = 0;
         player.currentAction = 0;
     }
 }
