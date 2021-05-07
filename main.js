@@ -28,15 +28,17 @@ Button.constructButton(listOfButtons, 10,50,40,40,"buildMenu");
 Button.constructButton(listOfButtons, 0, 39, 119, 360, "hudButton");
 const hud = new HUD(listOfButtons,[]);
 
+function arrayRemove(arr, value) { 
+    
+    return arr.filter(function(ele){ 
+        return ele != value; 
+    });
+}
 
-
-document.addEventListener("keydown", function(e) {
-    keys[e.key] = true;
-    console.log(keys);
-});
+document.addEventListener("keydown", function(e) {if (keys.indexOf(e.key) < 0) keys.push(e.key);});
 
 document.addEventListener("keyup", function(e) {
-    delete keys[e.key];
+    keys.splice(keys.indexOf(e.key), 1);
     scrollSpeedVector.x = 0;
     scrollSpeedVector.y = 0;
 });
