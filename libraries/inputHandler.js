@@ -41,20 +41,20 @@ export function mouseHandler(e, hud) {
                     }
                 }
             }
+            let hexCoords = Hex.pixelToHex(pointerPos);
+            player.currentAction = 
+            {
+                name: "interact",
+                hexCoords: new Point2D(hexCoords.x,hexCoords.y)
+            };
+
+
             let buttonStartLoc = Hex.hexToPixel(player.currentAction.hexCoords);
             for (let i = 0; i < 3; i++)
             {
                 Button.constructButton(interactButtons,buttonStartLoc.x + i*100,buttonStartLoc.y,100,100,"interact"+i);
             }
             console.log(hud.buttonsList);
-            // If he doesnt left-click on the build hud (not the build menu)
-            if(!hud.buttonsList[1].pointIsWithin(pointerPos)) {
-                player.currentAction = 
-                {
-                    name: "interact",
-                    hexCoords: hexCoords
-                };
-            }    
             return 0;
         }
 
@@ -90,8 +90,11 @@ export function mouseHandler(e, hud) {
             else {
                 map.mapHexes[hexCoords.x][hexCoords.y].building = 1;
                
-                if(checkHouse(hexCoords)) buildings[hexCoords.x][hexCoords.y] = new Commercial(buildingsSprite, hexCoords.x, hexCoords.y)
+                if(checkHouse(hexCoords)) buildings[hexCoords.x][hexCoords.y] = new Commercial(buildingsSprite, hexCoords.x, hexCoords.y);
             }
+        }
+               
+        if (player.currentAction.name === "interact"){
             
             for (let i = 0; i < interactButtons.length; i++) 
             {
