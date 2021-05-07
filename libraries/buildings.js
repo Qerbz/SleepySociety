@@ -141,24 +141,3 @@ class Electricity extends Building {
         this.workers = new Array();
     }
 }
-
-export class CoalPowerStation extends Electricity {
-
-    maxWorkers;
-    pGeneration;
-
-    /**
-     * 
-     * @param {Image} img The sprite image for the building.
-     * @param {*} x The x-coordinate of the building.
-     * @param {*} y The y-coordinate of the building.
-     * @param {*} maxWorkers The max numbers of workers in the facility.
-     */
-
-    constructor(img, x, y, maxWorkers) {
-        super(img, x, y, workers);
-        this.maxWorkers = maxWorkers;
-        this.pGeneration =  500;
-    }
-}
-
