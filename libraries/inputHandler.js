@@ -27,6 +27,7 @@ export function mouseHandler(e, hud) {
     }
 
     else{
+
         if (player.currentAction === 0) {
             for (let i = 0; i < hud.buttonsList.length; i++) 
             {
@@ -72,7 +73,6 @@ export function mouseHandler(e, hud) {
             }
             else {
                 map.mapHexes[hexCoords.x][hexCoords.y].building = 1;
-               
                 if(checkHouse(hexCoords)) buildings[hexCoords.x][hexCoords.y] = new Housing(buildingsSprite, hexCoords.x, hexCoords.y)
             }
             
