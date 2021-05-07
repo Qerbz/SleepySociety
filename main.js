@@ -1,12 +1,12 @@
-import { map, mapArray, mapHeight, mapWidth, size, listOfButtons,scrollSpeedVector, ctx, origo, hexSpritesheet, HUDSprite, canvas, buildingsSprite, buildingHUDSprite, player, tileInteract} from './constants/index.js'
+import { map, mapArray, mapHeight, mapWidth, size, listOfButtons,scrollSpeedVector, ctx, origo, hexSpritesheet, HUDSprite, canvas, buildingsSprite, buildingHUDSprite, player, tileInteract, keys} from './constants/index.js'
 import { HUD, Button } from './libraries/hud.js';
 import { isLoaded, load} from './loadHandler.js';
-import { keyHandlerDown, keyHandlerUp, mouseHandler } from './libraries/inputHandler.js';
+import { cameraMovement, mouseHandler } from './libraries/inputHandler.js';
 import { fpsCounter } from './libraries/fpsCounter.js';
 import drawGrid from './libraries/draw.js';
 import { Hex } from './libraries/hex.js';
 import { Point2D } from './libraries/point2d.js';
-import { Person } from './libraries/person.js';
+import { Person, Queue, PersonAction } from './libraries/person.js';
 import { Vector } from './libraries/vector.js';
 
 
@@ -25,13 +25,23 @@ tileInteract.src = "./img/tileInteract.png"
 
 
 Button.constructButton(listOfButtons, 10,50,40,40,"buildMenu");
+Button.constructButton(listOfButtons, 0, 39, 119, 360, "hudButton");
 const hud = new HUD(listOfButtons,[]);
 
 
-document.addEventListener("keyup", keyHandlerUp);
-document.addEventListener("keydown", keyHandlerDown);
-document.addEventListener("mousedown", function(e) {mouseHandler(e, hud)});
 
+document.addEventListener("keydown", function(e) {
+    keys[e.key] = true;
+    console.log(keys);
+});
+
+document.addEventListener("keyup", function(e) {
+    delete keys[e.key];
+    scrollSpeedVector.x = 0;
+    scrollSpeedVector.y = 0;
+});
+
+document.addEventListener("mousedown", function(e) {mouseHandler(e, hud)});
 
 //PROOF OF CONCEPT. DOESN'T SAVE ANYTHING OF NOTE AS NOTHING HAS YET HAPPENED IN THE GAME. TODO: ADD AUTOSAVE EVERY 5 MINUTES
 //const mapJSON = JSON.stringify(map);
@@ -52,8 +62,8 @@ function debug(){
     console.log(hud.buttonsList);
 }
 
-canvas.addEventListener('contextmenu', function(ev) {
-    ev.preventDefault();
+canvas.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
     
     return false;
 }, false);
@@ -83,9 +93,16 @@ function gameLoop() {
     if (player.currentAction === "buildMenu") {
         ctx.drawImage(buildingHUDSprite, 67, 54);
     }
+    if (player.currentAction.name == "interact")
+    {
+        let pixelCoords = Hex.hexToPixel(player.currentAction.hexCoords);
+        ctx.drawImage(tileInteract, pixelCoords.x, pixelCoords.y);
+    }
     fpsCounter()
+    cameraMovement(keys);
     requestAnimationFrame(gameLoop);
 }
+
 
 load();
 let isLoadedLoop;
@@ -99,4 +116,3 @@ function init(){
         gameLoop();
     }
 }
-

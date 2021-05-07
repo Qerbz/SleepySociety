@@ -20,6 +20,7 @@ export const player = new Player()
 
 export const elementsToBeLoaded = 5;
 
+export const keys = new Array();
 
 export const hexSpritesheet = new Image();
 export const HUDSprite = new Image();

@@ -3,62 +3,29 @@ import { Hex } from './hex.js';
 import { Point2D } from './point2d.js';
 import { Button } from './hud.js';
 import { Vector } from './vector.js';
-import { Housing } from './buildings.js'
+import { Commercial, Housing } from './buildings.js';
+import { Queue } from './person.js';
 
-export function keyHandlerDown(e)
-{  
- 
-    if (e.key == "ArrowDown") {
-         scrollSpeedVector.y = -scrollSpeed;
-    }
-    else if (e.key == "ArrowUp")
-    {
-        scrollSpeedVector.y = scrollSpeed;
-    }
-    else if (e.key == "ArrowRight")
-    {
-        scrollSpeedVector.x = -scrollSpeed;
-    }
-    else if (e.key == "ArrowLeft")
-    {
-        scrollSpeedVector.x = scrollSpeed;
-    }
-    else 
-    {
-    }
+
+export function cameraMovement(keys) {
+    if (keys["ArrowUp"]) scrollSpeedVector.y = scrollSpeed;
+
+    if (keys["ArrowDown"]) scrollSpeedVector.y = -scrollSpeed;
+
+    if (keys["ArrowRight"]) scrollSpeedVector.x = -scrollSpeed;
+    
+    if (keys["ArrowLeft"]) scrollSpeedVector.x = scrollSpeed;
 }
-
-export function keyHandlerUp(e)
-{
-    if (e.key == "ArrowDown")
-    {
-        scrollSpeedVector.y = 0;
-    }
-    else if (e.key == "ArrowUp")
-    {
-        scrollSpeedVector.y = 0;
-    }
-    else if (e.key == "ArrowRight")
-    {
-        scrollSpeedVector.x = 0;
-    }
-    else if (e.key == "ArrowLeft")
-    {
-        scrollSpeedVector.x = 0;
-    }
-    else 
-    {
-    }
-}
-
-
 
 export function mouseHandler(e, hud) {
     const pointerPos = new Point2D(e.clientX, e.clientY);
+    const hexCoords = Hex.pixelToHex(pointerPos);
+    
 
     if (e.which == 3){
         player.avatar.newDestination(new Vector (pointerPos.x - origo.x, pointerPos.y - origo.y));
     }
+
     else{
         if (player.currentAction === 0) {
             for (let i = 0; i < hud.buttonsList.length; i++) 
@@ -74,22 +41,24 @@ export function mouseHandler(e, hud) {
                     }
                 }
             }
-            let hexCoords = Hex.pixelToHex(pointerPos);
-            player.currentAction = 
-            {
-                name: "interact",
-                hexCoords: new Point2D(hexCoords.x,hexCoords.y)
-            };
-
-
             let buttonStartLoc = Hex.hexToPixel(player.currentAction.hexCoords);
             for (let i = 0; i < 3; i++)
             {
                 Button.constructButton(interactButtons,buttonStartLoc.x + i*100,buttonStartLoc.y,100,100,"interact"+i);
             }
             console.log(hud.buttonsList);
+            // If he doesnt left-click on the build hud (not the build menu)
+            if(!hud.buttonsList[1].pointIsWithin(pointerPos)) {
+                player.currentAction = 
+                {
+                    name: "interact",
+                    hexCoords: hexCoords
+                };
+            }    
             return 0;
         }
+
+        // If he click on the 
         else if (player.currentAction === "buildMenu") {
        
             makeBuildingButtons();
@@ -97,31 +66,32 @@ export function mouseHandler(e, hud) {
             for (let j = 0; j < buildingButtons.length; j++) {
                 if (buildingButtons[j].pointIsWithin(pointerPos)) {
                     player.currentAction = buildingButtons[j].name
-                    Button.constructButton(hud.buttonsList, 1, 43, 119, 358, "hudButton");
-    
+                    
                     return 0;
                 }
             }
         }
+
+        // If player click on buildHouse button
         else if (player.currentAction === "buildHouse") {
             if(hud.buttonsList[1].pointIsWithin(pointerPos)) {
                 player.currentAction = 0;
             }
             else {
-    
-                let hexCoords = Hex.pixelToHex(pointerPos);
+                map.mapHexes[hexCoords.x][hexCoords.y].building = 1;
+                if(checkHouse(hexCoords)) buildings[hexCoords.x][hexCoords.y] = new Housing(buildingsSprite, hexCoords.x, hexCoords.y)
+            }
+            
+        }
+        else if (player.currentAction === "buildCommercial") {
+            if(hud.buttonsList[1].pointIsWithin(pointerPos)) {
+                player.currentAction = 0;
+            }
+            else {
                 map.mapHexes[hexCoords.x][hexCoords.y].building = 1;
                
-                if(typeof(buildings[hexCoords.x]) !== "object") {
-                    buildings[hexCoords.x] = [];
-                }
-                if (typeof(buildings[hexCoords.x][hexCoords.y]) !== "object" ) {
-                    buildings[hexCoords.x][hexCoords.y] = new Housing(buildingsSprite, hexCoords.x, hexCoords.y)
-                    
-                }
-            } 
-        }
-        if (player.currentAction.name === "interact"){
+                if(checkHouse(hexCoords)) buildings[hexCoords.x][hexCoords.y] = new Commercial(buildingsSprite, hexCoords.x, hexCoords.y)
+            }
             
             for (let i = 0; i < interactButtons.length; i++) 
             {
@@ -137,10 +107,11 @@ export function mouseHandler(e, hud) {
                 }
             }
         }
+
         buildingButtons.length = 0;
         player.currentAction = 0;
     }
-}  
+}
 
 
 function makeBuildingButtons() {
@@ -158,5 +129,15 @@ function makeBuildingButtons() {
             xInit += step;
         }
         yInit += step;
+    }
+}
+
+function checkHouse(hexCoords) {
+    if(typeof(buildings[hexCoords.x]) !== "object") {
+        buildings[hexCoords.x] = [];
+    }
+    if (typeof(buildings[hexCoords.x][hexCoords.y]) !== "object" ) {
+        return true;
+        
     }
 }

@@ -7,6 +7,7 @@ class Building {
     x;
     y;
     upgradeable;
+    built;
     level;
     width;
     height;
@@ -23,6 +24,7 @@ class Building {
         this.x = x;
         this.y = y;
         this.upgradeable = false;
+        this.built = false;
         this.level = 0;
         this.width = 64;
         this.height = 64;
@@ -47,8 +49,8 @@ class Building {
      */
 
     draw(frameX, frameY) {
-        this.pixelPos = Hex.hexToPixel(new Point2D(this.x, this.y))
-        ctx.drawImage(this.img, this.width * frameX, 0, this.width, this.height, this.pixelPos.x-32, this.pixelPos.y-32, this.width, this.height)
+        this.pixelPos = Hex.hexToPixel(new Point2D(this.x, this.y));
+        ctx.drawImage(this.img, this.width * frameX, this.height * frameY, this.width, this.height, this.pixelPos.x-this.width/2, this.pixelPos.y-this.height/2, this.width, this.height);
   
     }
 }
@@ -57,6 +59,7 @@ export class Housing extends Building {
 
     price;
     inhabitants;
+    type;
 
     /**
      * 
@@ -73,6 +76,7 @@ export class Housing extends Building {
         };
         this.people = new Array();
         this.inhabitants = 3;
+        this.type = "housing";
     }
 }
 
@@ -80,7 +84,7 @@ export class Commercial extends Building {
 
     price;
     workers;
-
+    type;
     /**
      * 
      * @param {Image} img The image of the building
@@ -94,8 +98,8 @@ export class Commercial extends Building {
             work: 3,
             wood: 30
         };
-        this.inhabitants = 0;
         this.workers = new Array();
+        this.type = "commercial";
     }
 }
 
@@ -123,18 +127,38 @@ class Agriculture extends Building {
 
 class Electricity extends Building {
 
+    workers;
+
     /**
      * 
-     * @param {Image} img 
-     * @param {Number} x 
-     * @param {Number} y 
+     * @param {Image} img The sprite image for the building.
+     * @param {Number} x The x-coordinate of the building.
+     * @param {Number} y The y-coordinate of the building.
      */
 
-    constructor(img, x, y, price, maxWorkers) {
+    constructor(img, x, y, built) {
         super(img, x, y);
-        this.price = price;
-        this.maxWorkers = maxWorkers;
         this.workers = new Array();
+    }
+}
+
+export class CoalPowerStation extends Electricity {
+
+    maxWorkers;
+    pGeneration;
+
+    /**
+     * 
+     * @param {Image} img The sprite image for the building.
+     * @param {*} x The x-coordinate of the building.
+     * @param {*} y The y-coordinate of the building.
+     * @param {*} maxWorkers The max numbers of workers in the facility.
+     */
+
+    constructor(img, x, y, maxWorkers) {
+        super(img, x, y, workers);
+        this.maxWorkers = maxWorkers;
+        this.pGeneration =  500;
     }
 }
 
