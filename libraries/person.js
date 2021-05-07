@@ -6,6 +6,7 @@ import { Vector } from "./vector.js";
 export class Person 
 {
   //attributes
+  name
   gender;
   height;
   haircolor;
@@ -54,6 +55,8 @@ export class Person
 
   constructor(father,mother)
   {
+    this.name = "Paul";
+
     //Attributes
     this.strength = 1;
     this.charisma = 1;
@@ -125,9 +128,14 @@ export class Person
   }
   move()
   {
-
-    // console.log(this.destination)
-    if (Math.floor(this.coordinates.x) !== this.destination.x && Math.floor(this.coordinates.y) !== this.destination.y) {
+    let deltax = this.coordinates.x-this.destination.x;
+    let deltay = this.coordinates.y-this.destination.y;
+    if (Math.abs(deltax) < ((this.dexterity+5)/5) && Math.abs(deltay) < ((this.dexterity+5)/5))
+    {
+      this.coordinates.x = this.destination.x;
+      this.coordinates.y = this.destination.y;
+    }
+    else {
       let clonedVector = Vector.clone(this.destination);
       clonedVector.subtract(this.coordinates);
       
@@ -139,6 +147,7 @@ export class Person
   newDestination(v)
   {
     this.destination = Vector.clone(v);
+    console.log(this.name + " is moving towards " + this.destination.x + ", " + this.destination.y + " and is currently at " + this.coordinates.x + ", " + this.coordinates.y);
   }
 }
 
