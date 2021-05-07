@@ -7,53 +7,15 @@ import { Commercial, Housing } from './buildings.js';
 import { Queue } from './person.js';
 
 
-export function keyHandlerDown(e)
-{  
- 
-    if (e.key == "ArrowDown") {
-         scrollSpeedVector.y = -scrollSpeed;
-    }
-    else if (e.key == "ArrowUp")
-    {
-        scrollSpeedVector.y = scrollSpeed;
-    }
-    else if (e.key == "ArrowRight")
-    {
-        scrollSpeedVector.x = -scrollSpeed;
-    }
-    else if (e.key == "ArrowLeft")
-    {
-        scrollSpeedVector.x = scrollSpeed;
-    }
-    else 
-    {
-    }
+export function cameraMovement(keys) {
+    if (keys["ArrowUp"]) scrollSpeedVector.y = scrollSpeed;
+
+    if (keys["ArrowDown"]) scrollSpeedVector.y = -scrollSpeed;
+
+    if (keys["ArrowRight"]) scrollSpeedVector.x = -scrollSpeed;
+    
+    if (keys["ArrowLeft"]) scrollSpeedVector.x = scrollSpeed;
 }
-
-export function keyHandlerUp(e)
-{
-    if (e.key == "ArrowDown")
-    {
-        scrollSpeedVector.y = 0;
-    }
-    else if (e.key == "ArrowUp")
-    {
-        scrollSpeedVector.y = 0;
-    }
-    else if (e.key == "ArrowRight")
-    {
-        scrollSpeedVector.x = 0;
-    }
-    else if (e.key == "ArrowLeft")
-    {
-        scrollSpeedVector.x = 0;
-    }
-    else 
-    {
-    }
-}
-
-
 
 export function mouseHandler(e, hud) {
     const pointerPos = new Point2D(e.clientX, e.clientY);
