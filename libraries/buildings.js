@@ -59,6 +59,7 @@ export class Housing extends Building {
 
     price;
     inhabitants;
+    type;
 
     /**
      * 
@@ -75,6 +76,7 @@ export class Housing extends Building {
         };
         this.people = new Array();
         this.inhabitants = 3;
+        this.type = "housing";
     }
 }
 
@@ -82,7 +84,7 @@ export class Commercial extends Building {
 
     price;
     workers;
-
+    type;
     /**
      * 
      * @param {Image} img The image of the building
@@ -97,6 +99,7 @@ export class Commercial extends Building {
             wood: 30
         };
         this.workers = new Array();
+        this.type = "commercial";
     }
 }
 

@@ -3,7 +3,9 @@ import { Hex } from './hex.js';
 import { Point2D } from './point2d.js';
 import { Button } from './hud.js';
 import { Vector } from './vector.js';
-import { Housing } from './buildings.js'
+import { Commercial, Housing } from './buildings.js';
+import { Queue } from './person.js';
+
 
 export function cameraMovement(keys) {
     if (keys["ArrowUp"]) scrollSpeedVector.y = scrollSpeed;
@@ -17,10 +19,13 @@ export function cameraMovement(keys) {
 
 export function mouseHandler(e, hud) {
     const pointerPos = new Point2D(e.clientX, e.clientY);
+    const hexCoords = Hex.pixelToHex(pointerPos);
+    
 
     if (e.which == 3){
         player.avatar.newDestination(new Vector (pointerPos.x - origo.x, pointerPos.y - origo.y));
     }
+
     else{
         if (player.currentAction === 0) {
             for (let i = 0; i < hud.buttonsList.length; i++) 
@@ -35,14 +40,18 @@ export function mouseHandler(e, hud) {
                     }
                 }
             }
-            let hexCoords = Hex.pixelToHex(pointerPos);
-            player.currentAction = 
-            {
-                name: "interact",
-                hexCoords: new Point2D(hexCoords.x,hexCoords.y)
-            };
+            // If he doesnt left-click on the build hud (not the build menu)
+            if(!hud.buttonsList[1].pointIsWithin(pointerPos)) {
+                player.currentAction = 
+                {
+                    name: "interact",
+                    hexCoords: hexCoords
+                };
+            }    
             return 0;
         }
+
+        // If he click on the 
         else if (player.currentAction === "buildMenu") {
        
             makeBuildingButtons();
@@ -50,31 +59,36 @@ export function mouseHandler(e, hud) {
             for (let j = 0; j < buildingButtons.length; j++) {
                 if (buildingButtons[j].pointIsWithin(pointerPos)) {
                     player.currentAction = buildingButtons[j].name
-                    Button.constructButton(hud.buttonsList, 1, 43, 119, 358, "hudButton");
-    
+                    
                     return 0;
                 }
             }
         }
+
+        // If player click on buildHouse button
         else if (player.currentAction === "buildHouse") {
             if(hud.buttonsList[1].pointIsWithin(pointerPos)) {
                 player.currentAction = 0;
             }
             else {
-    
-                let hexCoords = Hex.pixelToHex(pointerPos);
                 map.mapHexes[hexCoords.x][hexCoords.y].building = 1;
                
-                if(typeof(buildings[hexCoords.x]) !== "object") {
-                    buildings[hexCoords.x] = [];
-                }
-                if (typeof(buildings[hexCoords.x][hexCoords.y]) !== "object" ) {
-                    buildings[hexCoords.x][hexCoords.y] = new Housing(buildingsSprite, hexCoords.x, hexCoords.y)
-                    
-                }
+                if(checkHouse(hexCoords)) buildings[hexCoords.x][hexCoords.y] = new Housing(buildingsSprite, hexCoords.x, hexCoords.y)
             }
             
         }
+        else if (player.currentAction === "buildCommercial") {
+            if(hud.buttonsList[1].pointIsWithin(pointerPos)) {
+                player.currentAction = 0;
+            }
+            else {
+                map.mapHexes[hexCoords.x][hexCoords.y].building = 1;
+               
+                if(checkHouse(hexCoords)) buildings[hexCoords.x][hexCoords.y] = new Commercial(buildingsSprite, hexCoords.x, hexCoords.y)
+            }
+            
+        }
+
         buildingButtons.length = 0;
         player.currentAction = 0;
     }
@@ -96,5 +110,15 @@ function makeBuildingButtons() {
             xInit += step;
         }
         yInit += step;
+    }
+}
+
+function checkHouse(hexCoords) {
+    if(typeof(buildings[hexCoords.x]) !== "object") {
+        buildings[hexCoords.x] = [];
+    }
+    if (typeof(buildings[hexCoords.x][hexCoords.y]) !== "object" ) {
+        return true;
+        
     }
 }
