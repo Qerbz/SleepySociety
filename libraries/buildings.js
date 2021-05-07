@@ -57,6 +57,9 @@ class Building {
 
 export class Housing extends Building {
 
+    img;
+    x;
+    y;
     price;
     inhabitants;
     type;
@@ -82,6 +85,9 @@ export class Housing extends Building {
 
 export class Commercial extends Building {
 
+    img;
+    x;
+    y;
     price;
     workers;
     type;
@@ -105,6 +111,11 @@ export class Commercial extends Building {
 
 class Agriculture extends Building {
 
+    img;
+    x;
+    y;
+    maxWorkers;
+    type;
     price;
 
     /**
@@ -118,6 +129,7 @@ class Agriculture extends Building {
     constructor(img, x, y, maxWorkers) {
         super(img, x, y);
         this.maxWorkers = maxWorkers;
+        this.type = "agriculture",
         this.price = {
             work: 3,
             wood: 40
@@ -125,9 +137,14 @@ class Agriculture extends Building {
     }
 }
 
-class Electricity extends Building {
+export class Electricity extends Building {
 
+    img;
+    x;
+    y;
     workers;
+    type;
+    price;
 
     /**
      * 
@@ -136,8 +153,14 @@ class Electricity extends Building {
      * @param {Number} y The y-coordinate of the building.
      */
 
-    constructor(img, x, y, built) {
+    constructor(img, x, y) {
         super(img, x, y);
         this.workers = new Array();
+        this.type = "electricity",
+        this.price = {
+            work: 10,
+            wood: 50,
+            iron: 20
+        };
     }
 }
