@@ -3,7 +3,7 @@ import { Hex } from './hex.js';
 import { Point2D } from './point2d.js';
 import { Button } from './hud.js';
 import { Vector } from './vector.js';
-import { Housing } from './buildings.js';
+import { Commercial, Housing } from './buildings.js';
 import { Queue } from './person.js';
 
 
@@ -58,7 +58,7 @@ export function keyHandlerUp(e)
 export function mouseHandler(e, hud) {
     const pointerPos = new Point2D(e.clientX, e.clientY);
     const hexCoords = Hex.pixelToHex(pointerPos);
-    Button.constructButton(hud.buttonsList, 0, 39, 119, 360, "hudButton");
+    
 
     if (e.which == 3){
         player.avatar.newDestination(new Vector (pointerPos.x - origo.x, pointerPos.y - origo.y));
@@ -97,7 +97,7 @@ export function mouseHandler(e, hud) {
             for (let j = 0; j < buildingButtons.length; j++) {
                 if (buildingButtons[j].pointIsWithin(pointerPos)) {
                     player.currentAction = buildingButtons[j].name
-    
+                    
                     return 0;
                 }
             }
@@ -115,6 +115,18 @@ export function mouseHandler(e, hud) {
             }
             
         }
+        else if (player.currentAction === "buildCommercial") {
+            if(hud.buttonsList[1].pointIsWithin(pointerPos)) {
+                player.currentAction = 0;
+            }
+            else {
+                map.mapHexes[hexCoords.x][hexCoords.y].building = 1;
+               
+                if(checkHouse(hexCoords)) buildings[hexCoords.x][hexCoords.y] = new Commercial(buildingsSprite, hexCoords.x, hexCoords.y)
+            }
+            
+        }
+
         buildingButtons.length = 0;
         player.currentAction = 0;
     }

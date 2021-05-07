@@ -25,6 +25,7 @@ tileInteract.src = "./img/tileInteract.png"
 
 
 Button.constructButton(listOfButtons, 10,50,40,40,"buildMenu");
+Button.constructButton(listOfButtons, 0, 39, 119, 360, "hudButton");
 const hud = new HUD(listOfButtons,[]);
 
 

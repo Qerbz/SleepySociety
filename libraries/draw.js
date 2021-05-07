@@ -45,8 +45,8 @@ export default function drawGrid()
             drawTile(mapArray[x][y].tile, new Point2D(x,y));
             if (map.mapHexes[x][y].building == 1){
                 
-    
-                buildings[x][y].draw(0, 0);
+                if (buildings[x][y].type == "housing") buildings[x][y].draw(0, 0);
+                if (buildings[x][y].type == "commercial") buildings[x][y].draw(1, 0);
             }
 
         }
