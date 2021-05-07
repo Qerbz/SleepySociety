@@ -42,6 +42,7 @@ export const buildingTypes = ["House", "Commercial", "Agriculture", "Education",
 
 export const listOfButtons = [];
 export const buildingButtons = [];
+export const interactButtons = [];
 
 export const camera = { x: 100, y: 100 }
 

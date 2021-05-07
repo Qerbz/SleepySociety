@@ -55,6 +55,13 @@ function sleep(milliseconds) {
     } while (currentDate - date < milliseconds);
 }
 
+let debugLoop;
+debugLoop = setInterval(debug(),100);
+
+function debug(){
+    console.log(hud.buttonsList);
+}
+
 canvas.addEventListener('contextmenu', function(e) {
     e.preventDefault();
     
@@ -100,6 +107,8 @@ function gameLoop() {
 load();
 let isLoadedLoop;
 isLoadedLoop = setInterval(init(),100);
+
+
 
 function init(){
     if(isLoaded()) {
