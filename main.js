@@ -54,8 +54,8 @@ function sleep(milliseconds) {
     } while (currentDate - date < milliseconds);
 }
 
-canvas.addEventListener('contextmenu', function(ev) {
-    ev.preventDefault();
+canvas.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
     
     return false;
 }, false);
