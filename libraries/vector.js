@@ -27,7 +27,7 @@ export class Vector
 			this.x += vector.x;
 			this.y += vector.y;
 		}
-		else		return new Error(vector + " is not an instance of Vector");
+		else return new Error(vector + " is not an instance of Vector");
 	}
 
 	subtract ( vector )
@@ -37,7 +37,7 @@ export class Vector
 			this.x -= vector.x;
 			this.y -= vector.y;
 		}
-		else		return new Error(vector + " is not an instance of Vector");
+		else return new Error(vector + " is not an instance of Vector");
 	}
 
 	scale ( t )
@@ -48,16 +48,14 @@ export class Vector
 			this.y *= t;
 		}
 
-		else		return new Error(t + " is not a Number")
+		else return new Error(t + " is not a Number");
 		
 	}
 
 	static scalarproduct ( vectora, vectorb ) 
 	{
-		if (vectora instanceof Vector && vectorb instanceof Vector){
-			return vectora.x*vectorb.x + vectora.y*vectorb.y;
-		}
-		else		return new Error(vector + " is not an istance of Vector")
+		if (vectora instanceof Vector && vectorb instanceof Vector) return vectora.x*vectorb.x + vectora.y*vectorb.y;
+		else return new Error(vector + " is not an istance of Vector");
 	}
 
 	normalize ()
@@ -77,9 +75,7 @@ export class Vector
 
 	angle ( vector )
 	{
-
-		return Math.acos(Vector.scalarproduct(this,vector)/(this.length * vector.length))
-
+		return Math.acos(Vector.scalarproduct(this,vector)/(this.length * vector.length));
 	}
 
 	rotate ( angle )
@@ -99,7 +95,6 @@ export class Vector
 		return Math.round((number + Number.EPSILON) * f) / f;
 	}
 }
-
 
 let v = new Vector(1,0);
 let w = new Vector(1,7);
