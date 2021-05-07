@@ -14,7 +14,7 @@ export class HUD
 export class Button
 {
     pointStartButton;
-    pointEnd;
+    pointEndButton;
     name;
 
     constructor(point2DStart, point2DEnd, name)
