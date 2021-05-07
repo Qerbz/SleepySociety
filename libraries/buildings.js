@@ -49,8 +49,8 @@ class Building {
      */
 
     draw(frameX, frameY) {
-        this.pixelPos = Hex.hexToPixel(new Point2D(this.x, this.y))
-        ctx.drawImage(this.img, this.width * frameX, this.height * frameY, this.width, this.height, this.pixelPos.x-32, this.pixelPos.y-32, this.width, this.height)
+        this.pixelPos = Hex.hexToPixel(new Point2D(this.x, this.y));
+        ctx.drawImage(this.img, this.width * frameX, this.height * frameY, this.width, this.height, this.pixelPos.x-this.width/2, this.pixelPos.y-this.height/2, this.width, this.height);
   
     }
 }
