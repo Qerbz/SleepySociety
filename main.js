@@ -35,9 +35,7 @@ function arrayRemove(arr, value) {
     });
 }
 
-document.addEventListener("keydown", function(e) {
-    if (keys.indexOf(e.key) === -1) keys.push(e.key);
-});
+document.addEventListener("keydown", function(e) {if (keys.indexOf(e.key) < 0) keys.push(e.key);});
 
 document.addEventListener("keyup", function(e) {
     keys.splice(keys.indexOf(e.key), 1);
