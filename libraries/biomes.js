@@ -18,21 +18,22 @@ export default function getBiome(coords) {
 
 function biome(e, m)
 {
-    if (e < 0.2) return tile.water; 
-    if (e < 0.3) return tile.sand;
+    if (e < 0.265) return tile.water;
 
     if (e < 0.5) {
-        if (m < 0.2) return tile.scorched;
-        if (m < 0.5) return tile.grass;
-        if (m < 0.74) return tile.forestDeep;
+        if (m < 0.3) return tile.sand;
+        if (m < 0.45) return tile.grass;
+        if (m < 0.8) return tile.forestDeep;
         else return tile.jungle;
     }
 
     if (e < 0.78) {
-        if (m < 0.2) return tile.desert;
+        if (m < 0.2) return tile.sand;
         if (m < 0.3) return tile.dirt;
-        if (m < 0.6) return tile.grass;
-        else return tile.mountain;
+        if (m < 0.4) return tile.grass;
+        if (m < 0.6) return tile.forestDeep;
+        if (m < 0.9) return tile.mountain;
+        else return tile.water;
     }
 
     else {
