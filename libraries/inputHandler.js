@@ -36,7 +36,6 @@ export function mouseHandler(e, hud) {
                     if (hud.buttonsList[i].name === "buildMenu") 
                     {
                         player.currentAction = "buildMenu";
-                        console.log(hud.buttonsList);
                         return 0;  
                     }
                 }
@@ -47,14 +46,15 @@ export function mouseHandler(e, hud) {
                     name: "interact",
                     hexCoords: new Point2D(hexCoords.x,hexCoords.y)
                 };
+                let buttonStartLoc = Hex.hexToPixel(player.currentAction.hexCoords);
+                for (let i = 0; i < 3; i++)
+                {
+                    Button.constructButton(interactButtons,buttonStartLoc.x + i*100,buttonStartLoc.y,100,100,"interact"+i);
+                }
+                console.log(hud.buttonsList);
+                return 0;
             }
-            // let buttonStartLoc = Hex.hexToPixel(player.currentAction.hexCoords);
-            // for (let i = 0; i < 3; i++)
-            // {
-            //     Button.constructButton(interactButtons,buttonStartLoc.x + i*100,buttonStartLoc.y,100,100,"interact"+i);
-            // }
-            // console.log(hud.buttonsList);
-            // return 0;
+           
         }
 
         // If he click on the 
@@ -82,6 +82,7 @@ export function mouseHandler(e, hud) {
             }
             
         }
+
 
         else if (player.currentAction === "buildCommercial") {
             if(hud.buttonsList[hudButtonIndex].pointIsWithin(pointerPos)) {
