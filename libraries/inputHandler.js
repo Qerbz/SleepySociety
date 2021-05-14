@@ -4,7 +4,7 @@ import { Point2D } from './point2d.js';
 import { Button } from './hud.js';
 import { Vector } from './vector.js';
 import { Commercial, Housing } from './buildings.js';
-import { Queue } from './person.js';
+import { PersonAction, Queue } from './person.js';
 
 
 export function cameraMovement(keys) {
@@ -54,7 +54,6 @@ export function mouseHandler(e, hud) {
             {
                 Button.constructButton(interactButtons,buttonStartLoc.x + i*100,buttonStartLoc.y,100,100,"interact"+i);
             }
-            console.log(hud.buttonsList);
             return 0;
         }
 
@@ -102,11 +101,19 @@ export function mouseHandler(e, hud) {
                 {
                     if (interactButtons[i].name === "interact0") 
                     {
-                        
-                        interactButtons.splice(0,interactButtons.length);
-                        player.currentAction = 0;
-                        return 0;  
+                        player.avatar.actionqueue.queueAdd(new PersonAction("chopWood", player.currentAction.hexCoords));
                     }
+                    else if (interactButtons[i].name === "interact1"){
+                        console.log("ERROR button not implemented");
+                    }
+                    else if (interactButtons[i].name === "interact2"){
+                        console.log("ERROR button not implemented");
+                    }
+
+                    interactButtons.splice(0,interactButtons.length);
+                    player.currentAction = 0;
+                    return 0;  
+                    
                 }
             }
         }

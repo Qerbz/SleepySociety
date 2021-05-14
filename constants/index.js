@@ -11,6 +11,8 @@ export const hexWidth = size*2;
 export const hexHeight = size * Math.sqrt(3);
 export const degrees60 = 2 * Math.PI / 6;
 
+
+
 export const mapHeight = 200;
 export const mapWidth = 200;
 export const mapSeed = Math.random();
@@ -71,4 +73,6 @@ export const mapArray = [];
 export const map = {
     mapHexes: mapArray,
     mapSeed: mapSeed
-}
+};
+
+export const people = [player.avatar];

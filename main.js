@@ -1,4 +1,4 @@
-import { map, mapArray, mapHeight, mapWidth, size, listOfButtons,scrollSpeedVector, ctx, origo, hexSpritesheet, HUDSprite, canvas, buildingsSprite, buildingHUDSprite, player, tileInteract, keys} from './constants/index.js'
+import { map, mapArray, mapHeight, mapWidth, size, listOfButtons,scrollSpeedVector, ctx, origo, hexSpritesheet, HUDSprite, canvas, buildingsSprite, buildingHUDSprite, player, tileInteract, keys, people} from './constants/index.js'
 import { HUD, Button } from './libraries/hud.js';
 import { isLoaded, load} from './loadHandler.js';
 import { cameraMovement, mouseHandler } from './libraries/inputHandler.js';
@@ -100,7 +100,21 @@ function gameLoop() {
         let pixelCoords = Hex.hexToPixel(player.currentAction.hexCoords);
         ctx.drawImage(tileInteract, pixelCoords.x, pixelCoords.y);
     }
-    fpsCounter()
+    for (let i = 0; i<people.length; i++)
+    {
+        if(people[i].actionIsDone)
+        {
+            if(people[i].actionqueue.actionQueue.length > 0)
+            {
+                people[i].nextAction();
+            }
+        }
+        else{
+            people[i].actionHandler();
+        }
+    }
+
+    fpsCounter();
     cameraMovement(keys);
     requestAnimationFrame(gameLoop);
 }
