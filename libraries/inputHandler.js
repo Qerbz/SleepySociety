@@ -127,7 +127,6 @@ function makeBuildingButtons() {
         for (let j = 0; j < 2; j++ ) {
             Button.constructButton(buildingButtons, xInit, yInit, 28, 27, `build${buildingTypes[building]}`);
             
-            
             building += 1;
             xInit += step;
         }
