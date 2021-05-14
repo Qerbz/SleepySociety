@@ -8,7 +8,7 @@ import { Hex } from './libraries/hex.js';
 import { Point2D } from './libraries/point2d.js';
 import { Person, Queue, PersonAction } from './libraries/person.js';
 import { Vector } from './libraries/vector.js';
-
+import loadMainMenu from './menu.js';
 
 
 ctx.webkitImageSmoothingEnabled = false;
@@ -21,8 +21,6 @@ HUDSprite.src = "./img/hud.png";
 buildingsSprite.src = "./img/buildings.png";
 buildingHUDSprite.src = "./img/buildingHUD.png";
 tileInteract.src = "./img/tileInteract.png"
-
-
 
 Button.constructButton(listOfButtons, 10,50,40,40,"buildMenu");
 Button.constructButton(listOfButtons, 0, 39, 119, 360, "hudButton");
@@ -61,7 +59,7 @@ let debugLoop;
 debugLoop = setInterval(debug(),100);
 
 function debug(){
-    console.log(hud.buttonsList);
+    // console.log(hud.buttonsList);
 }
 
 canvas.addEventListener('contextmenu', function(e) {
@@ -105,7 +103,7 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
-
+// loadMainMenu(ctx, canvas.width, canvas.height);
 load();
 let isLoadedLoop;
 isLoadedLoop = setInterval(init(),100);
