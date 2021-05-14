@@ -23,9 +23,10 @@ buildingHUDSprite.src = "./img/buildingHUD.png";
 tileInteract.src = "./img/tileInteract.png"
 
 
-
+// Construct static buttons
 Button.constructButton(listOfButtons, 10,50,40,40,"buildMenu");
 Button.constructButton(listOfButtons, 0, 39, 119, 360, "hudButton");
+
 const hud = new HUD(listOfButtons,[]);
 
 function arrayRemove(arr, value) { 
