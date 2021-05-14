@@ -13,6 +13,7 @@ export class Hex
         this.point2D = point2D;
         this.building = 0;
         this.tile;
+        this.work = 0;
     }
     /**
      * 

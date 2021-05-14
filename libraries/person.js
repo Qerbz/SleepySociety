@@ -1,7 +1,8 @@
-import { origo } from '../constants/index.js';
+import { origo, map, tile } from '../constants/index.js';
 import { Point2D } from './point2d.js';
 import {Resource, ResourcesStored} from './resources.js';
 import { Vector } from "./vector.js";
+import { Hex } from "./hex.js";
 
 export class Person 
 {
@@ -16,6 +17,7 @@ export class Person
   siblings;
   children;
   actionqueue;
+  actionIsDone;
   inventory;
   coordinates;
   destination;
@@ -36,6 +38,7 @@ export class Person
   medicine;
   inventoryManagement;
   tracking;
+  forestry;
 
   //Needs
   thirst;
@@ -64,6 +67,9 @@ export class Person
     this.wisdom = 1;
     this.intelligence = 1;
     this.constitution = 1;
+
+    //skills
+    this.forestry = 0;
 
     //gender
     let genderNum = Math.round(Math.random());
@@ -117,11 +123,13 @@ export class Person
     this.children = []; //people usually don't have children at birth
 
     //actionqueue
-    this.actionqueue = [];
+    this.actionqueue = new Queue();
+    this.actionIsDone = true;
 
     //inventory
     this.inventory = [];
   }
+
   draw(ctx)
   {
     ctx.fillRect(this.coordinates.x-5 + origo.x,this.coordinates.y-5 + origo.y,10,10)
@@ -147,7 +155,58 @@ export class Person
   newDestination(v)
   {
     this.destination = Vector.clone(v);
-    console.log(this.name + " is moving towards " + this.destination.x + ", " + this.destination.y + " and is currently at " + this.coordinates.x + ", " + this.coordinates.y);
+    //console.log(this.name + " is moving towards " + this.destination.x + ", " + this.destination.y + " and is currently at " + this.coordinates.x + ", " + this.coordinates.y);
+  }
+  actionHandler()
+  {
+    if (this.actionqueue.actionQueue.length > 0){
+      if(this.actionqueue.actionQueue[0].actionName == "chopWood")
+      {
+        let pixelCoordsAction = Hex.hexToPixel(this.actionqueue.actionQueue[0].coordinates);
+
+        if(map.mapHexes[this.actionqueue.actionQueue[0].coordinates.x][this.actionqueue.actionQueue[0].coordinates.y].tile == tile.forestDeep && pixelCoordsAction.x-origo.x == this.coordinates.x && pixelCoordsAction.y-origo.x == this.coordinates.y)
+        {
+
+          map.mapHexes[this.actionqueue.actionQueue[0].coordinates.x][this.actionqueue.actionQueue[0].coordinates.y].work += (this.strength + this.forestry + 1);
+
+          if(map.mapHexes[this.actionqueue.actionQueue[0].coordinates.x][this.actionqueue.actionQueue[0].coordinates.y].work > 1000)
+          {
+            map.mapHexes[this.actionqueue.actionQueue[0].coordinates.x][this.actionqueue.actionQueue[0].coordinates.y].tile = tile.grass;
+
+            this.actionqueue.queueShift();
+
+            this.actionIsDone = true;
+          }
+        }
+        else if (!(this.destination.x == pixelCoordsAction.x - origo.x && this.destination.y == pixelCoordsAction.y-origo.y))
+        {
+          console.log("cancelled action.. deleting");
+          this.actionqueue.queueShift();
+  
+          this.actionIsDone = true;
+        }
+        else if(!(map.mapHexes[this.actionqueue.actionQueue[0].coordinates.x][this.actionqueue.actionQueue[0].coordinates.y].tile == tile.forestDeep))
+        {
+          console.log("invalid action... deleting.");
+          this.actionqueue.queueShift();
+  
+          this.actionIsDone = true;
+        }
+      }
+      else
+      {
+        console.log("action not supported... deleting.");
+        this.actionqueue.queueShift();
+
+        this.actionIsDone = true;
+      }
+    }
+  }
+  nextAction()
+  {
+    this.actionIsDone = false;
+    let destCoords = Hex.hexToPixel(this.actionqueue.actionQueue[0].coordinates);
+    this.newDestination(new Vector(destCoords.x-origo.x,destCoords.y-origo.y));
   }
 }
 

@@ -1,4 +1,4 @@
-import { map, mapArray, mapHeight, mapWidth, size, listOfButtons,scrollSpeedVector, ctx, origo, hexSpritesheet, HUDSprite, canvas, buildingsSprite, buildingHUDSprite, player, tileInteract, keys} from './constants/index.js'
+import { map, mapArray, mapHeight, mapWidth, size, listOfButtons,scrollSpeedVector, ctx, origo, hexSpritesheet, HUDSprite, canvas, buildingsSprite, buildingHUDSprite, player, tileInteract, keys, people} from './constants/index.js'
 import { HUD, Button } from './libraries/hud.js';
 import { isLoaded, load} from './loadHandler.js';
 import { cameraMovement, mouseHandler } from './libraries/inputHandler.js';
@@ -22,8 +22,11 @@ buildingsSprite.src = "./img/buildings.png";
 buildingHUDSprite.src = "./img/buildingHUD.png";
 tileInteract.src = "./img/tileInteract.png"
 
+
+// Construct static buttons
 Button.constructButton(listOfButtons, 10,50,40,40,"buildMenu");
 Button.constructButton(listOfButtons, 0, 39, 119, 360, "hudButton");
+
 const hud = new HUD(listOfButtons,[]);
 
 function arrayRemove(arr, value) { 
@@ -98,7 +101,21 @@ function gameLoop() {
         let pixelCoords = Hex.hexToPixel(player.currentAction.hexCoords);
         ctx.drawImage(tileInteract, pixelCoords.x, pixelCoords.y);
     }
-    fpsCounter()
+    for (let i = 0; i<people.length; i++)
+    {
+        if(people[i].actionIsDone)
+        {
+            if(people[i].actionqueue.actionQueue.length > 0)
+            {
+                people[i].nextAction();
+            }
+        }
+        else{
+            people[i].actionHandler();
+        }
+    }
+
+    fpsCounter();
     cameraMovement(keys);
     requestAnimationFrame(gameLoop);
 }
