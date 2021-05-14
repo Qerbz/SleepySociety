@@ -5,6 +5,7 @@ import { Button } from './hud.js';
 import { Vector } from './vector.js';
 import { Commercial, Housing } from './buildings.js';
 import { PersonAction, Queue } from './person.js';
+import { findIndexButtonlist } from './utils.js';
 
 
 export function cameraMovement(keys) {
@@ -20,41 +21,39 @@ export function cameraMovement(keys) {
 export function mouseHandler(e, hud) {
     const pointerPos = new Point2D(e.clientX, e.clientY);
     const hexCoords = Hex.pixelToHex(pointerPos);
+    const hudButtonIndex = findIndexButtonlist(hud.buttonsList, "hudButton");
     
-
     if (e.which == 3){
         player.avatar.newDestination(new Vector (pointerPos.x - origo.x, pointerPos.y - origo.y));
     }
-
     else{
         if (player.currentAction === 0) {
             for (let i = 0; i < hud.buttonsList.length; i++) 
             {
-                if(hud.buttonsList[i].pointIsWithin(pointerPos)) 
+                if(hud.buttonsList[i].pointIsWithin(pointerPos)) 
                 {
                     console.log(hud.buttonsList[i].name)
                     if (hud.buttonsList[i].name === "buildMenu") 
                     {
                         player.currentAction = "buildMenu";
-                        console.log(hud.buttonsList);
                         return 0;  
                     }
                 }
             }
-            let hexCoords = Hex.pixelToHex(pointerPos);
-            player.currentAction = 
-            {
-                name: "interact",
-                hexCoords: new Point2D(hexCoords.x,hexCoords.y)
-            };
-
-
-            let buttonStartLoc = Hex.hexToPixel(player.currentAction.hexCoords);
-            for (let i = 0; i < 3; i++)
-            {
-                Button.constructButton(interactButtons,buttonStartLoc.x + i*100,buttonStartLoc.y,100,100,"interact"+i);
+            if(!((pointerPos.x > 0 && pointerPos.x < 118) && (pointerPos.y > 39 && pointerPos.y < 399))) {
+                player.currentAction = 
+                {
+                    name: "interact",
+                    hexCoords: new Point2D(hexCoords.x,hexCoords.y)
+                };
+                let buttonStartLoc = Hex.hexToPixel(player.currentAction.hexCoords);
+                for (let i = 0; i < 3; i++)
+                {
+                    Button.constructButton(interactButtons,buttonStartLoc.x + i*100,buttonStartLoc.y,100,100,"interact"+i);
+                }
+                console.log(hud.buttonsList);
+                return 0;
             }
-            return 0;
         }
 
         // If he click on the 
@@ -73,7 +72,7 @@ export function mouseHandler(e, hud) {
 
         // If player click on buildHouse button
         else if (player.currentAction === "buildHouse") {
-            if(hud.buttonsList[1].pointIsWithin(pointerPos)) {
+            if(hud.buttonsList[hudButtonIndex].pointIsWithin(pointerPos)) {
                 player.currentAction = 0;
             }
             else {
@@ -82,13 +81,14 @@ export function mouseHandler(e, hud) {
             }
             
         }
+
+
         else if (player.currentAction === "buildCommercial") {
-            if(hud.buttonsList[1].pointIsWithin(pointerPos)) {
+            if(hud.buttonsList[hudButtonIndex].pointIsWithin(pointerPos)) {
                 player.currentAction = 0;
             }
             else {
-                map.mapHexes[hexCoords.x][hexCoords.y].building = 1;
-               
+                map.mapHexes[hexCoords.x][hexCoords.y].building = 1;  
                 if(checkHouse(hexCoords)) buildings[hexCoords.x][hexCoords.y] = new Commercial(buildingsSprite, hexCoords.x, hexCoords.y);
             }
         }
@@ -97,7 +97,7 @@ export function mouseHandler(e, hud) {
             
             for (let i = 0; i < interactButtons.length; i++) 
             {
-                if(interactButtons[i].pointIsWithin(pointerPos)) 
+                if(interactButtons[i].pointIsWithin(pointerPos)) 
                 {
                     if (interactButtons[i].name === "interact0") 
                     {
@@ -122,7 +122,6 @@ export function mouseHandler(e, hud) {
         player.currentAction = 0;
     }
 }
-
 
 function makeBuildingButtons() {
     let step = 43;
